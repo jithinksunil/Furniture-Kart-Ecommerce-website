@@ -1,6 +1,7 @@
 const express=require('express')
 const app=express()
 const sessions=require('express-session')
+const expressLayouts=require('express-ejs-layouts')
 const userRouter=require('../The furniture kart/routes/userRoute')
 const adminRouter=require('../The furniture kart/routes/adminRoute')
 
@@ -18,6 +19,7 @@ app.use((req, res, next) => {//setup cache
     next();
 });
 
+app.use(expressLayouts)
 app.set('view engine','ejs')//setting up  view engine
 
 const mongodb=require('./config/mongooseConnection')

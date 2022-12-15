@@ -1,7 +1,7 @@
 const express=require('express')
 
 function login(req,res){
-    res.render('sample')
+    res.render('admin')
 }
 
 module.exports={login}
