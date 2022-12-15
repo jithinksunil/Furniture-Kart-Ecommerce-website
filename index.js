@@ -2,8 +2,8 @@ const express=require('express')
 const app=express()
 const sessions=require('express-session')
 const expressLayouts=require('express-ejs-layouts')
-const userRouter=require('../Furniture-Kart-Ecommerce-website/routes/userRoute')
-const adminRouter=require('../Furniture-Kart-Ecommerce-website/routes/adminRoute')
+const userRouter=require('../Furniture-Kart-Ecommerce-master/routes/userRoute')
+const adminRouter=require('../Furniture-Kart-Ecommerce-master/routes/adminRoute')
 
 /*---------------------------Setups-----------------------------*/
 app.use(express.urlencoded({extended:true}))//to get data from post method
