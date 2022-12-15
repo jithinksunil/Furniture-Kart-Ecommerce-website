@@ -3,6 +3,6 @@ const router=express.Router()
 const userCollection=require('../models/userSchema')
 const userController=require('../controllers/userController')
 
-router.get('/furnitureKart',userController.login)
+router.get('/user',userController.login)
 
 module.exports=router

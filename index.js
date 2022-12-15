@@ -2,8 +2,8 @@ const express=require('express')
 const app=express()
 const sessions=require('express-session')
 const expressLayouts=require('express-ejs-layouts')
-const userRouter=require('../The furniture kart/routes/userRoute')
-const adminRouter=require('../The furniture kart/routes/adminRoute')
+const userRouter=require('../Furniture-Kart-Ecommerce-website/routes/userRoute')
+const adminRouter=require('../Furniture-Kart-Ecommerce-website/routes/adminRoute')
 
 /*---------------------------Setups-----------------------------*/
 app.use(express.urlencoded({extended:true}))//to get data from post method
@@ -19,7 +19,9 @@ app.use((req, res, next) => {//setup cache
     next();
 });
 
-app.use(expressLayouts)
+app.use(express.static('./public'));//static file setup for folders in public folder,jithin is a folder inside the public folder
+app.use(expressLayouts)//setting up layout
+app.set('views','./views')//setting up directory for view engine, here views is the folder
 app.set('view engine','ejs')//setting up  view engine
 
 const mongodb=require('./config/mongooseConnection')
