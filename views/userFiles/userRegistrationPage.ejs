@@ -1,0 +1,75 @@
+<head>
+  <link rel="stylesheet" href="/styles/userLoginPage.css" />
+</head>
+<body>
+  <%- include('./partials/navbar')%>
+  <div class="container loginPageOverrides">
+    <section class="sign-in">
+      <div class="container">
+        <div class="signin-content">
+          <div class="signin-image">
+            <figure>
+              <img class="d-md-block d-sm-none " src="/images/loginImage.jpg" alt="sing up image" />
+            </figure>
+            
+          </div>
+
+          <div class="signin-form">
+            <h2 class="form-title">Register</h2>
+            <form
+              action="/user/registration/validation"
+              method="POST"
+              class="register-form"
+              id="login-form"
+            >
+              <div class="form-group">
+                <label for="your_name"
+                  ><i class="zmdi zmdi-account material-icons-name"></i
+                ></label>
+                <input
+                  type="email"
+                  name="email"
+                  id="your_name"
+                  placeholder="Email"
+                  required
+                  
+                />
+              </div>
+              <div class="form-group">
+                <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
+                <input
+                  type="password"
+                  name="password"
+                  id="your_pass"
+                  placeholder="Password"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="checkbox"
+                  name="remember-me"
+                  id="remember-me"
+                  class="agree-term"
+                />
+                <label for="remember-me" class="label-agree-term"
+                  ><span><span></span></span>Remember me</label
+                >
+              </div>
+              <div class="form-group form-button">
+                <input
+                  type="submit"
+                  name="signin"
+                  id="signin"
+                  class="form-submit"
+                  value="Sign up"
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <%- include('./partials/footer')%>
+</body>

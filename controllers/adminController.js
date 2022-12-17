@@ -1,7 +1,18 @@
-const express=require('express')
 
-function login(req,res){
-    res.render('admin')
+function adminLogin(req,res){
+    res.render('./adminFiles/adminLoginPage')
 }
 
-module.exports={login}
+function adminLoginValidation(req,res){
+    res.redirect('/admin/profile')
+}
+
+function adminProfile(req,res){
+    res.render('./adminFiles/adminProfilePage')
+}
+
+module.exports={
+    adminLogin,
+    adminLoginValidation,
+    adminProfile
+}
