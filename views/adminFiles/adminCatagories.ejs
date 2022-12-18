@@ -1,0 +1,57 @@
+<%- include('./partials/adminLayoutHeader')%>
+
+<section class="is-title-bar">
+    <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+        <ul>
+            <li>Admin</li>
+            <li>Products</li>
+            <li>Category management</li>
+        </ul>
+    </div>
+</section>
+
+<section class="is-hero-bar">
+    <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+        <h1 class="title">
+            Category management
+        </h1>
+    </div>
+</section>
+
+
+<table class="table">
+  <thead>
+    <tr>
+        
+        <th scope="col">No</th>
+        <th scope="col" style="width: 250px;">Image</th>
+        <th scope="col">Category</th>
+        <th scope="col">Update</th>
+        <th scope="col">Delete</th>
+        <th scope="col">Action</th>
+  
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+
+      <td>1</td>
+      <td>
+        <div style="height: 90px; background-color: rgb(13, 62, 13);">
+            Image
+        </div>
+      </td>
+      <td>Mark</td>
+      <td><button type="button" class="btn btn-outline-primary" style="width: 80px; height:40px">Update</button></td>
+      <td><button type="button" class="btn btn-outline-primary" style="width: 80px; height:40px">Delete</button></td>
+      <td><button type="button" class="btn btn-primary" style="width: 80px; height:40px">List</button></td>
+      
+    </tr>
+  </tbody>
+</table>
+<div>
+    <button type="button" class="btn btn-primary mx-5 my-3" style="width: 80px; height:40px margin">List</button>
+</div>
+
+
+<%- include('./partials/adminLayoutFooter')%>

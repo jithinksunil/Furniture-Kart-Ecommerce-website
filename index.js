@@ -19,6 +19,9 @@ app.use((req, res, next) => {//setup cache
     next();
 });
 
+const morgan=require('morgan')//to check weather css are loaded or not
+app.use(morgan("dev"))
+
 app.use(express.static('./public'));//static file setup for folders in public folder,jithin is a folder inside the public folder
 app.use(expressLayouts)//setting up layout
 app.set('views','./views')//setting up directory for view engine, here views is the folder

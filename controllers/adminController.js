@@ -4,15 +4,40 @@ function adminLogin(req,res){
 }
 
 function adminLoginValidation(req,res){
-    res.redirect('/admin/profile')
+    res.redirect('/admin/dashboard')
 }
 
-function adminProfile(req,res){
-    res.render('./adminFiles/adminProfilePage')
+function adminDashBoard(req,res){
+    res.render('./adminFiles/adminDashBoard')
+}
+
+function userManagement(req,res){
+    res.render('./adminFiles/admin_userManagement')
+}
+
+function categoryManagement(req,res){
+    res.render('./adminFiles/adminCatagories')
+}
+
+function productManagement(req,res){
+    res.render('./adminFiles/adminProducts')
+}
+
+function orderManagement(req,res){
+    res.render('./adminFiles/adminOrderManagement')
+}
+
+function couponManagement(req,res){
+    res.render('./adminFiles/adminCouponManagement')
 }
 
 module.exports={
     adminLogin,
     adminLoginValidation,
-    adminProfile
+    adminDashBoard,
+    userManagement,
+    categoryManagement,
+    productManagement,
+    orderManagement,
+    couponManagement
 }
