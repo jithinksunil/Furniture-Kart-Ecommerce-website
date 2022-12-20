@@ -1,5 +1,9 @@
+const userCollection=require('../models/userSchema')
+const catCollection=require('../models/categorySchema')
+const productCollection = require('../models/productSchema')
 
 function adminLogin(req,res){
+    
     res.render('./adminFiles/adminLoginPage')
 }
 
@@ -7,20 +11,65 @@ function adminLoginValidation(req,res){
     res.redirect('/admin/dashboard')
 }
 
-function adminDashBoard(req,res){
-    res.render('./adminFiles/adminDashBoard')
+async function adminDashBoard(req,res){
+    let dashBoardData={
+        users:await userCollection.count(),
+        products:await productCollection.count()
+    }
+    res.render('./adminFiles/adminDashBoard',{data:dashBoardData})
 }
 
-function userManagement(req,res){
-    res.render('./adminFiles/admin_userManagement')
+async function userManagement(req,res){
+
+    const users=await userCollection.find()
+    res.render('./adminFiles/admin_userManagement',{userData:users})
 }
 
-function categoryManagement(req,res){
-    res.render('./adminFiles/adminCatagories')
+async function blockUser(req,res){
+
+    await userCollection.updateOne({_id:req.query.id},{action:false})
+    res.redirect('/admin/usermangement')
 }
 
-function productManagement(req,res){
-    res.render('./adminFiles/adminProducts')
+async function unBlockUser(req,res){
+
+    await userCollection.updateOne({_id:req.query.id},{action:true})
+    res.redirect('/admin/usermangement')
+}
+
+async function categoryManagement(req,res){
+    let catData=await catCollection.find()
+    res.render('./adminFiles/adminCatagories',{catData:catData})
+}
+
+async function addCategory(req,res){
+    await catCollection.insertMany([{catName:req.body.catName}])
+    res.redirect('/admin/products/categorymangement')
+}
+
+async function listCategoryAction(req,res){
+    await catCollection.updateOne({_id:req.query.id},{action:true})
+    res.redirect('/admin/products/categorymangement')
+}
+
+async function unListCategoryAction(req,res){
+    await catCollection.updateOne({_id:req.query.id},{action:false})
+    res.redirect('/admin/products/categorymangement')
+}
+
+async function productManagement(req,res){
+    let productData=await productCollection.find() 
+    res.render('./adminFiles/adminProducts',{productData:productData})
+}
+
+async function listProductAction(req,res){
+    await productCollection.updateOne({_id:req.query.id},{action:true})
+    res.redirect('/admin/products/productmangement')
+}
+
+async function unListProductAction(req,res){
+    await productCollection.updateOne({_id:req.query.id},{action:false})
+    res.redirect('/admin/products/productmangement')
 }
 
 function orderManagement(req,res){
@@ -36,8 +85,15 @@ module.exports={
     adminLoginValidation,
     adminDashBoard,
     userManagement,
+    blockUser,
+    unBlockUser,
     categoryManagement,
+    addCategory,
+    listCategoryAction,
+    unListCategoryAction,
     productManagement,
+    listProductAction,
+    unListProductAction,
     orderManagement,
     couponManagement
 }

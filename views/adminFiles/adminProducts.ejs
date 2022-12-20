@@ -1,23 +1,120 @@
 <%- include('./partials/adminLayoutHeader')%>
 
-<section class="is-title-bar">
-    <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
-        <ul>
-            <li>Admin</li>
-            <li>Products</li>
-            <li>Product management</li>
-        </ul>
-    </div>
-</section>
+<head>
+	<link rel="stylesheet" href="/admin/css/tableStyles.css">
+	<style>
+		td:nth-of-type(1):before { content: "Sl no"; }
+		td:nth-of-type(2):before { content: "Product"; }
+		td:nth-of-type(3):before { content: "Image"; }
+		td:nth-of-type(4):before { content: "Edit"; }
+		td:nth-of-type(5):before { content: "Action"; }
+	</style>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script><script>
+        $(document).ready(function () {
+            $("#example").DataTable();
+        });
+    </script>
+</head>
+<body>
+	<div style="width:98%">
+        <section class="is-title-bar">
+			<div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+				<ul>
+					<li>Admin</li>
+					<li>Products</li>
+					<li>Product management</li>
+				</ul>
+			</div>
+		</section>
+		
+		<section class="is-hero-bar">
+			<div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+				<h1 class="title">
+					Product management
+				</h1>
+				<button type="button" class="btn btn-success" style="width: 80px; height:40px">Add</button>
+			</div>
+		</section>
+        <section class="mt-2 ">
+            <table id="example" class="table mt-5 table-hover table-light " style="width:100%">
+                <thead>
+                    <tr>
+                        <th class="text-center">Sl no</th>
+						<th>Product</th>
+						<th>Image</th>
+						<th>Edit</th>
+						<th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+					<% productData.forEach((item,i)=>{ %>
+						<tr>
+							<td class="mx-2 text-center"><%= i+1 %></td>
+							<td class="mx-2"><%= item.productName %></td>
+							<td class="mx-2">
+							<div style="height: 90px; background-color: rgb(13, 62, 13);">
+								Image
+							</div>
+						</td>
+						<td class="mx-2"><button type="button" class="btn btn-outline-primary" style="width: 80px; height:40px">Update</button></td>
 
-<section class="is-hero-bar">
-    <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
-        <h1 class="title">
-            Product management
-        </h1>
-    </div>
-</section>
+						<% if(item.action){
+                            %><td class="mx-2"><a href="/admin/products/productmangement/un-listaction?id=<%=item._id%>" role="button" class="btn btn-danger" style="width: 91px; height:40px">Un-list</a></td><%
+                        }else{
+                            %><td class="mx-2"><a href="/admin/products/productmangement/listaction?id=<%=item._id%>" role="button" class="btn btn-primary" style="width: 91px; height:40px">List</a></td><%
+                        }%>
 
-this is Product management
+						</tr><%
+					}) 
+					%>
+                   
+                </tbody>
+            </table>
+        </section>
+
+		<section class="is-hero-bar">
+			<div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+			</div>
+		</section>
+
+		<div class="container col-md-9 ms-sm-auto col-lg-10 px-md-4">
+			<div class="row g-0 align-items-center justify-content-center">
+				<div class="col-lg-6 mb-lg-0 py-5">
+					<div class="card cascading-right"
+						style="background: hsla(0, 0%, 100%, 0.55); backdrop-filter: blur(30px); ">
+						<div class="card-body shadow-5 text-center">
+							<h2 class="fw-bold">Add New Product</h2>
+							<form action="/admin/products/productmangement/add" method="post" enctype="multipart/form-data">
+
+								<div class="form-outline mt-3">
+									<label class="form-label" for="form3Example1">Product Name</label><br>
+									<input type="text" id="form3Example1" name="catName" class="form-control" />
+
+								</div>
+								<div class="form-outline mt-3">
+									<label class="form-label" for="form3Example1">Choose your image</label><br>
+									<input type="file" name="image" class="form-control" />
+
+								</div>
+
+								<div class="form-outline mt-3">
+									<input type="submit" value="Submit" class="btn btn-primary btn-block mb-4">
+								</div>
+
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+		
+</body>
 
 <%- include('./partials/adminLayoutFooter')%>
