@@ -9,7 +9,7 @@ const adminRouter=require('../Furniture-Kart-Ecommerce-website-master/routes/adm
 app.use(express.urlencoded({extended:true}))//to get data from post method
 
 app.use(sessions({//setup session
-    resave:true,//to resave the session
+    resave:false,//to resave the session
     saveUninitialized:true,
     secret:'khfihuifgyscghi6543367567vhbjjfgt45475nvjhgjgj+6+9878', //random hash key string to genarate session id     
 }))

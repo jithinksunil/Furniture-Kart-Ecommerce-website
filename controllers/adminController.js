@@ -1,14 +1,27 @@
 const userCollection=require('../models/userSchema')
+const adminCollection=require('../models/adminSchema')
 const catCollection=require('../models/categorySchema')
 const productCollection = require('../models/productSchema')
 
 function adminLogin(req,res){
+
     
     res.render('./adminFiles/adminLoginPage')
 }
 
-function adminLoginValidation(req,res){
-    res.redirect('/admin/dashboard')
+async function adminLoginValidation(req,res){
+    let admin=await adminCollection.findOne({email:req.body.email})
+    try{
+        if(admin.password===req.body.password){
+            res.redirect('/admin/dashboard')
+        }
+        else{
+            res.redirect('/admin/login')
+        }
+    }
+    catch(err){
+        res.redirect('/admin/login')
+    }
 }
 
 async function adminDashBoard(req,res){
@@ -43,7 +56,13 @@ async function categoryManagement(req,res){
 }
 
 async function addCategory(req,res){
-    await catCollection.insertMany([{catName:req.body.catName}])
+    await catCollection.insertMany(
+        [{
+            catName:req.body.catName,
+            catImage:req.file.filename,
+            action:true
+        }]
+    )
     res.redirect('/admin/products/categorymangement')
 }
 
@@ -60,6 +79,28 @@ async function unListCategoryAction(req,res){
 async function productManagement(req,res){
     let productData=await productCollection.find() 
     res.render('./adminFiles/adminProducts',{productData:productData})
+}
+
+async function productAddPage(req,res){
+    let catData=await catCollection.find()
+
+    res.render('./adminFiles/admin_addProductPage',{catData:catData})
+}
+
+async function addProductCompleted(req,res){
+    await productCollection.insertMany(
+        [{
+            productName:req.body.productName,
+            productImage:req.file.filename,
+            category:req.body.catagoryName,
+            description:req.body.description,
+            rate:req.body.rate,
+            stock:req.body.stock,
+            action:true
+        }]
+    )
+    console.log(req.body.productName);
+    res.redirect('/admin/products/productmangement')
 }
 
 async function listProductAction(req,res){
@@ -92,6 +133,8 @@ module.exports={
     listCategoryAction,
     unListCategoryAction,
     productManagement,
+    productAddPage,
+    addProductCompleted,
     listProductAction,
     unListProductAction,
     orderManagement,

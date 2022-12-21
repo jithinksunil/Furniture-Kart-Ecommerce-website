@@ -59,10 +59,11 @@
 							<td class="mx-2 text-center"><%= i+1 %></td>
 							<td class="mx-2"><%= item.catName %></td>
 							<td class="mx-2">
-							<div style="height: 90px; background-color: rgb(13, 62, 13);">
-								Image
-							</div>
-						</td>
+								<div style="height: 90px;width:120px" class="img-fluid d-flex align-items-center">
+									<img src="/categories/images/<%= item.catImage %>" alt="img">
+								</div>
+							</td>
+							
 						<td class="mx-2"><button type="button" class="btn btn-outline-primary" style="width: 80px; height:40px">Update</button></td>
 
 						<% if(item.action){
@@ -100,7 +101,7 @@
 								</div>
 								<div class="form-outline mt-3">
 									<label class="form-label" for="form3Example1">Choose your image</label><br>
-									<input type="file" name="image" class="form-control" />
+									<input type="file" name="catImage" class="form-control" />
 
 								</div>
 

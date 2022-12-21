@@ -2,6 +2,11 @@ const mongoose=require('mongoose')
 
 const newSchema=new mongoose.Schema({//defining structure of collections
     productName:String,
+    productImage:String,
+    category:String,
+    description:String,
+    rate:Number,
+    stock:Number,
     action:Boolean
 })
 
