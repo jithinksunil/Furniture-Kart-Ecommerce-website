@@ -64,20 +64,20 @@ function userOtp(req,res){  //user login page
     }
     req.session.userData=userData
     req.session.otp= otpgen
+    console.log(req.session);
     
-    setTimeout(() => {//not working///////////////////////////////////////////////////////////////
-        req.session.otp= Math.floor(1000 + Math.random() * 9000)
-        req.session.otp2='fdsgsdgfdg'
-        console.log(req.session);
-    },10000);
+    setTimeout(() => {
+        // req.session.otp= Math.floor(1000 + Math.random() * 9000)//reassigning session inside the settime out is not reflecting the changes out side.why?
+        req.session.destroy()
+        console.log('otp expired');
+    },20000);
     res.render('./userFiles/otp')
 }
 
 
 async function otpValidation(req,res){  //user login page
-    console.log(req.session);
-    if(req.session.otp===req.body.otp){
-        
+    
+    if(req.session.otp==req.body.otp){
         await userCollection.insertMany([
             {
                 fName:req.session.userData.fName,
@@ -87,8 +87,10 @@ async function otpValidation(req,res){  //user login page
                 password:req.session.userData.password
             }
         ])
-        req.session.destroy()
         res.redirect('/')
+    }
+    else{
+        res.send('otp expired')
     }
 }
 
