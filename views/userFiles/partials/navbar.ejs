@@ -8,9 +8,21 @@
     class="navbar navbar-expand-lg"
   >
     <div class="container-fluid">
-      <a class="navbar-brand " href="#">Navbar</a>
+      <a class="navbar-brand " href="/">Furniture Kart</a>
+      <div>
+        <form class="d-flex" role="search">
+          <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+            name="search"
+          />
+          <input  class="btn btn-outline-light" type="submit" value="Search" >
+        </form>
+      </div>
       <button
-        class="navbar-toggler"
+        class="navbar-toggler bg-color-danger"
         type="button"
         data-bs-toggle="collapse"
         data-bs-target="#navbarSupportedContent"
@@ -23,10 +35,16 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active " aria-current="page" href="#">Home</a>
+            <a class="nav-link active " aria-current="page" href="/user/home">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
+            <% if(userData){%>
+              <a class="nav-link" href="/user/cart?userId=<%=userData._id %>">Cart</a>
+            <%}
+            else{%>
+              <a class="nav-link" href="/user/login">Cart</a>
+            <%}%>
+            
           </li>
           <li class="nav-item dropdown">
             <a
@@ -48,23 +66,12 @@
           <li class="nav-item">
             <a class="nav-link disabled ">Disabled</a>
           </li>
-          <li>
-            <form class="d-flex" role="search">
-              <input
-                class="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button class="btn btn-outline-light" type="submit">Search</button>
-            </form>
-          </li>
         </ul>
-
-        <a href="/user/login" class="nav-link">Login/Register</a>
-
-        <a href="/user/logout" class="nav-link"><button>logout</button></a>
-
+        <% if(userData){
+          %><p class="text-light"><%= userData.fName %></p><a href="/user/logout" class="nav-link"><button>logout</button></a> <%
+        }else{
+          %>  <a href="/user/login" class="nav-link">Login/Register</a><%
+        }%>
       </div>
     </div>
   </nav>

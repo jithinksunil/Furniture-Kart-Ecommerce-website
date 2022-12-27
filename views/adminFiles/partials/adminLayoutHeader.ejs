@@ -66,7 +66,7 @@
             <span class="icon"><i class="mdi mdi-github-circle"></i></span>
             <span>GitHub</span>
           </a>
-          <a href="/admin/login" title="Log out" class="navbar-item desktop-icon-only">
+          <a href="/admin/logout" title="Log out" class="navbar-item desktop-icon-only">
             <span class="icon"><i class="mdi mdi-logout"></i></span>
             <span>Log out</span>
           </a>
@@ -97,26 +97,17 @@
               <span class="menu-item-label">Users</span>
             </a>
           </li>
-          <li>
-            <a class="dropdown">
-              <span class="icon"><i class="mdi mdi-credit-card-outline"></i></span>
-              <span class="menu-item-label">Products</span>
-              <span class="icon"><i class="mdi mdi-plus"></i></span>
+          <li class="--set-active-profile-html">
+            <a href="/admin/products/productmangement">
+              <span class="icon"><i class="mdi mdi-account-multiple"></i></span>
+              <span>Product management</span>
             </a>
-            <ul>
-              <li>
-                <a href="/admin/products/productmangement">
-                  <span>Product management</span>
-                </a>
-              </li>
-            </ul>
-            <ul>
-              <li>
-                <a href="/admin/products/categorymangement">
-                  <span>Category management</span>
-                </a>
-              </li>
-            </ul>
+          </li>
+          <li class="--set-active-profile-html">
+            <a href="/admin/products/categorymangement">
+              <span class="icon"><i class="mdi mdi-account-multiple"></i></span>
+              <span>Category management</span>
+            </a>
           </li>
           <li>
             <a href="/admin/orders" class="has-icon">

@@ -2,17 +2,18 @@ const userCollection=require('../models/userSchema')
 const adminCollection=require('../models/adminSchema')
 const catCollection=require('../models/categorySchema')
 const productCollection = require('../models/productSchema')
+const cartCollection=require('../models/cartShema')
+const orderCollection = require('../models/orderSchema')
+const couponCollection=require('../models/couponShema')
 
 function adminLogin(req,res){
-
-    
     res.render('./adminFiles/adminLoginPage')
 }
-
 async function adminLoginValidation(req,res){
     let admin=await adminCollection.findOne({email:req.body.email})
     try{
         if(admin.password===req.body.password){
+            req.session.admin=true
             res.redirect('/admin/dashboard')
         }
         else{
@@ -39,8 +40,8 @@ async function userManagement(req,res){
 }
 
 async function blockUser(req,res){
-
-    await userCollection.updateOne({_id:req.query.id},{action:false})
+    
+    let jithin=await userCollection.updateOne({_id:req.query.id},{action:false})
     res.redirect('/admin/usermangement')
 }
 
@@ -51,19 +52,31 @@ async function unBlockUser(req,res){
 }
 
 async function categoryManagement(req,res){
+    let message=req.query.message
     let catData=await catCollection.find()
-    res.render('./adminFiles/adminCatagories',{catData:catData})
+    res.render('./adminFiles/adminCatagories',{catData:catData,message})
+    message=false
 }
 
 async function addCategory(req,res){
-    await catCollection.insertMany(
-        [{
-            catName:req.body.catName,
-            catImage:req.file.filename,
-            action:true
-        }]
-    )
-    res.redirect('/admin/products/categorymangement')
+    if(req.file){
+        try{
+            await catCollection.insertMany(
+                [{
+                    catName:req.body.catName,
+                    catImage:req.file.filename,
+                }]
+            )
+            res.redirect('/admin/products/categorymangement')
+        }
+        catch(err){
+            res.redirect('/admin/products/categorymangement')
+        }
+    }
+    else{
+        res.redirect('/admin/products/categorymangement?message=Select jpeg format')
+    }
+
 }
 
 async function listCategoryAction(req,res){
@@ -83,11 +96,12 @@ async function productManagement(req,res){
 
 async function productAddPage(req,res){
     let catData=await catCollection.find()
-
+    
     res.render('./adminFiles/admin_addProductPage',{catData:catData})
 }
 
 async function addProductCompleted(req,res){
+    
     await productCollection.insertMany(
         [{
             productName:req.body.productName,
@@ -113,12 +127,24 @@ async function unListProductAction(req,res){
     res.redirect('/admin/products/productmangement')
 }
 
-function orderManagement(req,res){
-    res.render('./adminFiles/adminOrderManagement')
+async function orderManagement(req,res){
+
+    let orderData=await orderCollection.find()
+
+    let user=await userCollection.find({_id:orderData.userId})
+    res.render('./adminFiles/adminOrderManagement',{orderData,user})
 }
 
-function couponManagement(req,res){
-    res.render('./adminFiles/adminCouponManagement')
+async function couponManagement(req,res){
+
+    let couponData= await couponCollection.find()
+
+    res.render('./adminFiles/adminCouponManagement',{couponData})
+}
+
+function logOut(req,res){
+    req.session.destroy()
+    res.redirect('/admin/login')
 }
 
 module.exports={
@@ -138,5 +164,6 @@ module.exports={
     listProductAction,
     unListProductAction,
     orderManagement,
-    couponManagement
+    couponManagement,
+    logOut
 }

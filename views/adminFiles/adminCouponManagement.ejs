@@ -1,22 +1,82 @@
 <%- include('./partials/adminLayoutHeader')%>
+<head>
+	<link rel="stylesheet" href="/admin/css/tableStyles.css">
+	<style>
+		td:nth-of-type(1):before { content: "Sl no"; }
+		td:nth-of-type(2):before { content: "Coupon name";}
+		td:nth-of-type(3):before { content: "Discount"; }
+        td:nth-of-type(4):before { content: "Status"; }
+		td:nth-of-type(5):before { content: "Action"; }
+		td:nth-of-type(6):before { content: "Cancel"; }
+	</style>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script><script>//datatable ajax file
+        $(document).ready(function () {
 
-<section class="is-title-bar">
-    <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
-        <ul>
-            <li>Admin</li>
-            <li>Coupons</li>
-        </ul>
-    </div>
-</section>
+            $("#example").DataTable();
 
-<section class="is-hero-bar">
-    <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
-        <h1 class="title">
-            Coupons
-        </h1>
-    </div>
-</section>
+        });
+    </script>
+</head>
+<body>
+    <section class="is-title-bar">
+        <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+            <ul>
+                <li>Admin</li>
+                <li>Coupons</li>
+            </ul>
+        </div>
+    </section>
+    
+    <section class="is-hero-bar">
+        <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+            <h1 class="title">
+                Coupons
+            </h1>
+        </div>
+    </section>
+    <section class="mt-2 ">
+        <table id="example" class="table mt-5 table-hover table-light " style="width:100%">
+            <thead>
+                <tr>
+                    <th class="text-center">Sl no</th>
+                    <th>Coupon name</th>
+                    <th>Discount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                    <th>Cancel</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% couponData.forEach((item,i)=>{ %>
+                    <tr>
+                        <td class="mx-2 text-center"><%= i+1 %></td>
+                        <td class="mx-2"><%= item.name %></td>
+                        <td class="mx-2"><%= item.amountOff %></td>
+                        <td class="mx-2"><%= item.status %></td>
+    
+                    <% if(item.action){
+                        %><td class="mx-2"><a href="/admin/orders/ordermangement/un-listaction?id=<%=item._id%>" role="button" class="btn btn-danger" style="width: 91px; height:40px">List</a></td><%
+                    }else{
+                        %><td class="mx-2"><a href="/admin/orders/ordermangement/listaction?id=<%=item._id%>" role="button" class="btn btn-success" style="width: 91px; height:40px">Un-list</a></td><%
+                    }%>
+    
+                        <td class="mx-2"><button type="button" class="btn btn-danger" style="width: 80px; height:40px">cancel</button></td>
+    
+                    </tr><%
+                }) 
+                %>
+               
+            </tbody>
+        </table>
+    </section>
+    
+    <%- include('./partials/adminLayoutFooter')%>
+    
+</body>
 
-this is Couponspage
-
-<%- include('./partials/adminLayoutFooter')%>

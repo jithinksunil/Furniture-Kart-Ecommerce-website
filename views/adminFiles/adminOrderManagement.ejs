@@ -1,22 +1,85 @@
 <%- include('./partials/adminLayoutHeader')%>
+<head>
+	<link rel="stylesheet" href="/admin/css/tableStyles.css">
+	<style>
+		td:nth-of-type(1):before { content: "Sl no"; }
+		td:nth-of-type(2):before { content: "User email"; }
+		td:nth-of-type(3):before { content: "Address"; }
+		td:nth-of-type(4):before { content: "Order Date"; }
+		td:nth-of-type(6):before { content: "Total amount"; }
+		td:nth-of-type(7):before { content: "Hold/Release"; }
+		td:nth-of-type(8):before { content: "Cancel"; }
+	</style>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script><script>//datatable ajax file
+        $(document).ready(function () {
+            $("#example").DataTable();
+        });
+    </script>
+</head>
 
-<section class="is-title-bar">
-    <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
-        <ul>
-            <li>Admin</li>
-            <li>Orders</li>
-        </ul>
-    </div>
-</section>
+<body>
+    <section class="is-title-bar">
+        <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+            <ul>
+                <li>Admin</li>
+                <li>Orders</li>
+            </ul>
+        </div>
+    </section>
+    
+    <section class="is-hero-bar">
+        <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+            <h1 class="title">
+                Orders
+            </h1>
+        </div>
+    </section>
+    
+    <section class="mt-2 ">
+        <table id="example" class="table mt-5 table-hover table-light " style="width:100%">
+            <thead>
+                <tr>
+                    <th class="text-center">Sl no</th>
+                    <th>User email</th>
+                    <th>Address</th>
+                    <th>Order Date</th>
+                    <th>Total amount</th>
+                    <th>Hold/Release</th>
+                    <th>Cancel</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% orderData.forEach((item,i)=>{ %>
+                    <tr>
+                        <td class="mx-2 text-center"><%= i+1 %></td>
+                        <td class="mx-2"><%= user.email %></td>
+                        <td class="mx-2"><%= item.description %></td>
+                        <td class="mx-2"><%= item.orderDate %> </td>
+                        <td class="mx-2"><%= item.netAmount %> Rs</td>
 
-<section class="is-hero-bar">
-    <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
-        <h1 class="title">
-            Orders
-        </h1>
-    </div>
-</section>
+                    <% if(item.action){
+                        %><td class="mx-2"><a href="/admin/orders/ordermangement/un-listaction?id=<%=item._id%>" role="button" class="btn btn-danger" style="width: 91px; height:40px">Hold</a></td><%
+                    }else{
+                        %><td class="mx-2"><a href="/admin/orders/ordermangement/listaction?id=<%=item._id%>" role="button" class="btn btn-success" style="width: 91px; height:40px">Release</a></td><%
+                    }%>
 
-this is Order management
+                        <td class="mx-2"><button type="button" class="btn btn-danger" style="width: 80px; height:40px">cancel</button></td>
 
-<%- include('./partials/adminLayoutFooter')%>
+                    </tr><%
+                }) 
+                %>
+               
+            </tbody>
+        </table>
+    </section>
+    
+    <%- include('./partials/adminLayoutFooter')%>
+    
+</body>
+
