@@ -7,75 +7,64 @@
 
 </style>
 <%- include('./partials/navbar')%>
-<div class="container-fluid px-0 ">
-  <div class="flex-container" >
-    <% for(let i=0;i<productData.length;i++){%>
-      <div class="card mx-4 my-4" style="width: 15rem;height:20rem">
-        <div class="img-fluid" style="height: 50%;width: 100%;">
-          <img class="card-img-top" src="/products/images/<%=productData[i].productImage %>" alt="Card image cap">
-        </div>
-        
-        <div class="card-body">
-          <h5 class="card-title"><%=productData[i].productName%></h5>
-          <h5 class="card-title"><%=productData[i].rate %></h5>
-          <p class="card-text"><%=productData[i].description%></p>
-          <a href="#" class="btn btn-primary" style="font-size: small;">buy</a>
-          <a href="user/addtocart?productId=<%= productData[i]._id %>" class="btn btn-success" style="font-size: small;">+ Cart</a>
-        </div>
-        
-      </div>
-    <%}%>
+<div style="display: flex;">
+
+  <div style="width:26.5rem;height: auto ;background-color: rgb(230, 230, 230) " >
+
   </div>
-
-
-  <div style="display:flex; justify-content: center;">
-
-    <div style="display:flex; border: 1px solid rgb(13,110,253);border-radius: .5rem; margin: 3rem;">
-
-      <% if(currentPage>1){%>
-        <a href="?page=<%= currentPage-1 %>">Previous page</a>
-      <%}%>
-
-      <% for(let j=0;j<totalPages;j++){%>
-        <% if(currentPage==j+1){%>
-          <div style="display:flex; justify-content: center;align-items: center; height: 1.5rem; width: 1.5rem; background-color:rgb(13,110,253) ">
-            <a style="color: aliceblue;" href="?page=<%= j+1 %>"><%= j+1 %></a>
-          </div>
-          <%}
-          else{%>
-            <div style="display:flex; justify-content: center;align-items: center; height: 2 rem; width: 1.5rem;">
-              <a href="?page=<%= j+1 %>"><%= j+1 %></a>
+  <div class="container-fluid px-0 " style=" ">
+    <div class="flex-container" >
+     
+        <% for(let i=0;i<productData.length;i++){%>
+          <div class="card mx-4 my-4" style="width: 15rem;height:18rem;border-radius: 0;">
+            <div class="img-fluid" style="height: 55%;width: 100% ;border-radius: 0;">
+              <img class="card-img-top" src="/products/images/<%=productData[i].productImage %>" alt="Card image cap" style="border-radius: 0;">
             </div>
-          <%}%>
-      <%}%>
-      
-      <%if(currentPage<totalPages){%>
-        <a href="?page=<%= currentPage+1 %>">Next Page</a>
-      <%}%>
-
+            
+            <div class="card-body">
+              <h5 class="card-title text-center"><%=productData[i].productName%></h5>
+              <h5 class="card-title text-center text-success"><%=productData[i].rate %> Rs</h5>
+              <a href="#" class="btn btn-primary" style="font-size: small;">buy</a>
+              <a href="user/addtocart?productId=<%= productData[i]._id %>" class="btn btn-success" style="font-size: small;">+ Cart</a>
+            </div>
+            
+          </div>
+        <%}%>
     </div>
-
-  </div>
-
-  <div class="container">
-    <div class="row">
-      <div class="col-md-3">
-        <div style="height:20rem; width: 15rem;background-color: rgb(71, 7, 52);margin: 2rem;"></div>
+  
+  
+    <div style="display:flex; justify-content: center;">
+  
+      <div style="display:flex; border: 1px solid rgb(13,110,253);border-radius: .5rem; margin: 3rem;">
+  
+        <% if(currentPage>1){%>
+          <a href="?page=<%= currentPage-1 %>">Previous page</a>
+        <%}%>
+  
+        <% for(let j=0;j<totalPages;j++){%>
+          <% if(currentPage==j+1){%>
+            <div style="display:flex; justify-content: center;align-items: center; height: 1.5rem; width: 1.5rem; background-color:rgb(13,110,253) ">
+              <a style="color: aliceblue;" href="?page=<%= j+1 %>"><%= j+1 %></a>
+            </div>
+            <%}
+            else{%>
+              <div style="display:flex; justify-content: center;align-items: center; height: 2 rem; width: 1.5rem;">
+                <a href="?page=<%= j+1 %>"><%= j+1 %></a>
+              </div>
+            <%}%>
+        <%}%>
+        
+        <%if(currentPage<totalPages){%>
+          <a href="?page=<%= currentPage+1 %>">Next Page</a>
+        <%}%>
+  
       </div>
-      <div class="col-md-3">
-        <div style="height:20rem; width: 15rem;background-color: rgb(220, 162, 202);margin: 2rem;"></div>
-      </div>
-      <div class="col-md-3">
-        <div style="height:20rem; width: 15rem;background-color: rgb(71, 7, 52);margin: 2rem;"></div>
-      </div>
-      <div class="col-md-3">
-        <div style="height:20rem; width: 15rem;background-color: rgb(205, 172, 195);margin: 2rem;"></div>
-      </div>
-      <div class="col-md-3">
-        <div style="height:20rem; width: 15rem;background-color: rgb(71, 7, 52);margin: 2rem;"></div>
-      </div>
+  
     </div>
+    
   </div>
   
+
 </div>
+
 <%- include('./partials/footer')%>

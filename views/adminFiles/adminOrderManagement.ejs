@@ -46,7 +46,7 @@
             <thead>
                 <tr>
                     <th class="text-center">Sl no</th>
-                    <th>User email</th>
+                    <th>User </th>
                     <th>Address</th>
                     <th>Order Date</th>
                     <th>Total amount</th>
@@ -58,8 +58,8 @@
                 <% orderData.forEach((item,i)=>{ %>
                     <tr>
                         <td class="mx-2 text-center"><%= i+1 %></td>
-                        <td class="mx-2"><%= user.email %></td>
-                        <td class="mx-2"><%= item.description %></td>
+                        <td class="mx-2"><%= item.user[0].fName %></td>
+                        <td class="mx-2"><%= item.address.houseName %></td>
                         <td class="mx-2"><%= item.orderDate %> </td>
                         <td class="mx-2"><%= item.netAmount %> Rs</td>
 

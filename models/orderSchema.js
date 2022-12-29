@@ -5,7 +5,7 @@ const newSchema=new mongoose.Schema({//defining structure of collections
     products:[{productId:String,quantity:Number}],
     couponsApplied:[{coupenId:String}],
     netAmount:Number,
-    addressId:{houseName:String, village:String, pin:Number, state:String, country:String},
+    address:{houseName:String, village:String, pin:Number, state:String, country:String},
     status:{ type:String,default:'processing'},
     orderDate:String,
     expectedDeliveryDate:String

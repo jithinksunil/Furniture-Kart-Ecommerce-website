@@ -28,7 +28,8 @@ async function adminLoginValidation(req,res){
 async function adminDashBoard(req,res){
     let dashBoardData={
         users:await userCollection.count(),
-        products:await productCollection.count()
+        products:await productCollection.count(),
+        orders:await orderCollection.count()
     }
     res.render('./adminFiles/adminDashBoard',{data:dashBoardData})
 }
@@ -129,10 +130,14 @@ async function unListProductAction(req,res){
 
 async function orderManagement(req,res){
 
-    let orderData=await orderCollection.find()
-
-    let user=await userCollection.find({_id:orderData.userId})
-    res.render('./adminFiles/adminOrderManagement',{orderData,user})
+    let orderData=await orderCollection.aggregate([{$lookup:{
+        from:'user_collections',
+        localField:'userId',
+        foreignField:'_id',
+        as:'user'
+    }}])
+    console.log(orderData)
+    res.render('./adminFiles/adminOrderManagement',{orderData})
 }
 
 async function couponManagement(req,res){

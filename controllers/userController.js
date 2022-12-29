@@ -1,15 +1,17 @@
-const nodemailer=require('nodemailer')
 const productCollection=require('../models/productSchema')
 const userCollection = require("../models/userSchema")
 
+const otpfunctions=require('../config/otpConfiguration')
+
 async function home(req,res){  //user login page
+
     let search=''
+    
     let page=1
     let productData
-    let limit=12;
+    let limit=9;
     if(req.query.search){
-        search=req.query.search
-  
+        let search=req.query.search
     }
     if(req.query.page){
         page=parseInt(req.query.page)
@@ -35,7 +37,8 @@ async function home(req,res){  //user login page
 }
 
 function userLogin(req,res){  //user login page
-    res.render('./userFiles/userLoginPage',{userData:req.session.userData})
+    let warning=req.query.warning
+    res.render('./userFiles/userLoginPage',{userData:req.session.userData,warning})
 }
 
 async function userValidation(req,res){  //user login validation
@@ -46,70 +49,61 @@ async function userValidation(req,res){  //user login validation
             res.redirect('/')
         }
         else{
-            res.redirect('/user/login')
+            res.redirect(`/user/login?warning=${true}`)
         }
     }
     catch(err){
-        res.redirect('/user/login')
+        res.redirect(`/user/login?warning=${true}`)
     }
 }
 
 function userLogout(req,res){  //user login page
     req.session.destroy()
-    console.log(req.session);
     res.redirect('/')
 }
 
 function userRegistration(req,res){  //user login page
-    res.render('./userFiles/userRegistrationPage',{userData:req.session.userData})
+    let warning=req.query.warning
+    res.render('./userFiles/userRegistrationPage',{userData:req.session.userData,warning})
 }
 
-function userRegistrationOtp(req,res){  //user login page
-    
-    let otpgen= Math.floor(1000 + Math.random() * 9000)
-    console.log(otpgen);
+async function userRegistrationOtp(req,res){  //user login page
 
-    var transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: 'jithinksunil96@gmail.com',
-            pass: 'nskzhacimzlqfors'  // password from gmail
+    let newUser=await userCollection.aggregate([{$match:{email:req.body.email}},{$project:{"email":1}}])
+    console.log(newUser)
+    try{
+        if(req.body.email==newUser[0].email){
+            
+            res.redirect(`/user/registration?warning=${true}`)
+            
         }
-    });
-
-    var mailOptions = {
-        from: 'jithinksunil96@gmail.com',
-        to: req.body.email,  //doseje1135@bitvoo.com
-        subject: 'YOUR OTP',
-        //   text: `enterotp`
-        html: `<p>${otpgen}</p>`
-    };
-
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
-    })
-
-    let userData={
-        fName:req.body.fName,
-        lName:req.body.lName,
-        age:req.body.age,
-        email:req.body.email,
-        password:req.body.password,
     }
-    req.session.registrationData=userData
-    req.session.otp= otpgen
-    console.log(req.session);
-    
-    setTimeout(() => {
-        // req.session.otp= Math.floor(1000 + Math.random() * 9000)//reassigning session inside the settime out is not reflecting the changes out side.why?
-        req.session.destroy()
-        console.log('otp expired');
-    },20000);
-    res.render('./userFiles/otp')
+    catch(err){
+
+        let otpgen=otpfunctions.otp()
+        let mailOptions=otpfunctions.mailObject(req.body.email,otpgen)
+        otpfunctions.mailService(mailOptions);
+        
+        let userData={
+            fName:req.body.fName,
+            lName:req.body.lName,
+            age:req.body.age,
+            email:req.body.email,
+            password:req.body.password,
+        }
+        req.session.registrationData=userData
+        req.session.otp= otpgen
+        console.log(req.session);
+        
+        setTimeout(() => {
+            // req.session.otp= Math.floor(1000 + Math.random() * 9000)//reassigning session inside the settime out is not reflecting the changes out side.why?
+            req.session.destroy()
+            console.log('otp expired');
+        },20000);
+        res.render('./userFiles/otp')
+
+    }
+
 }
 
 
@@ -133,60 +127,62 @@ async function userRegistrationOtpValidation(req,res){  //user login page
     }
 }
 
-function forgotPassword(req,res){
-    res.render('./userFiles/forgotPasswordPage')
+function forgotPasswordPage(req,res){
+    let warning=req.query.warning
+    res.render('./userFiles/forgotPasswordPage',{warning})
 }
 
-function forgotPasswordOtp(req,res){
+async function forgotPasswordNewPasswordPage(req,res){
 
-    let otpgen= Math.floor(1000 + Math.random() * 9000)
-    console.log(otpgen);
+    console.log(req.query.email);
 
-    var transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: 'jithinksunil96@gmail.com',
-            pass: 'nskzhacimzlqfors'  // password from gmail
+    let userData=await userCollection.aggregate([{$match:{email:req.query.email}},{$project:{'email':1}}])
+    try{   
+        if(userData[0].email==req.query.email){
+            res.render('./userFiles/forgotPasswordNewPasswordPage',{userEmail:userData[0].email})
         }
-    });
+    }
+    catch(err){
+        res.redirect(`/user/forgotpassword?warning=${true}`)
+    }
+}
 
-    var mailOptions = {
-        from: 'jithinksunil96@gmail.com',
-        to: req.body.email,  //doseje1135@bitvoo.com
-        subject: 'YOUR OTP',
-        //   text: `enterotp`
-        html: `<p>${otpgen}</p>`
-    };
+function forgotPasswordOtpPageRedirct(req,res){
+    req.session.forgotPasswordEmail=req.query.userEmail
+    req.session.password=req.body.password
+    res.redirect('/forgotpassword/otppage')
+}
 
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
-    })
-
-    req.session.forgotPasswordEmail=req.body.email
+function forgotPasswordOtpPage(req,res){
+    let otpgen=otpfunctions.otp()
+    let mailOptions=otpfunctions.mailObject(req.body.email,otpgen)
+    otpfunctions.mailService(mailOptions);
     req.session.forgotPasswordOtp=otpgen
     
+    let warning=req.query.warning
+
     setTimeout(() => {
         req.session.destroy()
         console.log('otp expired');
     },20000);
-
-    res.render('./userFiles/forgotPasswordOtp')
-    
+  
+    res.render('./userFiles/forgotPasswordOtp',{warning})
 }
 
-function forgotPasswordOtpValidation(req,res){
-    if(req.session.forgotPasswordOtp==req.body.otp){
-        res.render('./userFiles/newPasswordPage')
-    }
-}
 
 async function forgotPasswordUpdation(req,res){
-    await userCollection.updateOne({email:req.session.forgotPasswordEmail},{password:req.body.password})
-    res.redirect('/')
+
+    if(req.session.forgotPasswordOtp==req.body.otp){
+
+        await userCollection.updateOne({email:req.session.forgotPasswordEmail},{password:req.session.password})
+        req.session.destroy()
+        res.redirect('/')
+
+    }
+    else{
+        res.redirect(`/forgotpassword/otppage?warning=${true}`)
+    }
+    
 }
 
 function userHome(req,res){
@@ -201,9 +197,11 @@ module.exports={
     userRegistration,
     userRegistrationOtp,
     userRegistrationOtpValidation,
-    forgotPassword,
-    forgotPasswordOtp,
-    forgotPasswordOtpValidation,
+    forgotPasswordPage,
+    forgotPasswordNewPasswordPage,
+    forgotPasswordOtpPageRedirct,
+    forgotPasswordOtpPage,
     forgotPasswordUpdation,
     userHome
 }
+
