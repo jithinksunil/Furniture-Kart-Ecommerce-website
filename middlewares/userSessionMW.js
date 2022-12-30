@@ -1,6 +1,6 @@
 
 function userSession(req,res,next){
-    if(req.session.userData){
+    if(true){
         next()
     }
     else{

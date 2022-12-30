@@ -1,6 +1,5 @@
 const productCollection=require('../models/productSchema')
 const userCollection = require("../models/userSchema")
-
 const otpfunctions=require('../config/otpConfiguration')
 
 async function home(req,res){  //user login page
@@ -82,7 +81,7 @@ async function userRegistrationOtp(req,res){  //user login page
 
         let otpgen=otpfunctions.otp()
         let mailOptions=otpfunctions.mailObject(req.body.email,otpgen)
-        otpfunctions.mailService(mailOptions);
+        otpfunctions.mailService(mailOptions)
         
         let userData={
             fName:req.body.fName,
@@ -132,14 +131,29 @@ function forgotPasswordPage(req,res){
     res.render('./userFiles/forgotPasswordPage',{warning})
 }
 
-async function forgotPasswordNewPasswordPage(req,res){
 
-    console.log(req.query.email);
+async function forgotPasswordOtpPage(req,res){
 
-    let userData=await userCollection.aggregate([{$match:{email:req.query.email}},{$project:{'email':1}}])
+    let userData=await userCollection.aggregate([{$match:{email:req.query.userEmail}},{$project:{'email':1}}])
+    
     try{   
-        if(userData[0].email==req.query.email){
-            res.render('./userFiles/forgotPasswordNewPasswordPage',{userEmail:userData[0].email})
+        if(userData[0].email==req.query.userEmail){
+            
+            let userEmail=req.query.userEmail
+
+            let warning=req.query.warning
+            if(!warning){
+                let otpgen=otpfunctions.otp()
+                let mailOptions=otpfunctions.mailObject(req.query.userEmail,otpgen)
+                otpfunctions.mailService(mailOptions);
+                req.session.forgotPasswordOtp=otpgen
+                setTimeout(() => {
+                    req.session.destroy()
+                    console.log('otp expired');
+                },20000);
+            }
+            
+            res.render('./userFiles/forgotPasswordOtp',{warning,userEmail})
         }
     }
     catch(err){
@@ -147,42 +161,30 @@ async function forgotPasswordNewPasswordPage(req,res){
     }
 }
 
-function forgotPasswordOtpPageRedirct(req,res){
-    req.session.forgotPasswordEmail=req.query.userEmail
-    req.session.password=req.body.password
-    res.redirect('/forgotpassword/otppage')
-}
 
-function forgotPasswordOtpPage(req,res){
-    let otpgen=otpfunctions.otp()
-    let mailOptions=otpfunctions.mailObject(req.body.email,otpgen)
-    otpfunctions.mailService(mailOptions);
-    req.session.forgotPasswordOtp=otpgen
-    
-    let warning=req.query.warning
-
-    setTimeout(() => {
-        req.session.destroy()
-        console.log('otp expired');
-    },20000);
-  
-    res.render('./userFiles/forgotPasswordOtp',{warning})
-}
-
-
-async function forgotPasswordUpdation(req,res){
+async function forgotPasswordNewPasswordPage(req,res){
 
     if(req.session.forgotPasswordOtp==req.body.otp){
-
-        await userCollection.updateOne({email:req.session.forgotPasswordEmail},{password:req.session.password})
         req.session.destroy()
-        res.redirect('/')
+        res.render('./userFiles/forgotPasswordNewPasswordPage',{userEmail:req.query.userEmail})
 
     }
     else{
-        res.redirect(`/forgotpassword/otppage?warning=${true}`)
+        req.session.destroy()
+        res.redirect(`/user/forgotpassword/otppage?warning=${true}&userEmail=${req.query.userEmail}`)
     }
     
+}
+
+async function forgotPasswordUpdation(req,res){
+    console.log(req.query.userEmail);
+    console.log(req.body.password);
+
+    await userCollection.updateOne({email:req.query.userEmail},{password:req.body.password})
+    res.redirect('/')
+    // req.session.forgotPasswordEmail=req.query.userEmail
+    // req.session.password=req.body.password
+    // res.redirect('/forgotpassword/otppage')
 }
 
 function userHome(req,res){
@@ -199,7 +201,6 @@ module.exports={
     userRegistrationOtpValidation,
     forgotPasswordPage,
     forgotPasswordNewPasswordPage,
-    forgotPasswordOtpPageRedirct,
     forgotPasswordOtpPage,
     forgotPasswordUpdation,
     userHome

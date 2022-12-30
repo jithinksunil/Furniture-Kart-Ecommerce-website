@@ -44,6 +44,17 @@
             <%}%>
             
           </li>
+
+          <li class="nav-item">
+            <% if(userData){%>
+              <a class="nav-link" href="/user/wishlist?userId=<%=userData._id %>">Wishlist</a>
+            <%}
+            else{%>
+              <a class="nav-link" href="/user/login">Wishlist</a>
+            <%}%>
+            
+          </li>
+
           <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle text-white"

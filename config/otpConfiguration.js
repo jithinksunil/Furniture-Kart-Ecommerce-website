@@ -8,6 +8,7 @@ function otp(){
     
 }
 
+
 function mailObject(email,otpgen){
 
     let mailOptions = {

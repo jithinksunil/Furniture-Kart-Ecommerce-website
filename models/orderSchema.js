@@ -1,9 +1,9 @@
 const mongoose=require('mongoose')
 
 const newSchema=new mongoose.Schema({//defining structure of collections
-    userId:String,
-    products:[{productId:String,quantity:Number}],
-    couponsApplied:[{coupenId:String}],
+    userId:mongoose.Types.ObjectId,
+    products:[{productId:mongoose.Types.ObjectId,quantity:Number}],
+    couponsApplied:[{coupenId:mongoose.Types.ObjectId}],
     netAmount:Number,
     address:{houseName:String, village:String, pin:Number, state:String, country:String},
     status:{ type:String,default:'processing'},

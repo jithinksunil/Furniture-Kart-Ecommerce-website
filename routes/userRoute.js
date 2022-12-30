@@ -2,6 +2,7 @@ const express=require('express')
 const router=express.Router()
 const userController=require('../controllers/userController')
 const cartController=require('../controllers/cartController')
+const wishlistController=require('../controllers/wishlistController')
 const userSession = require('../middlewares/userSessionMW')
 const userSessionMW=userSession.userSession
 const withOutUserSessionMW=userSession.withOutUserSession
@@ -15,13 +16,15 @@ router.get('/user/registration',withOutUserSessionMW,userController.userRegistra
 router.post('/user/registration/Otp',userController.userRegistrationOtp)
 router.post('/user/registration/otpRecieved',userController.userRegistrationOtpValidation)
 router.get('/user/forgotpassword',userController.forgotPasswordPage)
-router.get('/forgotpassword/newpassword',userController.forgotPasswordNewPasswordPage)
-router.post('/forgotpassword/otppage',userController.forgotPasswordOtpPageRedirct)
-router.get('/forgotpassword/otppage',userController.forgotPasswordOtpPage)
-router.post('/forgotpassword/otpupdation',userController.forgotPasswordUpdation)
+router.get('/user/forgotpassword/otppage',userController.forgotPasswordOtpPage)
+router.post('/forgotpassword/newpassword',userController.forgotPasswordNewPasswordPage)
+router.post('/forgotpassword/passwordupdation',userController.forgotPasswordUpdation)
 router.get('/user/home',userController.userHome)
 
 router.get('/user/cart',userSessionMW,cartController.userCart)
 router.get('/user/addtocart',userSessionMW,cartController.userAddToCart)
+
+router.get('/user/wishlist',userSessionMW,wishlistController.userWishlist)
+router.get('/user/addtowishlist',userSessionMW,wishlistController.userAddToWishlist)
 
 module.exports=router
