@@ -36,6 +36,7 @@ const uploadCategories=multer(
 )
 
 const uploadProducts=multer({storage:productStorage})
+
 module.exports={
     uploadCategories,
     uploadProducts

@@ -1,8 +1,15 @@
 const productCollection=require('../models/productSchema')
+const catCollection = require("../models/categorySchema")
 const userCollection = require("../models/userSchema")
 const otpfunctions=require('../config/otpConfiguration')
 
-async function home(req,res){  //user login page
+async function home(req,res){
+    catData=await catCollection.find()
+    recProducts=await productCollection.find().limit(6)
+    res.render('./userFiles/userHomePage',{catData,recProducts})
+}
+
+async function ShopPage(req,res){  //user login page
 
     let search=''
     
@@ -66,6 +73,11 @@ function userRegistration(req,res){  //user login page
     res.render('./userFiles/userRegistrationPage',{userData:req.session.userData,warning})
 }
 
+function jithin(a){
+    a();
+}
+
+
 async function userRegistrationOtp(req,res){  //user login page
 
     let newUser=await userCollection.aggregate([{$match:{email:req.body.email}},{$project:{"email":1}}])
@@ -99,11 +111,13 @@ async function userRegistrationOtp(req,res){  //user login page
             req.session.destroy()
             console.log('otp expired');
         },20000);
+        
         res.render('./userFiles/otp')
 
     }
 
 }
+
 
 
 async function userRegistrationOtpValidation(req,res){  //user login page

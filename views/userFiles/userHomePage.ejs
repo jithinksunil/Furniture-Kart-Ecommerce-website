@@ -18,10 +18,20 @@
       flex-wrap: wrap;
       justify-content: center;
     }
+    .tiles-1{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      height:16rem;
+      width:22rem;
+      margin:20px
+    }
     .tiles{
       justify-content: center;
-      height:19rem;
-      width:22rem;
+      background-color: black;
+      height:22rem;
+      width:15rem;
     }
     .innerClass{
       height:16rem;
@@ -144,28 +154,18 @@
   
 
   <div class="separator-2">
-    <h2 style="text-align: center;font-style: normal;margin: 3rem;">Categories</h2>
+    <h2 style="text-align: center;font-style: normal;margin: 3rem">Categories</h2>
   </div>
   
   <div class="catlist">
-    <div class="tiles my-5 mx-3">
-      <div class="innerClass">
-        <img src="/categories/images/1671543595955-2.jpg" alt="" class="img-fluid">
+    <%catData.forEach((item)=>{%>
+
+      <div class="tiles-1" style="background-image:url(/categories/images/<%= item.catImage %>);background-size: 100%;background-repeat: no-repeat">
+        <h3 class="text-center"><%= item.catName %></h3>
       </div>
-      <h3 class="text-center">Cots</h3>
-    </div>
-    <div class="tiles my-5 mx-3">
-      <div class="innerClass">
-        <img src="/categories/images/1671543595955-2.jpg" alt="" class="img-fluid">
-      </div>
-      <h3 class="text-center">Cots</h3>
-    </div>
-    <div class="tiles my-5 mx-3">
-      <div class="innerClass">
-        <img src="/categories/images/1671543595955-2.jpg" alt="" class="img-fluid">
-      </div>
-      <h3 class="text-center">Cots</h3>
-    </div>
+
+    <%})%>
+
   </div>
   
   <div class="catlist">
@@ -179,24 +179,18 @@
   </div>
 
   <div class="catlist">
-    <div class="tiles my-5 mx-3">
-      <div class="innerClass">
-        <img src="/categories/images/1671543595955-2.jpg" alt="" class="img-fluid">
+    <%recProducts.forEach((item)=>{%>
+
+      <div class="tiles my-5 mx-3">
+        <div class="innerClass">
+          <img src="/products/images/<%= item.productImage %>" alt="" class="img-fluid">
+        </div>
+        <h3 class="text-center">Offer-1</h3>
       </div>
-      <h3 class="text-center">Offer-1</h3>
-    </div>
-    <div class="tiles my-5 mx-3">
-      <div class="innerClass">
-        <img src="/categories/images/1671543595955-2.jpg" alt="" class="img-fluid">
-      </div>
-      <h3 class="text-center">Offer-2</h3>
-    </div>
-    <div class="tiles my-5 mx-3">
-      <div class="innerClass">
-        <img src="/categories/images/1671543595955-2.jpg" alt="" class="img-fluid">
-      </div>
-      <h3 class="text-center">Offer-3</h3>
-    </div>
+
+    <%})%>
+
+    
   </div>
 
   <div>
