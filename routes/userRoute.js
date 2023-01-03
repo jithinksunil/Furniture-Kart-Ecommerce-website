@@ -19,12 +19,16 @@ router.get('/user/forgotpassword',userController.forgotPasswordPage)
 router.get('/user/forgotpassword/otppage',userController.forgotPasswordOtpPage)
 router.post('/forgotpassword/newpassword',userController.forgotPasswordNewPasswordPage)
 router.post('/forgotpassword/passwordupdation',userController.forgotPasswordUpdation)
-router.get('/user/home',userController.userHome)
+router.get('/user/home',userController.shopPage)
+
 
 router.get('/user/cart',userSessionMW,cartController.userCart)
 router.get('/user/addtocart',userSessionMW,cartController.userAddToCart)
+router.get('/user/addfromcart',userSessionMW,cartController.userAddFromCart)
+router.get('/user/deductfromcart',userSessionMW,cartController.userDeductFromCart)
+router.get('/user/cart/removeitem',userSessionMW,cartController.removeFromCart)
 
 router.get('/user/wishlist',userSessionMW,wishlistController.userWishlist)
 router.get('/user/addtowishlist',userSessionMW,wishlistController.userAddToWishlist)
-
+router.get('/user/wishlist/removeitem',userSessionMW,wishlistController.removeFromWishlist)
 module.exports=router

@@ -23,12 +23,14 @@ async function userWishlist(req,res){
             }
         }
     ])
+
+    console.log(userWishlist);
     
     if(!userWishlist){
         await wishlistCollection.insertMany([{userId:req.query.userId}])
     }
 
-    res.render('./userFiles/userWishlist',{userWishlist:userWishlist,userData:req.session.userData})
+    res.render('./userFiles/userWishlist',{userWishlist,userData:req.session.userData})
 }
 
 async function userAddToWishlist(req,res){
@@ -59,7 +61,16 @@ async function userAddToWishlist(req,res){
     res.redirect('/')
 }
 
+async function removeFromWishlist(req,res){
+
+    console.log(req.query.productId);
+    await wishlistCollection.updateOne({userId:req.session.userData._id},{$pull:{products:req.query.productId}})
+    res.redirect('/user/wishlist')
+
+}
+
 module.exports={
     userWishlist,
-    userAddToWishlist
+    userAddToWishlist,
+    removeFromWishlist
 }

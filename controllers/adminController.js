@@ -5,6 +5,7 @@ const productCollection = require('../models/productSchema')
 const cartCollection=require('../models/cartShema')
 const orderCollection = require('../models/orderSchema')
 const couponCollection=require('../models/couponShema')
+const sharp=require('sharp')
 
 function adminLogin(req,res){
     res.render('./adminFiles/adminLoginPage')
@@ -61,11 +62,14 @@ async function categoryManagement(req,res){
 
 async function addCategory(req,res){
     if(req.file){
+        console.log(req.file)
         try{
+            const name=Date.now()+'-'+req.file.originalname;
+            await sharp(req.file.buffer).resize({width:10000,height:10000}).toFile('./public/categories/images/'+name)
             await catCollection.insertMany(
                 [{
                     catName:req.body.catName,
-                    catImage:req.file.filename,
+                    catImage:name,
                 }]
             )
             res.redirect('/admin/products/categorymangement')
@@ -102,20 +106,33 @@ async function productAddPage(req,res){
 }
 
 async function addProductCompleted(req,res){
-    
-    await productCollection.insertMany(
-        [{
-            productName:req.body.productName,
-            productImage:req.file.filename,
-            category:req.body.catagoryName,
-            description:req.body.description,
-            rate:req.body.rate,
-            stock:req.body.stock,
-            action:true
-        }]
-    )
-    console.log(req.body.productName);
-    res.redirect('/admin/products/productmangement')
+
+    if(req.file){
+        console.log(req.file)
+        try{
+            const name=Date.now()+'-'+req.file.originalname;
+            await sharp(req.file.buffer).resize({width:10000,height:12000}).toFile('./public/products/images/'+name)
+            await productCollection.insertMany(
+                [{
+                    productName:req.body.productName,
+                    productImage:name,
+                    category:req.body.catagoryName,
+                    description:req.body.description,
+                    rate:req.body.rate,
+                    stock:req.body.stock,
+                    action:true
+                }]
+            )
+            res.redirect('/admin/products/productmangement')
+        }
+        catch(err){
+            res.redirect('/admin/products/productmangement')
+        }
+    }
+    else{
+        res.redirect('/admin/products/productmangement?message=Select jpeg format')
+    }
+
 }
 
 async function listProductAction(req,res){

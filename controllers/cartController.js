@@ -33,6 +33,16 @@ async function userCart(req,res){
         //     }
         // }
     ])
+
+    let price=0;
+    for(let i=0;i<cartProducts.length;i++){
+        price=price+(parseInt(cartProducts[i].nos)*parseInt(cartProducts[i].productDetails[0].rate))
+    }
+    let deliverCharge=40
+    let total=price+deliverCharge
+    let bill={
+        price,deliverCharge,total
+    }
     console.log(cartProducts);
 
     let userCart=await cartCollection.findOne({userId:req.query.userId})
@@ -40,7 +50,7 @@ async function userCart(req,res){
         await cartCollection.insertMany([{userId:req.query.userId}])
     }
 
-    res.render('./userFiles/userCart',{userCart,cartProducts,userData:req.session.userData})
+    res.render('./userFiles/userCart',{userCart,cartProducts,userData:req.session.userData,bill})
 }
 
 async function userAddToCart(req,res){
@@ -76,7 +86,39 @@ async function userAddToCart(req,res){
     res.redirect('/')
 }
 
+async function userAddFromCart(req,res){
+
+    let a=await cartCollection.updateOne({userId:req.session.userData._id, 'products.productId':req.query.productId},
+    {
+        $inc:{'products.$.quantity':1}
+    }
+
+)
+    res.redirect('/user/cart')
+}
+
+async function userDeductFromCart(req,res){
+
+    let a=await cartCollection.updateOne({userId:req.session.userData._id, 'products.productId':req.query.productId},
+    {
+        $inc:{'products.$.quantity':-1}
+    }
+
+)
+    res.redirect('/user/cart')
+}
+
+async function removeFromCart(req,res){
+
+    await cartCollection.updateOne({userId:req.session.userData._id},{$pull:{products:{productId:req.query.productId}}})
+    res.redirect('/user/cart')
+}
+
 module.exports={
     userCart,
-    userAddToCart
+    userAddToCart,
+    userAddFromCart,
+    userDeductFromCart,
+    removeFromCart
+    
 }

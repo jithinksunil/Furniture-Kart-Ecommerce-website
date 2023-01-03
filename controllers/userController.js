@@ -6,10 +6,10 @@ const otpfunctions=require('../config/otpConfiguration')
 async function home(req,res){
     catData=await catCollection.find()
     recProducts=await productCollection.find().limit(6)
-    res.render('./userFiles/userHomePage',{catData,recProducts})
+    res.render('./userFiles/userHomePage',{catData,recProducts,userData:req.session.userData})
 }
 
-async function ShopPage(req,res){  //user login page
+async function shopPage(req,res){  //user login page
 
     let search=''
     
@@ -207,6 +207,7 @@ function userHome(req,res){
 
 module.exports={
     home,
+    shopPage,
     userLogin,
     userValidation,
     userLogout,

@@ -1,59 +1,217 @@
 <head>
     <style>
-        .navbar{
-            position: relative;
+        .top{
+            padding: 10px;
+            width:100%;
+            background-color: rgb(232, 232, 232);
+            position: fixed;
+            top: 0;
+            z-index:1;
         }
         .right{
-            display: inline-block;
-            width:49%;
-            height:80vh;
-            background-color: red;
-            margin: 0;
+            width:35%;
+            height:100%;
+            background-color: rgb(232,232,232);
             position:fixed;
-            top:0px;
+            top:70px;
             right: 0;
         }
-        .left2{
+        .leftdiv{
             display: inline-block;
-            width:50%;
-            height:900px;
-            background-color: rgb(81, 124, 232);
+            width:65%;
             margin: 0;
             position: relative;
+            top:55px
   
         }
-
-        .ooter{
-            height: 10%;
-            width: 100%;
-            background-color: black;
+        .footer{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 70px;
+            width:65%;
+            background-color: rgb(232, 232, 232);
             position: fixed;
             bottom: 0;
         }
-
-        .innerdiv{
-            height: 50px;
-            width: 100%;
-            background-color: black;
-            position:sticky;
-            top: 0;
-
-        }
     </style>
 </head>
-<body>
-    <%- include('./partials/navbar')%>
-    <div class="left2">
-        <div class="innerdiv">
+<body style="background-color: rgb(232, 232, 232)">
+    <div class="top d-flex justify-content-center align-items-center
+        <div style="width:100vw; z-index: 2;display: flex;justify-content: center;">
+            <nav class="navbar navbar-expand-lg" style="width:80vw;height:auto;background-color:white;opacity: 0.9;border-radius: 2em;">
+              <div class="container-fluid " style="display:flex;align-items:center">
+                <div >
+                  <a class="navbar-brand " href="/">Furniture Kart</a>
+                </div>
+                
+                <div>
+                  <form class="d-flex" role="search">
+                    <input
+                      class="form-control me-2"
+                      type="search"
+                      placeholder="Search"
+                      aria-label="Search"
+                      name="search"
+                      style="border-radius: 1.5rem;"
+                    />
+                    <input  class="btn btn-outline-light text-black" type="submit" value="Search" style="border-radius: 1.5rem;height" >
+                  </form>
+                </div>
+                <button
+                  class="navbar-toggler bg-color-danger"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#navbarSupportedContent"
+                  aria-controls="navbarSupportedContent"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation"
+                >
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    
+                    <li class="nav-item">
+                      <% if(userData){%>
+                        <a class="nav-link" href="/user/cart?userId=<%=userData._id %>">Cart</a>
+                      <%}
+                      else{%>
+                        <a class="nav-link" href="/user/login">Cart</a>
+                      <%}%>
+                    </li>
+                    
+                    <li class="nav-item dropdown">
+                      <a
+                        class="nav-link dropdown-toggle text-muted"
+                        href="#"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        Categories
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                      </ul>
+                    </li>
+                    <li class="nav-item">
+                      <% if(userData){%>
+                        <a class="nav-link" href="/user/wishlist?userId=<%=userData._id %>">Wishlist</a>
+                      <%}
+                      else{%>
+                        <a class="nav-link" href="/user/login">Wishlist</a>
+                      <%}%>
+                    </li>
+                    <li>
+                      <a href="/user/home">shopPage</a>
+                      
+                    </li>
+                  </ul>
+                  
+                </div>
+              </div>
+            </nav>
+          </div>
+
+    </div>
+    <div class="leftdiv">
+
+        <%for(let i=0;i<cartProducts.length;i++){%>
+        
+            <div class="my-3 px-4" style="display: flex;align-items: center;margin:10px; background-color: rgb(255, 255, 255);">
+                <div style="display: flex;align-items: center;height:150px;width:150px;margin: 10px;">
+                    <img src="/products/images/<%= cartProducts[i].productDetails[0].productImage %>" alt="" style="height:100%">
+                   
+                </div>
+                <div>
+                   <h5 class="mx-5"><%= cartProducts[i].productDetails[0].productName %></h5>
+                </div>
+                <div style="display:flex">
+                    <div style="height:1.5rem ;width:1.5rem;border: 1px solid rgb(126, 126, 126);" class="d-flex justify-content-center align-items-center">
+                    <a href="/user/deductfromcart/?productId=<%= cartProducts[i].prod %>" style="text-decoration:none"><h3>-</h3></a>
+                    </div>
+                    <div style="height:1.5rem ;width:1.5rem;border: 1px solid  rgb(126, 126, 126);" class="d-flex justify-content-center align-items-center">
+                        <h5><%= cartProducts[i].nos %></h5>
+                    </div>
+                    <div style="height:1.5rem ;width:1.5rem;border: 1px solid rgb(126, 126, 126);" class="d-flex justify-content-center align-items-center">
+                        <a href="/user/addfromcart/?productId=<%= cartProducts[i].prod %>" style="text-decoration:none"><h3>+</h3></a>
+                        </div>
+                    
+                </div>
+                <div>
+                    <a href="/user/cart/removeitem?productId=<%= cartProducts[i].prod %>"class="mx-5 text-decoration-none">Remove</a>
+                </div>
+    
+            </div>
+
+        <%}%>
+        <div style="height:55px">
 
         </div>
 
     </div>
+        
+
+ 
 
     <div class="right">
-        vcxvxcvcxvcxv
+      <div style="background-color: rgb(255, 255, 255); padding: 10px;">
+        <table>
+          <thead >
+            <tr >
+              <td style="width:75%" >
+                Price Details
+              </td>
+              <td style="width:75%" >
+
+              </td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+               Price
+              </td>
+              <td >
+               <%= bill.price %> Rs
+              </td>
+            </tr>
+            <tr>
+              <td >
+                Discount
+              </td>
+              <td >
+                0 Rs
+              </td>
+            </tr>
+            <tr>
+              <td >
+                Delivery Charges
+              </td>
+              <td >
+                <%= bill.deliverCharge %> Rs
+              </td>
+            </tr>
+            <tr>
+              <td >
+                <h5 style="color:rgb(4, 123, 4)">Total</h3>
+              </td>
+              <td >
+                <h5 style="color:rgb(4, 123, 4)"><%= bill.total %> Rs</h3>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="footer">
+        <button style="background-color:#fb651a; border: none;border-radius: 5px; height: 50px; width:250px;">
+            <a class="text-light text-decoration-none" href=""><h6>Place Order</h6></a>
+        </button>
 
     </div>
 </body>
