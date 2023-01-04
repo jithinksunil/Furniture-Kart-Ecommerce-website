@@ -5,6 +5,7 @@ const productCollection = require('../models/productSchema')
 const cartCollection=require('../models/cartShema')
 const orderCollection = require('../models/orderSchema')
 const couponCollection=require('../models/couponShema')
+const bannerCollection = require('../models/bannerSchema')
 const sharp=require('sharp')
 
 function adminLogin(req,res){
@@ -164,6 +165,27 @@ async function couponManagement(req,res){
     res.render('./adminFiles/adminCouponManagement',{couponData})
 }
 
+async function bannerManagement(req,res){
+
+    let bannerData= await bannerCollection.find()
+    res.render('./adminFiles/adminBannerManagement',{bannerData})
+}
+
+async function blockBanner(req,res){
+    console.log(req.query.id);
+
+    await bannerCollection.updateOne({_id:req.query.id},{action:false})
+
+    res.redirect('/admin/banners')
+}
+
+async function unBlockBanner(req,res){
+
+    await bannerCollection.updateOne({_id:req.query.id},{action:true})
+
+    res.redirect('/admin/banners')
+}
+
 function logOut(req,res){
     req.session.destroy()
     res.redirect('/admin/login')
@@ -187,5 +209,8 @@ module.exports={
     unListProductAction,
     orderManagement,
     couponManagement,
+    bannerManagement,
+    blockBanner,
+    unBlockBanner,
     logOut
 }

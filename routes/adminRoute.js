@@ -26,6 +26,9 @@ router.get('/admin/products/productmangement/listaction',adminSessionMW,adminCon
 router.get('/admin/products/productmangement/un-listaction',adminSessionMW,adminController.unListProductAction)
 router.get('/admin/orders',adminSessionMW,adminController.orderManagement)
 router.get('/admin/coupons',adminSessionMW,adminController.couponManagement)
+router.get('/admin/banners',adminSessionMW,adminController.bannerManagement)
+router.get('/admin/banners/blockbanner',adminSessionMW,adminController.blockBanner)
+router.get('/admin/banners/unblockbanner',adminSessionMW,adminController.unBlockBanner)
 router.get('/admin/logout',adminController.logOut)
 module.exports=router
 

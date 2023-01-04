@@ -19,7 +19,7 @@ router.get('/user/forgotpassword',userController.forgotPasswordPage)
 router.get('/user/forgotpassword/otppage',userController.forgotPasswordOtpPage)
 router.post('/forgotpassword/newpassword',userController.forgotPasswordNewPasswordPage)
 router.post('/forgotpassword/passwordupdation',userController.forgotPasswordUpdation)
-router.get('/user/home',userController.shopPage)
+router.get('/user/categories',userController.categoriesPage)
 
 
 router.get('/user/cart',userSessionMW,cartController.userCart)

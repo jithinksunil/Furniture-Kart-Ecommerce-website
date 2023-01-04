@@ -7,8 +7,9 @@
 		td:nth-of-type(3):before { content: "Address"; }
 		td:nth-of-type(4):before { content: "Order Date"; }
 		td:nth-of-type(6):before { content: "Total amount"; }
-		td:nth-of-type(7):before { content: "Hold/Release"; }
-		td:nth-of-type(8):before { content: "Cancel"; }
+        td:nth-of-type(7):before { content: "Status"; }
+		td:nth-of-type(8):before { content: "Hold/Release"; }
+		td:nth-of-type(9):before { content: "Cancel"; }
 	</style>
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" />
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -50,6 +51,7 @@
                     <th>Address</th>
                     <th>Order Date</th>
                     <th>Total amount</th>
+                    <th>Status</th>
                     <th>Hold/Release</th>
                     <th>Cancel</th>
                 </tr>
@@ -62,6 +64,7 @@
                         <td class="mx-2"><%= item.address.houseName %></td>
                         <td class="mx-2"><%= item.orderDate %> </td>
                         <td class="mx-2"><%= item.netAmount %> Rs</td>
+                        <td class="mx-2"><%= item.status %></td>
 
                     <% if(item.action){
                         %><td class="mx-2"><a href="/admin/orders/ordermangement/un-listaction?id=<%=item._id%>" role="button" class="btn btn-danger" style="width: 91px; height:40px">Hold</a></td><%

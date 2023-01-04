@@ -2,44 +2,49 @@ const productCollection=require('../models/productSchema')
 const catCollection = require("../models/categorySchema")
 const userCollection = require("../models/userSchema")
 const otpfunctions=require('../config/otpConfiguration')
+const bannerCollection = require('../models/bannerSchema')
+const { query } = require('express')
 
 async function home(req,res){
+
+    let bannerData=await bannerCollection.find({action:true})
+    console.log(bannerData);
     catData=await catCollection.find()
     recProducts=await productCollection.find().limit(6)
-    res.render('./userFiles/userHomePage',{catData,recProducts,userData:req.session.userData})
+    res.render('./userFiles/userHomePage',{catData,recProducts,userData:req.session.userData,bannerData})
 }
 
 async function shopPage(req,res){  //user login page
 
-    let search=''
+    // let search=''
     
-    let page=1
-    let productData
-    let limit=9;
-    if(req.query.search){
-        let search=req.query.search
-    }
-    if(req.query.page){
-        page=parseInt(req.query.page)
-    }
-    productData=await productCollection.find({action:true,$or:[
-        {productName:{$regex:search,$options:'i'}},
-        {description:{$regex:search,$options:'i'}},
-        {category:{$regex:search,$options:'i'}}
-    ]}).limit(limit).skip((page-1)*limit)
+    // let page=1
+    // let productData
+    // let limit=9;
+    // if(req.query.search){
+    //     let search=req.query.search
+    // }
+    // if(req.query.page){
+    //     page=parseInt(req.query.page)
+    // }
+    // productData=await productCollection.find({action:true,$or:[
+    //     {productName:{$regex:search,$options:'i'}},
+    //     {description:{$regex:search,$options:'i'}},
+    //     {category:{$regex:search,$options:'i'}}
+    // ]}).limit(limit).skip((page-1)*limit)
 
-    let count=await productCollection.find({action:true,$or:[
-        {productName:{$regex:search,$options:'i'}},
-        {description:{$regex:search,$options:'i'}},
-        {category:{$regex:search,$options:'i'}}
-    ]}).count()
+    // let count=await productCollection.find({action:true,$or:[
+    //     {productName:{$regex:search,$options:'i'}},
+    //     {description:{$regex:search,$options:'i'}},
+    //     {category:{$regex:search,$options:'i'}}
+    // ]}).count()
 
-    res.render('./userFiles/homePage',{
-        userData:req.session.userData,
-        productData:productData,
-        totalPages:(count/limit),
-        currentPage:page
-    })
+    // res.render('./userFiles/homePage',{
+    //     userData:req.session.userData,
+    //     productData:productData,
+    //     totalPages:(count/limit),
+    //     currentPage:page
+    // })
 }
 
 function userLogin(req,res){  //user login page
@@ -201,8 +206,39 @@ async function forgotPasswordUpdation(req,res){
     // res.redirect('/forgotpassword/otppage')
 }
 
-function userHome(req,res){
-    res.render('./userFiles/userHomePage')
+async function categoriesPage(req,res){
+    let search=''
+    
+    let page=1
+    // let productData
+    let limit=9;
+    if(req.query.search){
+        let search=req.query.search
+    }
+    if(req.query.page){
+        page=parseInt(req.query.page)
+    }
+    productData=await productCollection.find({action:true,category:req.query.category,$or:[
+        {productName:{$regex:search,$options:'i'}},
+        {description:{$regex:search,$options:'i'}},
+        {category:{$regex:search,$options:'i'}}
+    ]}).limit(limit).skip((page-1)*limit)
+
+    let count=await productCollection.find({action:true,$or:[
+        {productName:{$regex:search,$options:'i'}},
+        {description:{$regex:search,$options:'i'}},
+        {category:{$regex:search,$options:'i'}}
+    ]}).count()
+
+    res.render('./userFiles/categoriesPage',{
+        userData:req.session.userData,
+        productData:productData,
+        totalPages:(count/limit),
+        currentPage:page
+    })
+    
+    
+    // res.render('./userFiles/categoriesPage',{productData})
 }
 
 module.exports={
@@ -218,6 +254,6 @@ module.exports={
     forgotPasswordNewPasswordPage,
     forgotPasswordOtpPage,
     forgotPasswordUpdation,
-    userHome
+    categoriesPage
 }
 
