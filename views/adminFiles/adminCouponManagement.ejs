@@ -3,11 +3,11 @@
 	<link rel="stylesheet" href="/admin/css/tableStyles.css">
 	<style>
 		td:nth-of-type(1):before { content: "Sl no"; }
-		td:nth-of-type(2):before { content: "Coupon name";}
-		td:nth-of-type(3):before { content: "Discount"; }
+		td:nth-of-type(2):before { content: "Coupon Code";}
+		td:nth-of-type(3):before { content: "Discount (%)"; }
+        td:nth-of-type(4):before { content: "No of coupons/user"; }
         td:nth-of-type(4):before { content: "Status"; }
 		td:nth-of-type(5):before { content: "Action"; }
-		td:nth-of-type(6):before { content: "Cancel"; }
 	</style>
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" />
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -45,29 +45,31 @@
             <thead>
                 <tr>
                     <th class="text-center">Sl no</th>
-                    <th>Coupon name</th>
-                    <th>Discount</th>
+                    <th>Coupon Code</th>
+                    <th>Discount (%)</th>
+                    <th>No of coupons/user</th>
                     <th>Status</th>
                     <th>Action</th>
-                    <th>Cancel</th>
                 </tr>
             </thead>
             <tbody>
                 <% couponData.forEach((item,i)=>{ %>
                     <tr>
                         <td class="mx-2 text-center"><%= i+1 %></td>
-                        <td class="mx-2"><%= item.name %></td>
-                        <td class="mx-2"><%= item.amountOff %></td>
-                        <td class="mx-2"><%= item.status %></td>
+                        <td class="mx-2"><%= item.couponCode %></td>
+                        <td class="mx-2"><%= item.discount %> %</td>
+                        <td class="mx-2"><%= item.count %> nos</td>
+                        <% if(item.status){
+                            %><td class="mx-2">Valid</td><%
+                        }else{
+                            %><td class="mx-2">Expired</td><%
+                        }%>
     
-                    <% if(item.action){
-                        %><td class="mx-2"><a href="/admin/orders/ordermangement/un-listaction?id=<%=item._id%>" role="button" class="btn btn-danger" style="width: 91px; height:40px">List</a></td><%
+                    <% if(item.status){
+                        %><td class="mx-2"><a href="/admin/coupon/couponmangement/actions?unList_CouponId=<%=item._id%>" role="button" class="btn btn-danger" style="width: 91px; height:40px">Un-list</a></td><%
                     }else{
-                        %><td class="mx-2"><a href="/admin/orders/ordermangement/listaction?id=<%=item._id%>" role="button" class="btn btn-success" style="width: 91px; height:40px">Un-list</a></td><%
+                        %><td class="mx-2"><a href="/admin/coupon/couponmangement/actions?list_CouponId=<%=item._id%>" role="button" class="btn btn-success" style="width: 91px; height:40px">List</a></td><%
                     }%>
-    
-                        <td class="mx-2"><button type="button" class="btn btn-danger" style="width: 80px; height:40px">cancel</button></td>
-    
                     </tr><%
                 }) 
                 %>

@@ -124,10 +124,6 @@
                   <a class="nav-link" href="/user/login">Wishlist</a>
                 <%}%>
               </li>
-              <li>
-                <a href="/user/home">shopPage</a>
-                
-              </li>
             </ul>
             
           </div>
@@ -169,7 +165,7 @@
   <div class="catlist">
     <%catData.forEach((item)=>{%>
 
-      <a href="/user/categories/?category=<%= item.catName %>">
+      <a href="/user/categories/<%= item.catName %>/1">
         <div class="tiles-1 shadow p-3 mb-5 bg-white rounded" style="background-image:url(/categories/images/<%= item.catImage %>);background-size: 100%;background-repeat: no-repeat">
           <h3 class="text-center"><%= item.catName %></h3>
         </div>

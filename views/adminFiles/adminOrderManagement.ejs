@@ -40,6 +40,14 @@
                 Orders
             </h1>
         </div>
+        <div>
+            <%if(salesReport){%>
+                <a href="<%=path%>" target="_blank"  role="button"class="btn btn-danger" style="width: 91px; height:40px">Download</a>
+            <%}else{%>
+                <a href="/admin/genarate/salesreport" role="button"class="btn btn-danger" style="width: 91px; height:40px">Genarate SalesReport</a>
+            <%}%>
+            
+        </div>
     </section>
     
     <section class="mt-2 ">

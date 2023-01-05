@@ -7,6 +7,9 @@ const orderCollection = require('../models/orderSchema')
 const couponCollection=require('../models/couponShema')
 const bannerCollection = require('../models/bannerSchema')
 const sharp=require('sharp')
+const pdf=require('pdf-creator-node')
+const fs=require('fs')
+const path=require('path')
 
 function adminLogin(req,res){
     res.render('./adminFiles/adminLoginPage')
@@ -148,6 +151,9 @@ async function unListProductAction(req,res){
 
 async function orderManagement(req,res){
 
+    let salesReport=req.query.genarated
+    let path=req.query.path
+
     let orderData=await orderCollection.aggregate([{$lookup:{
         from:'user_collections',
         localField:'userId',
@@ -155,7 +161,51 @@ async function orderManagement(req,res){
         as:'user'
     }}])
     console.log(orderData)
-    res.render('./adminFiles/adminOrderManagement',{orderData})
+    res.render('./adminFiles/adminOrderManagement',{orderData,salesReport,path})
+}
+
+
+async function salesReport(req,res){
+
+    let orderData=await orderCollection.aggregate([{$match:{status:'completed'}},{$lookup:{
+        from:'user_collections',
+        localField:'userId',
+        foreignField:'_id',
+        as:'user'
+    }}])
+    
+    let salesData=[];//this array is created because the sales report template cannot read the data like this.user[0].fName??????????????????
+    for(let i=0;i<orderData.length;i++){
+        let order={
+            address:orderData[i].address.houseName,
+            fName:orderData[i].user[0].fName,
+            netAmount:orderData[i].netAmount,
+            status:orderData[i].status,
+            orderDate:orderData[i].orderDate
+        }
+        salesData.push(order)
+    }
+
+    let totalAmount=0;
+    for(let i=0;i<orderData.length;i++){
+        totalAmount=totalAmount+orderData[i].netAmount
+    }
+    
+    const html=fs.readFileSync(path.join(__dirname,'../views/adminFiles/salesReport/reportTemplate.html'),'utf-8')
+    const filename=Math.random()+'_doc'+'.pdf'
+    const filepath='/public/salesReports/'+filename
+
+    const document={
+        html:html,
+        data:{salesData,totalAmount},
+        path:'./public/salesReports/'+filename
+    }
+    pdf.create(document).then(resolve=>{
+        console.log(resolve)
+        res.redirect(`/admin/orders?genarated=${true}&path=${filepath}`)
+    }).catch(err=>{
+        console.log(err);
+    })
 }
 
 async function couponManagement(req,res){
@@ -163,6 +213,15 @@ async function couponManagement(req,res){
     let couponData= await couponCollection.find()
 
     res.render('./adminFiles/adminCouponManagement',{couponData})
+}
+
+async function couponListAndUnListActions(req,res){
+    if(req.query.list_CouponId){
+        await couponCollection.updateOne({_id:req.query.list_CouponId},{status:true})
+    }else if(req.query.unList_CouponId){
+        await couponCollection.updateOne({_id:req.query.unList_CouponId},{status:false})
+    }
+    res.redirect('/admin/coupons')
 }
 
 async function bannerManagement(req,res){
@@ -208,7 +267,9 @@ module.exports={
     listProductAction,
     unListProductAction,
     orderManagement,
+    salesReport,
     couponManagement,
+    couponListAndUnListActions,
     bannerManagement,
     blockBanner,
     unBlockBanner,

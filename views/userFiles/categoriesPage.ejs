@@ -39,24 +39,24 @@
       <div style="display:flex; border: 1px solid rgb(13,110,253);border-radius: .5rem; margin: 3rem;">
   
         <% if(currentPage>1){%>
-          <a href="?page=<%= currentPage-1 %>">Previous page</a>
+          <a href="/user/categories/<%= catName %>/<%= currentPage-1 %>">Previous page</a>
         <%}%>
   
         <% for(let j=0;j<totalPages;j++){%>
           <% if(currentPage==j+1){%>
             <div style="display:flex; justify-content: center;align-items: center; height: 1.5rem; width: 1.5rem; background-color:rgb(13,110,253) ">
-              <a style="color: aliceblue;" href="?page=<%= j+1 %>"><%= j+1 %></a>
+              <a style="color: aliceblue;" href="/user/categories/<%= catName %>/<%= j+1 %>"><%= j+1 %></a>
             </div>
             <%}
             else{%>
               <div style="display:flex; justify-content: center;align-items: center; height: 2 rem; width: 1.5rem;">
-                <a href="?page=<%= j+1 %>"><%= j+1 %></a>
+                <a href="/user/categories/<%= catName %>/<%=j+1 %>"><%= j+1 %></a>
               </div>
             <%}%>
         <%}%>
         
         <%if(currentPage<totalPages){%>
-          <a href="?page=<%= currentPage+1 %>">Next Page</a>
+          <a href="/user/categories/<%= catName %>/<%= currentPage+1 %>">Next Page</a>
         <%}%>
   
       </div>

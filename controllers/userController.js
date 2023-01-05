@@ -8,7 +8,7 @@ const { query } = require('express')
 async function home(req,res){
 
     let bannerData=await bannerCollection.find({action:true})
-    console.log(bannerData);
+    console.log(bannerData)
     catData=await catCollection.find()
     recProducts=await productCollection.find().limit(6)
     res.render('./userFiles/userHomePage',{catData,recProducts,userData:req.session.userData,bannerData})
@@ -209,16 +209,16 @@ async function forgotPasswordUpdation(req,res){
 async function categoriesPage(req,res){
     let search=''
     
-    let page=1
+    let page=parseInt(req.params.page)
     // let productData
-    let limit=9;
+    let limit=2
     if(req.query.search){
-        let search=req.query.search
+        search=req.query.search
     }
-    if(req.query.page){
-        page=parseInt(req.query.page)
-    }
-    productData=await productCollection.find({action:true,category:req.query.category,$or:[
+    // if(req.query.page){
+    //     page=parseInt(req.query.page)
+    // }
+    productData=await productCollection.find({action:true,category:req.params.category,$or:[
         {productName:{$regex:search,$options:'i'}},
         {description:{$regex:search,$options:'i'}},
         {category:{$regex:search,$options:'i'}}
@@ -234,7 +234,8 @@ async function categoriesPage(req,res){
         userData:req.session.userData,
         productData:productData,
         totalPages:(count/limit),
-        currentPage:page
+        currentPage:page,
+        catName:req.params.category
     })
     
     

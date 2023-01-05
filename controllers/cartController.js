@@ -83,7 +83,7 @@ async function userAddToCart(req,res){
         )
     }
     
-    res.redirect('/')
+    res.redirect('/user/cart')
 }
 
 async function userAddFromCart(req,res){

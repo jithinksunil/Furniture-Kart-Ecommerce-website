@@ -4,7 +4,7 @@ const sessions=require('express-session')
 const expressLayouts=require('express-ejs-layouts')
 const userRouter=require('../Furniture-Kart-Ecommerce-website-master/routes/userRoute')
 const adminRouter=require('../Furniture-Kart-Ecommerce-website-master/routes/adminRoute')
-
+const path=require('path')
 /*---------------------------Setups-----------------------------*/
 app.use(express.urlencoded({extended:true}))//to get data from post method
 
@@ -22,6 +22,7 @@ app.use((req, res, next) => {//setup cache
 const morgan=require('morgan')//to check weather css are loaded or not
 app.use(morgan("dev"))
 
+app.use('/public',express.static(path.join(__dirname,'./public')))//static file setup for salesrepor download only?????????
 app.use(express.static('./public'));//static file setup for folders in public folder,jithin is a folder inside the public folder
 app.use(expressLayouts)//setting up layout
 app.set('views','./views')//setting up directory for view engine, here views is the folder
