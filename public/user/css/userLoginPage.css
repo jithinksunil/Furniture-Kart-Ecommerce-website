@@ -8,9 +8,7 @@
 }
 /*********************************************************************/
 .container{
-  width: 800px;
   margin: auto;
-  height: 90%;
   overflow: hidden;
   overflow-x: hidden;
  } 

@@ -1,15 +1,13 @@
 <head>
   <link rel="stylesheet" href="/user/css/userLoginPage.css" />
 </head>
-<body>
-  <%- include('./partials/navbar')%>
-  <div class="container loginPageOverrides">
+<body class="px-5 bg-none">
+  <div class="container loginPageOverrides shadow-none card">
     <section class="sign-in">
-      <div class="container">
-        <div class="signin-content">
-          <div class="signin-image">
+        <div class="signin-content mb-0 pb-md-0 pb-lg-0 pb-xl-0 pb-5" >
+          <div class="signin-image my-0 py-0 img-fluid d-md-block d-none" >
             <figure>
-              <img class="d-md-block d-none" src="/user/images/userLoginImage.jpg" alt="sing up image" />
+              <img src="/user/images/userLoginImage.jpg"  />
             </figure>
           </div>
 
@@ -72,8 +70,7 @@
             </form>
           </div>
         </div>
-      </div>
+
     </section>
   </div>
-  <%- include('./partials/footer')%>
 </body>

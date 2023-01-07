@@ -3,6 +3,7 @@ const router=express.Router()
 const userController=require('../controllers/userController')
 const cartController=require('../controllers/cartController')
 const wishlistController=require('../controllers/wishlistController')
+const productController=require('../controllers/productPageController')
 const userSession = require('../middlewares/userSessionMW')
 const userSessionMW=userSession.userSession
 const withOutUserSessionMW=userSession.withOutUserSession
@@ -20,6 +21,7 @@ router.get('/user/forgotpassword/otppage',userController.forgotPasswordOtpPage)
 router.post('/forgotpassword/newpassword',userController.forgotPasswordNewPasswordPage)
 router.post('/forgotpassword/passwordupdation',userController.forgotPasswordUpdation)
 router.get('/user/categories/:category/:page',userController.categoriesPage)
+router.get('/productpage/:productid',productController.productPage)
 
 
 router.get('/user/cart',userSessionMW,cartController.userCart)

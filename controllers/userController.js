@@ -4,12 +4,11 @@ const userCollection = require("../models/userSchema")
 const otpfunctions=require('../config/otpConfiguration')
 const bannerCollection = require('../models/bannerSchema')
 const { query } = require('express')
-
 async function home(req,res){
 
     let bannerData=await bannerCollection.find({action:true})
     console.log(bannerData)
-    catData=await catCollection.find()
+    catData=await catCollection.find({action:true})
     recProducts=await productCollection.find().limit(6)
     res.render('./userFiles/userHomePage',{catData,recProducts,userData:req.session.userData,bannerData})
 }
@@ -57,6 +56,7 @@ async function userValidation(req,res){  //user login validation
     try{
         if(userData.password==req.body.password){
             req.session.userData=userData
+            a.name=userData.fName
             res.redirect('/')
         }
         else{
@@ -211,7 +211,7 @@ async function categoriesPage(req,res){
     
     let page=parseInt(req.params.page)
     // let productData
-    let limit=2
+    let limit=12
     if(req.query.search){
         search=req.query.search
     }

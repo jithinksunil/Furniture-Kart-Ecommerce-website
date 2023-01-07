@@ -69,7 +69,7 @@ async function addCategory(req,res){
         console.log(req.file)
         try{
             const name=Date.now()+'-'+req.file.originalname;
-            await sharp(req.file.buffer).resize({width:10000,height:10000}).toFile('./public/categories/images/'+name)
+            await sharp(req.file.buffer).resize({width:750,height:750}).toFile('./public/categories/images/'+name)
             await catCollection.insertMany(
                 [{
                     catName:req.body.catName,
@@ -204,7 +204,7 @@ async function salesReport(req,res){
         console.log(resolve)
         res.redirect(`/admin/orders?genarated=${true}&path=${filepath}`)
     }).catch(err=>{
-        console.log(err);
+        console.log(err)
     })
 }
 

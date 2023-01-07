@@ -1,217 +1,119 @@
 <head>
-    <style>
-        .top{
-            padding: 10px;
-            width:100%;
-            background-color: rgb(232, 232, 232);
-            position: fixed;
-            top: 0;
-            z-index:1;
-        }
-        .right{
-            width:35%;
-            height:100%;
-            background-color: rgb(232,232,232);
-            position:fixed;
-            top:70px;
-            right: 0;
-        }
-        .leftdiv{
-            display: inline-block;
-            width:65%;
-            margin: 0;
-            position: relative;
-            top:55px
-  
-        }
-        .footer{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 70px;
-            width:65%;
-            background-color: rgb(232, 232, 232);
-            position: fixed;
-            bottom: 0;
-        }
-    </style>
+  <link rel="stylesheet" href="/public/user/css/cart.css">
 </head>
-<body style="background-color: rgb(232, 232, 232)">
-    <div class="top d-flex justify-content-center align-items-center
-        <div style="width:100vw; z-index: 2;display: flex;justify-content: center;">
-            <nav class="navbar navbar-expand-lg" style="width:80vw;height:auto;background-color:white;opacity: 0.9;border-radius: 2em;">
-              <div class="container-fluid " style="display:flex;align-items:center">
-                <div >
-                  <a class="navbar-brand " href="/">Furniture Kart</a>
-                </div>
-                
-                <div>
-                  <form class="d-flex" role="search">
-                    <input
-                      class="form-control me-2"
-                      type="search"
-                      placeholder="Search"
-                      aria-label="Search"
-                      name="search"
-                      style="border-radius: 1.5rem;"
-                    />
-                    <input  class="btn btn-outline-light text-black" type="submit" value="Search" style="border-radius: 1.5rem;height" >
-                  </form>
-                </div>
-                <button
-                  class="navbar-toggler bg-color-danger"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#navbarSupportedContent"
-                  aria-controls="navbarSupportedContent"
-                  aria-expanded="false"
-                  aria-label="Toggle navigation"
-                >
-                  <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    
-                    <li class="nav-item">
-                      <% if(userData){%>
-                        <a class="nav-link" href="/user/cart?userId=<%=userData._id %>">Cart</a>
-                      <%}
-                      else{%>
-                        <a class="nav-link" href="/user/login">Cart</a>
+<body>
+  <%- include('./partials/navBarLeft')%>
+  <div style="height:4vw"></div>
+
+    <section class="bg-light">
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-12">
+            <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+              <div class="card-body p-0">
+                <div class="row g-0">
+                  <div class="col-lg-8">
+                    <div class="p-5">
+                      <div class="d-flex justify-content-between align-items-center mb-5">
+                        <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
+                        <h6 class="mb-0 text-muted">3 items</h6>
+                      </div>
+                      <hr class="my-4">
+                      <%for(let i=0;i<cartProducts.length;i++){%>
+                         
+                        <div class="row mb-4 d-flex justify-content-between align-items-center">
+                          <div class="col-md-2 col-lg-2 col-xl-2">
+                            <img
+                            src="/products/images/<%= cartProducts[i].productDetails[0].productImage %>"
+                              class="img-fluid rounded-3" alt="Cotton T-shirt">
+                          </div>
+                          <div class="col-md-3 col-lg-3 col-xl-3">
+                            <h6 class="text-black mb-0"><%= cartProducts[i].productDetails[0].productName %></h6>
+                          </div>
+                          <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                            <div style="display:flex">
+                              <div style="height:1.5rem ;width:1.5rem;border: 1px solid rgb(126, 126, 126);" class="d-flex justify-content-center align-items-center">
+                              <a href="/user/deductfromcart/?productId=<%= cartProducts[i].prod %>" style="text-decoration:none"><h3>-</h3></a>
+                              </div>
+                              <div style="height:1.5rem ;width:1.5rem;border: 1px solid  rgb(126, 126, 126);" class="d-flex justify-content-center align-items-center">
+                                  <h5><%= cartProducts[i].nos %></h5>
+                              </div>
+                              <div style="height:1.5rem ;width:1.5rem;border: 1px solid rgb(126, 126, 126);" class="d-flex justify-content-center align-items-center">
+                                  <a href="/user/addfromcart/?productId=<%= cartProducts[i].prod %>" style="text-decoration:none"><h3>+</h3></a>
+                              </div>
+                              
+                          </div>
+                          </div>
+                          <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                            <h6 class="mb-0">€ 44.00</h6>
+                          </div>
+                          <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                            <a href="/user/cart/removeitem?productId=<%= cartProducts[i].prod %>" class="text-muted"><i class="fas fa-times"></i></a>
+                          </div>
+                        </div>
+                        <hr class="my-4">
                       <%}%>
-                    </li>
-                    
-                    <li class="nav-item dropdown">
-                      <a
-                        class="nav-link dropdown-toggle text-muted"
-                        href="#"
-                        role="button"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        Categories
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                      </ul>
-                    </li>
-                    <li class="nav-item">
-                      <% if(userData){%>
-                        <a class="nav-link" href="/user/wishlist?userId=<%=userData._id %>">Wishlist</a>
-                      <%}
-                      else{%>
-                        <a class="nav-link" href="/user/login">Wishlist</a>
-                      <%}%>
-                    </li>
-                    <li>
-                      <a href="/user/home">shopPage</a>
                       
-                    </li>
-                  </ul>
-                  
+    
+                      <div class="pt-5">
+                        <h6 class="mb-0"><a href="#!" class="text-body"><i
+                              class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a></h6>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 bg-grey">
+                    <div class="p-5">
+                      <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
+                      <hr class="my-4">
+    
+                      <div class="d-flex justify-content-between mb-4">
+                        <h5 class="text-uppercase">items 3</h5>
+                        <h5>€ 132.00</h5>
+                      </div>
+                      <div class="d-flex justify-content-between mb-4">
+                        <h5 class="text-uppercase">Shipping</h5>
+                        <h5><%= bill.deliverCharge %></h5>
+                      </div>
+    
+                      <div class="mb-4 pb-2">
+                        <select class="select">
+                          <option value="1">Standard-Delivery- €5.00</option>
+                          <option value="2">Two</option>
+                          <option value="3">Three</option>
+                          <option value="4">Four</option>
+                        </select>
+                      </div>
+    
+                      <h5 class="text-uppercase mb-3">Give code</h5>
+    
+                      <div class="mb-5">
+                        <div class="form-outline">
+                          <input type="text" id="form3Examplea2" class="form-control form-control-lg" />
+                          <label class="form-label" for="form3Examplea2">Enter your code</label>
+                        </div>
+                      </div>
+    
+                      <hr class="my-4">
+    
+                      <div class="d-flex justify-content-between mb-5">
+                        <h5 class="text-uppercase">Total price</h5>
+                        <h5><%= bill.price %></h5>
+                      </div>
+    
+                      <button type="button" class="btn btn-dark btn-block btn-lg"
+                        data-mdb-ripple-color="dark">Place order</button>
+    
+                    </div>
+                  </div>
                 </div>
               </div>
-            </nav>
-          </div>
-
-    </div>
-    <div class="leftdiv">
-
-        <%for(let i=0;i<cartProducts.length;i++){%>
-        
-            <div class="my-3 px-4" style="display: flex;align-items: center;margin:10px; background-color: rgb(255, 255, 255);">
-                <div style="display: flex;align-items: center;height:150px;width:150px;margin: 10px;">
-                    <img src="/products/images/<%= cartProducts[i].productDetails[0].productImage %>" alt="" style="height:100%">
-                   
-                </div>
-                <div>
-                   <h5 class="mx-5"><%= cartProducts[i].productDetails[0].productName %></h5>
-                </div>
-                <div style="display:flex">
-                    <div style="height:1.5rem ;width:1.5rem;border: 1px solid rgb(126, 126, 126);" class="d-flex justify-content-center align-items-center">
-                    <a href="/user/deductfromcart/?productId=<%= cartProducts[i].prod %>" style="text-decoration:none"><h3>-</h3></a>
-                    </div>
-                    <div style="height:1.5rem ;width:1.5rem;border: 1px solid  rgb(126, 126, 126);" class="d-flex justify-content-center align-items-center">
-                        <h5><%= cartProducts[i].nos %></h5>
-                    </div>
-                    <div style="height:1.5rem ;width:1.5rem;border: 1px solid rgb(126, 126, 126);" class="d-flex justify-content-center align-items-center">
-                        <a href="/user/addfromcart/?productId=<%= cartProducts[i].prod %>" style="text-decoration:none"><h3>+</h3></a>
-                    </div>
-                    
-                </div>
-                <div>
-                    <a href="/user/cart/removeitem?productId=<%= cartProducts[i].prod %>"class="mx-5 text-decoration-none">Remove</a>
-                </div>
-    
             </div>
-
-        <%}%>
-        <div style="height:55px">
-
+          </div>
         </div>
-
-    </div>
-        
-
- 
-
-    <div class="right">
-      <div style="background-color: rgb(255, 255, 255); padding: 10px;">
-        <table>
-          <thead >
-            <tr >
-              <td style="width:75%" >
-                Price Details
-              </td>
-              <td style="width:75%" >
-
-              </td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-               Price
-              </td>
-              <td >
-               <%= bill.price %> Rs
-              </td>
-            </tr>
-            <tr>
-              <td >
-                Discount
-              </td>
-              <td >
-                0 Rs
-              </td>
-            </tr>
-            <tr>
-              <td >
-                Delivery Charges
-              </td>
-              <td >
-                <%= bill.deliverCharge %> Rs
-              </td>
-            </tr>
-            <tr>
-              <td >
-                <h5 style="color:rgb(4, 123, 4)">Total</h3>
-              </td>
-              <td >
-                <h5 style="color:rgb(4, 123, 4)"><%= bill.total %> Rs</h3>
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
-    </div>
-    <div class="footer">
-        <button style="background-color:#fb651a; border: none;border-radius: 5px; height: 50px; width:250px;">
-            <a class="text-light text-decoration-none" href=""><h6>Place Order</h6></a>
-        </button>
+    </section>
 
-    </div>
+    
+
+    <%- include('./partials/footer') %>
 </body>

@@ -4,32 +4,44 @@
     justify-content:center;
     flex-wrap: wrap;
   }
+  .tiles{
+      justify-content: center;
+      height:19rem;
+      width:13rem;
+    }
+
+    .tile-outer:hover{
+      transform:scale(1.1);
+    }
 
 </style>
-<%- include('./partials/navbar')%>
-<div style="display: flex;">
+<%- include('./partials/navBarLeft')%>
+<div style="height:5vw" class="my-3"></div>
 
-  <div style="width:26.5rem;height: auto ;background-color: rgb(230, 230, 230) " >
-
-  </div>
-  <div class="container-fluid px-0 " style=" ">
+  <div class="container-fluid px-0 bg-light " >
     <div class="flex-container" >
      
         <% for(let i=0;i<productData.length;i++){%>
-          <div class="card mx-4 my-4" style="width: 15rem;height:18rem;border-radius: 0;">
-            <div class="img-fluid" style="height: 55%;width: 100% ;border-radius: 0;">
-              <img class="card-img-top" src="/products/images/<%=productData[i].productImage %>" alt="Card image cap" style="border-radius: 0;">
+
+          <a href="#">
+            <div class="tile-outer spt-5 pb-3 pt-1 card mx-4 my-4">
+              <div class="card-body float-right d-inline-block">
+                <a href="/user/addtowishlist?productId=<%= productData[i]._id %>" style="font-size:larger;float:right"><i class=" fa-regular fa-heart mx-4" ></i></a>
+              </div>
+
+              <div class="tiles mx-4 mb-2">
+                <div class="innerClass shadow" style="border-radius:0.5rem">  
+                  <img src="/products/images/<%=productData[i].productImage %>" alt="" class="img-fluid" style="border-radius:0.4rem">
+                </div>
+                <h4 class="text-center"><%=productData[i].productName%></h4>
+                <h5 class="text-center">&#8377 <%=productData[i].rate %></h5>
+              </div>
+              <div class="card-body d-flex justify-content-center">
+                <a href="/productpage/<%= productData[i]._id %>" class="btn btn-dark" style="font-size: small;">View Product</a>
+                </div>
+              
             </div>
-            
-            <div class="card-body">
-              <h5 class="card-title text-center"><%=productData[i].productName%></h5>
-              <h5 class="card-title text-center text-success"><%=productData[i].rate %> Rs</h5>
-              <a href="#" class="btn btn-primary" style="font-size: small;">buy</a>
-              <a href="/user/addtowishlist?productId=<%= productData[i]._id %>" class="btn btn-primary" style="font-size: small;">+ Wishlist</a>
-              <a href="/user/addtocart?productId=<%= productData[i]._id %>" class="btn btn-success" style="font-size: small;">+ Cart</a>
-            </div>
-            
-          </div>
+          </a>
         <%}%>
     </div>
   
@@ -64,8 +76,6 @@
     </div>
     
   </div>
-  
 
-</div>
 
 <%- include('./partials/footer')%>
