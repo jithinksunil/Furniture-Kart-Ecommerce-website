@@ -1,8 +1,21 @@
 const cartCollection=require('../models/cartShema')
+const catCollection=require('../models/categorySchema')
 const mongoose= require('mongoose')
 function toObjectId(arg){return mongoose.Types.ObjectId(arg)}
 
 async function userCart(req,res){
+
+        let catData=await catCollection.find({action:true})
+        let cartCount=0
+        try{
+            let userCart=await cartCollection.findOne({userId:req.session.userData._id})
+            for(let i=0;i<userCart.products.length;i++){
+                cartCount=cartCount+userCart.products[i].quantity
+            }
+        }
+        catch(err){
+            console.log(err);
+        }
 
     let cartProducts=await cartCollection.aggregate([
         {$match:{userId:toObjectId(req.session.userData._id)}},
@@ -50,10 +63,11 @@ async function userCart(req,res){
         await cartCollection.insertMany([{userId:req.query.userId}])
     }
 
-    res.render('./userFiles/userCart',{userCart,cartProducts,userData:req.session.userData,bill})
+    res.render('./userFiles/userCart',{userCart,cartProducts,userData:req.session.userData,bill,catData,cartCount})
 }
 
 async function userAddToCart(req,res){
+    console.log('ajax worke');
 
     let userCart=await cartCollection.findOne({userId:req.session.userData._id})
 
@@ -83,7 +97,7 @@ async function userAddToCart(req,res){
         )
     }
     
-    res.redirect('/user/cart')
+    res.json({status:true})
 }
 
 async function userAddFromCart(req,res){

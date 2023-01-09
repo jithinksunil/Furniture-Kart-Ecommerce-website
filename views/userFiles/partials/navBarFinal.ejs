@@ -28,7 +28,7 @@
             
             <li class="nav-item">
               <% if(userData){%>
-                <a class="nav-link" href="/user/cart?userId=<%=userData._id %>">Cart <i class="fa-solid fa-cart-shopping text-primary"></i></a>
+                <a class="nav-link" href="/user/cart?userId=<%=userData._id %>">Cart<span class="badge text-bg-success"><%= cartCount %></span><i class="fa-solid fa-cart-shopping text-primary"></i></a>
               <%}
               else{%>
                 <a class="nav-link" href="/user/login">Cart <i class="fa-solid fa-cart-shopping text-primary"></i></a>

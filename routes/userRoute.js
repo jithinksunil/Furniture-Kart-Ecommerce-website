@@ -4,6 +4,7 @@ const userController=require('../controllers/userController')
 const cartController=require('../controllers/cartController')
 const wishlistController=require('../controllers/wishlistController')
 const productController=require('../controllers/productPageController')
+const checkoutController=require('../controllers/checkOutController')
 const userSession = require('../middlewares/userSessionMW')
 const userSessionMW=userSession.userSession
 const withOutUserSessionMW=userSession.withOutUserSession
@@ -33,4 +34,6 @@ router.get('/user/cart/removeitem',userSessionMW,cartController.removeFromCart)
 router.get('/user/wishlist',userSessionMW,wishlistController.userWishlist)
 router.get('/user/addtowishlist',userSessionMW,wishlistController.userAddToWishlist)
 router.get('/user/wishlist/removeitem',userSessionMW,wishlistController.removeFromWishlist)
+
+router.get('/user/checkout',userSessionMW,checkoutController.checkOut)
 module.exports=router

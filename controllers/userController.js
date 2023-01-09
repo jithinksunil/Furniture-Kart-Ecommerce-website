@@ -1,5 +1,6 @@
 const productCollection=require('../models/productSchema')
 const catCollection = require("../models/categorySchema")
+const cartCollection = require("../models/cartShema")
 const userCollection = require("../models/userSchema")
 const otpfunctions=require('../config/otpConfiguration')
 const bannerCollection = require('../models/bannerSchema')
@@ -7,10 +8,19 @@ const { query } = require('express')
 async function home(req,res){
 
     let bannerData=await bannerCollection.find({action:true})
-    console.log(bannerData)
-    catData=await catCollection.find({action:true})
-    recProducts=await productCollection.find().limit(6)
-    res.render('./userFiles/userHomePage',{catData,recProducts,userData:req.session.userData,bannerData})
+    let catData=await catCollection.find({action:true})
+    let cartCount=0
+    try{
+        let userCart=await cartCollection.findOne({userId:req.session.userData._id})
+        for(let i=0;i<userCart.products.length;i++){
+            cartCount=cartCount+userCart.products[i].quantity
+        }
+    }
+    catch(err){
+        console.log(err);
+    }
+    recProducts=await productCollection.find().limit(4)
+    res.render('./userFiles/userHomePage',{catData,recProducts,userData:req.session.userData,bannerData,cartCount})
 }
 
 async function shopPage(req,res){  //user login page
@@ -207,6 +217,8 @@ async function forgotPasswordUpdation(req,res){
 }
 
 async function categoriesPage(req,res){
+    let catData=await catCollection.find({action:true})
+    
     let search=''
     
     let page=parseInt(req.params.page)
@@ -230,12 +242,25 @@ async function categoriesPage(req,res){
         {category:{$regex:search,$options:'i'}}
     ]}).count()
 
+    let cartCount=0
+    try{
+        let userCart=await cartCollection.findOne({userId:req.session.userData._id})
+        for(let i=0;i<userCart.products.length;i++){
+            cartCount=cartCount+userCart.products[i].quantity
+        }
+    }
+    catch(err){
+        console.log(err);
+    }
+
     res.render('./userFiles/categoriesPage',{
         userData:req.session.userData,
         productData:productData,
         totalPages:(count/limit),
         currentPage:page,
-        catName:req.params.category
+        catName:req.params.category,
+        catData,
+        cartCount
     })
     
     
