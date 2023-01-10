@@ -1,8 +1,83 @@
-
+<head>
+    <link rel="stylesheet" type="text/css" href="/user/css/productDetailPage.css">
+</head>
 <body>
     <%- include('./partials/navBarLeft')%>
     <div style="height:4vw"></div>
-    <button onclick="addToCart('<%= productData._id %>')" class="btn btn-dark">Add to Cart</button>
+
+    <div class="container my-5">
+
+        <div class="row">
+            
+            <div class="col-md-5">
+                <div class="main-img">
+                    <img class="img-fluid" src="/products/images/<%=productData.productImage%>" alt="ProductS">
+                </div>
+            </div>
+
+            <div class="col-md-7">
+                <div class="main-description px-2">
+                    <div class="category text-bold text-secondary">
+                        Category: Cot
+                    </div>
+                    <div class="product-title text-bold my-3">
+                        <%= productData.productName %>
+                    </div>
+
+
+                    <div class="price-area my-4">
+                        <p class="old-price mb-1"><del>$<span>
+                            ₹ <%= productData.rate %>
+                        </span></del>
+                            <span class="old-price-discount text-danger">(20% off)</span></p>
+                        <p class="new-price text-bold mb-1"><span>
+                            ₹ <%= productData.rate %>
+                        </span></p>
+                        <p class="text-secondary mb-1">(Additional tax may apply on checkout)</p>
+
+                    </div>
+
+
+                    <div class="buttons d-flex my-5">
+                        <div class="block">
+                            <button id="cartButton" class="btn btn-dark btn-addtocart mx-2" style="width: 140px;" onclick="addToCart('<%= productData._id %>')"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+                        </div>
+                        <div class="block">
+                            <button class="btn btn-dark mx-2">Buy now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-details my-4">
+                    <p class="details-title text-color mb-1">Product Details</p>
+                    <p class="description"> <p> <div>
+                        <!-- <%= productData.description %> -->
+                    </div>
+                        
+                    </p> </p>
+                </div>
+
+                <div class="product-details my-4">
+                    <p class="details-title text-color mb-2">Material & Care</p>
+                    <ul>
+                        <li>Cotton</li>
+                        <li>Machine-wash</li>
+                    </ul>
+                </div>
+
+                <div class="product-details my-4">
+                    <p class="details-title text-color mb-2">Sold by</p>
+                    <ul>
+                        <li>Cotton</li>
+                        <li>Machine-wash</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
     <%- include('./partials/footer') %>
     
     <script>

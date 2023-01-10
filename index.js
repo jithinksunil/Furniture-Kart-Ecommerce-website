@@ -5,6 +5,7 @@ const expressLayouts=require('express-ejs-layouts')
 const userRouter=require('../Furniture-Kart-Ecommerce-website-master/routes/userRoute')
 const adminRouter=require('../Furniture-Kart-Ecommerce-website-master/routes/adminRoute')
 const path=require('path')
+
 /*---------------------------Setups-----------------------------*/
 app.use(express.urlencoded({extended:true}))//to get data from post method
 

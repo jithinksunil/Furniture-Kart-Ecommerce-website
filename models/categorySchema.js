@@ -2,7 +2,7 @@ const mongoose=require('mongoose')
 
 const newSchema=new mongoose.Schema({//defining structure of collections
     catName:String,
-    catImage:String,
+    catImage:[String],
     action:{type:Boolean, default:true}
 })
 

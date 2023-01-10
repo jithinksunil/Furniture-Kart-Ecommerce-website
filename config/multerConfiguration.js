@@ -1,6 +1,5 @@
 const multer=require('multer')
 
-
 const catStorage=multer.memoryStorage()
 const uploadCategories=multer(
     {

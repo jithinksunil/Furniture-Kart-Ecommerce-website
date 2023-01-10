@@ -65,17 +65,25 @@ async function categoryManagement(req,res){
 }
 
 async function addCategory(req,res){
-    if(req.file){
-        console.log(req.file)
+
+    
+    if(req.files){
+        console.log(req.files)
         try{
-            const name=Date.now()+'-'+req.file.originalname;
-            await sharp(req.file.buffer).resize({width:750,height:750}).toFile('./public/categories/images/'+name)
+            const name=Date.now()+'-'+req.files[0].originalname;
+            await sharp(req.files[0].buffer).resize({width:750,height:750}).toFile('./public/categories/images/'+name)
             await catCollection.insertMany(
                 [{
                     catName:req.body.catName,
-                    catImage:name,
+                    catImage:[name],
                 }]
             )
+            for(let i=1;i<req.files.length;i++){
+                const name=Date.now()+'-'+req.files[i].originalname;
+                await sharp(req.files[i].buffer).resize({width:750,height:750}).toFile('./public/categories/images/'+name)
+                await catCollection.updateOne({catName:req.body.catName},{$push:{catImage:name}})
+            }
+            
             res.redirect('/admin/products/categorymangement')
         }
         catch(err){
