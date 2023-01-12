@@ -1,6 +1,8 @@
 const { default: mongoose } = require('mongoose');
 const cartCollection=require('../models/cartShema')
-const catCollection=require('../models/categorySchema')
+const catCollection=require('../models/categorySchema');
+const userCollection = require('../models/userSchema');
+
 module.exports={
     checkOut:async (req,res)=>{
         let catData=await catCollection.find({action:true})
@@ -40,5 +42,18 @@ module.exports={
         }
 
         res.render('./userFiles/checkOutPage',{price,cartCount,catData,userData:req.session.userData})
+    },
+    couponApply:async (req,res)=>{
+        let userData=await userCollection.findOne({_id:req.session.userData._id})
+        let couponData=userData.coupons
+
+        let couponExist=couponData.findIndex((item)=>{
+            return item==req.query.couponCode
+        })
+        if(couonExist==-1){
+            res.json({status:true})
+        }else{
+            res.json({status:false})
+        }
     }
 }

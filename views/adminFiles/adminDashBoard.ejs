@@ -73,7 +73,7 @@
         </div>
     </div>
 
-    <div class="card">
+    <!-- <div class="card">
         <div class="card-content">
             <div class="flex items-center justify-between">
                 <div class="widget-label">
@@ -89,39 +89,139 @@
                 </span>
             </div>
         </div>
+    </div> -->
     </div>
-</div>
 
-<div class="card mb-6">
-    <header class="card-header">
-        <p class="card-header-title">
-            <span class="icon">
-                <i class="mdi mdi-buffer"></i>
-            </span>
-            Orders
-        </p>
-        <a href="/admin/dashboard" class="card-header-icon">
-            <span class="icon">
-                <i class="mdi mdi-reload"></i>
-            </span>
-        </a>
-    </header>
-    <div class="card-content">
-        <div class="chart-area">
-            <div class="h-full">
-                <div class="chartjs-size-monitor">
-                    <div class="chartjs-size-monitor-expand">
-                        <div></div>
-                    </div>
-                    <div class="chartjs-size-monitor-shrink">
-                        <div></div>
+    <section>
+        <style>
+            .total-sale{
+            
+                background: rgb(118, 187, 208);
+            }
+            .order{
+            
+                background: rgb(159, 167, 87);
+            }
+            .user{
+            
+                background-color: rgb(100, 148, 132);
+            }
+            
+        </style>
+        
+        <div class="container"> 
+        
+            <div class="row ">
+                <div class="col-xl-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-chart-area me-1"></i>
+                            Orders/month
+                        </div>
+                        <div class="card-body"><canvas id="myBarChart" width="100%" height="60"></canvas></div>
                     </div>
                 </div>
-                <canvas id="big-line-chart" width="2992" height="1000" class="chartjs-render-monitor block" style="height: 400px; width: 1197px;"></canvas>
+        
+                <div class="col-xl-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-chart-bar me-1"></i>
+                            Order Status
+                        </div>
+                        <div class="card-body"><canvas id="myPieChart" width="100%" height="60"></canvas></div>
+                    </div>
+                </div>
+        
             </div>
         </div>
-    </div>
-</div></section>
+        
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script>
+        
+            // Set new default font family and font color to mimic Bootstrap's default styling
+        Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+        Chart.defaults.global.defaultFontColor = '#292b2c';
+        
+        // Bar Chart Example
+        var ctx = document.getElementById("myBarChart");
+        var myLineChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["January", "February", "March", "April", "May", "June","July","August","September","October","Novembor","Decomber"],
+            datasets: [{
+            label: "Orders",
+            backgroundColor: "rgba(2,117,216,1)",
+            borderColor: "rgba(2,117,216,1)",
+            data: ['<%= orderPerMonth[0] %>',
+                    '<%= orderPerMonth[1] %>',
+                    '<%= orderPerMonth[2] %>',
+                    '<%= orderPerMonth[3] %>',
+                    '<%= orderPerMonth[4] %>',
+                    '<%= orderPerMonth[5] %>',
+                    '<%= orderPerMonth[6] %>',
+                    '<%= orderPerMonth[7] %>',
+                    '<%= orderPerMonth[8] %>',
+                    '<%= orderPerMonth[9] %>',
+                    '<%= orderPerMonth[10] %>',
+                    '<%= orderPerMonth[11] %>',
+                    '<%= orderPerMonth[12] %>',
+                ],
+            }],
+        },
+        options: {
+            scales: {
+            xAxes: [{
+                time: {
+                unit: 'month'
+                },
+                gridLines: {
+                display: false
+                },
+                ticks: {
+                maxTicksLimit: 12
+                }
+            }],
+            yAxes: [{
+                ticks: {
+                min: 0,
+                max: 50,
+                maxTicksLimit: 20
+                },
+                gridLines: {
+                display: true
+                }
+            }],
+            },
+            legend: {
+            display: false
+            }
+        }
+        });
+        
+        </script>
+        
+        <script>
+            const cty = document.getElementById('myPieChart');
+            
+            new Chart(cty, {
+                type: 'pie',
+                data: {
+                labels: ['Pending','Shipped', 'Out for Delivery', 'Delivered', 'Cancelled'],
+                datasets: [{
+                    label: 'Revenue',
+                    backgroundColor: ['#007bff', '#C8CDD1', '#ffc107', '#133122','#AD2633'],
+                    data: ['<%= data.pending %>','<%= data.shipped %>','<%= data.outForDelivey %>','<%= data.deliverd %>','<%= data.cancelled %>'],
+                //  borderWidth: 1
+                }]
+                }
+            });
+        
+        </script>
+    </section>
+
+
+</section>
 
 
 <%- include('./partials/adminLayoutFooter')%>

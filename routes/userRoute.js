@@ -5,6 +5,7 @@ const cartController=require('../controllers/cartController')
 const wishlistController=require('../controllers/wishlistController')
 const productController=require('../controllers/productPageController')
 const checkoutController=require('../controllers/checkOutController')
+const orderController=require('../controllers/orderController')
 const userSession = require('../middlewares/userSessionMW')
 const userSessionMW=userSession.userSession
 const withOutUserSessionMW=userSession.withOutUserSession
@@ -36,4 +37,11 @@ router.get('/user/addtowishlist',userSessionMW,wishlistController.userAddToWishl
 router.get('/user/wishlist/removeitem',userSessionMW,wishlistController.removeFromWishlist)
 
 router.get('/user/checkout',userSessionMW,checkoutController.checkOut)
+router.get('/coupon/applied',checkoutController.couponApply)
+router.post('/user/order',userSessionMW,orderController.order)
+router.get('/oder/completed',userSessionMW,orderController.orderCompleted)
+router.get('/onlinepayment/gateway',userSessionMW,orderController.onlinePaymentGateWay)
+router.get('/onlinepayment/success',userSessionMW,orderController.onlinePaymentSuccess)
+router.get('/onlinepayment/cancel',userSessionMW,orderController.onlinePaymentCancel)
+
 module.exports=router

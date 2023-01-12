@@ -1,8 +1,22 @@
 const wishlistCollection=require('../models/wishlistSchema')
+const catCollection=require('../models/categorySchema')
+const cartCollection=require('../models/cartShema')
 const mongoose= require('mongoose')
 function toObjectId(arg){return mongoose.Types.ObjectId(arg)}
 
 async function userWishlist(req,res){
+
+    let catData=await catCollection.find({action:true})
+    let cartCount=0
+        try{
+            let userCart=await cartCollection.findOne({userId:req.session.userData._id})
+            for(let i=0;i<userCart.products.length;i++){
+                cartCount=cartCount+userCart.products[i].quantity
+            }
+        }
+        catch(err){
+            console.log(err);
+        }
 
     let userWishlist=await wishlistCollection.aggregate([
         {$match:{userId:toObjectId(req.session.userData._id)}},//to object id defined by me look above
@@ -30,7 +44,7 @@ async function userWishlist(req,res){
         await wishlistCollection.insertMany([{userId:req.query.userId}])
     }
 
-    res.render('./userFiles/userWishlist',{userWishlist,userData:req.session.userData})
+    res.render('./userFiles/userWishlist',{userWishlist,userData:req.session.userData,cartCount,catData})
 }
 
 async function userAddToWishlist(req,res){

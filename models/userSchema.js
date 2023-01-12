@@ -7,7 +7,9 @@ const newSchema=new mongoose.Schema({//defining structure of collections
     email:String,
     password:String,
     age:Number,
-    action:Boolean
+    action:Boolean,
+    coupons:[String]
+    
 })
 
 const userCollection=new mongoose.model('user_collection',newSchema)//creating collection using the defined schema and assign to new Model

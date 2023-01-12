@@ -9,13 +9,13 @@
             <h5 class="mb-0">Biling details</h5>
           </div>
           <div class="card-body">
-            <form id="checkout">
+            <form id="checkout" action="/user/order?netAmount=<%= price %>" method="post">
               <!-- Text input -->
               <div class="form-outline mb-4">
                 <input
                   type="text"
                   id="housename"
-                  name="housename"
+                  name="houseName"
                   class="form-control"
                 />
                 <label class="form-label" for="form7Example3">House Name</label>
@@ -96,7 +96,7 @@
                 <button
                   type="submit"
                   value="submit"
-                  class="btn btn-primary btn-lg btn-block"
+                  class="btn btn-lg btn-dark"
                 >
                   Make purchase
                 </button>
@@ -128,14 +128,15 @@
                 <h5 class="text-uppercase mb-5">Give code</h5>
                 <div>
                   <div class="form-outline mt-3">
-                    <input
-                      type="text"
-                      id="coupon" 
-                      class="form-control form-control-lg"
-                    />
-                    <label class="form-label" for="coupon" 
-                      >Enter your code</label
-                    >
+                    <form >
+                      <input
+                        type="text"
+                        id="couponCode" 
+                        class="form-control form-control-lg"
+                      />
+                      <button onclick="couponApplied()">Submit</button>
+
+                    </form>
                   </div>
 
                 </div>

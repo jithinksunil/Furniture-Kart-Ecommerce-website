@@ -25,6 +25,7 @@ router.post('/admin/products/productmangement/addproduct/completed',productUploa
 router.get('/admin/products/productmangement/listaction',adminSessionMW,adminController.listProductAction)
 router.get('/admin/products/productmangement/un-listaction',adminSessionMW,adminController.unListProductAction)
 router.get('/admin/orders',adminSessionMW,adminController.orderManagement)
+router.get('/admin/orders/statuschange',adminController.orderStatusManagement)
 router.get('/admin/genarate/salesreport',adminSessionMW,adminController.salesReport)
 router.get('/admin/coupons',adminSessionMW,adminController.couponManagement)
 router.get('/admin/coupon/couponmangement/actions',adminSessionMW,adminController.couponListAndUnListActions)

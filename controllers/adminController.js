@@ -31,12 +31,28 @@ async function adminLoginValidation(req,res){
 }
 
 async function adminDashBoard(req,res){
+
+    let orderPerMonth=[]
+    for (let i=1;i<=12;i++){
+        let numberOfOrders=await orderCollection.find({orderMonth:i}).count()
+        orderPerMonth.push(numberOfOrders)
+    }
+    
+    console.log(orderPerMonth);
     let dashBoardData={
         users:await userCollection.count(),
         products:await productCollection.count(),
-        orders:await orderCollection.count()
+        orders:await orderCollection.count(),
+        deliverd:await orderCollection.find({status:'Deliverd'}).count(),
+        cancelled:await orderCollection.find({status:'Cancel'}).count(),
+        pending:await orderCollection.find({status:'Pending'}).count(),
+        outForDelivey:await orderCollection.find({status:'Out for delivey'}).count(),
+        shipped:await orderCollection.find({status:'Shipped'}).count()
     }
-    res.render('./adminFiles/adminDashBoard',{data:dashBoardData})
+    console.log(dashBoardData.deliverd);
+    await orderCollection.find({status:'Deliverd'})
+
+    res.render('./adminFiles/adminDashBoard',{data:dashBoardData,orderPerMonth})
 }
 
 async function userManagement(req,res){
@@ -172,16 +188,20 @@ async function orderManagement(req,res){
     res.render('./adminFiles/adminOrderManagement',{orderData,salesReport,path})
 }
 
+async function orderStatusManagement(req,res){
+    await orderCollection.updateOne({_id:req.query.orderId},{status:req.query.status})
+    res.json({status:true})
+}
+
 
 async function salesReport(req,res){
 
-    let orderData=await orderCollection.aggregate([{$match:{status:'completed'}},{$lookup:{
+    let orderData=await orderCollection.aggregate([{$match:{status:'Deliverd'}},{$lookup:{
         from:'user_collections',
         localField:'userId',
         foreignField:'_id',
         as:'user'
     }}])
-    
     let salesData=[];//this array is created because the sales report template cannot read the data like this.user[0].fName??????????????????
     for(let i=0;i<orderData.length;i++){
         let order={
@@ -210,7 +230,7 @@ async function salesReport(req,res){
     }
     pdf.create(document).then(resolve=>{
         console.log(resolve)
-        res.redirect(`/admin/orders?genarated=${true}&path=${filepath}`)
+        res.redirect(filepath)
     }).catch(err=>{
         console.log(err)
     })
@@ -275,6 +295,7 @@ module.exports={
     listProductAction,
     unListProductAction,
     orderManagement,
+    orderStatusManagement,
     salesReport,
     couponManagement,
     couponListAndUnListActions,

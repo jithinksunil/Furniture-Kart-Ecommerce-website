@@ -1,5 +1,6 @@
 const cartCollection=require('../models/cartShema')
 const catCollection=require('../models/categorySchema')
+const wishlistCollection=require('../models/wishlistSchema')
 const mongoose= require('mongoose')
 function toObjectId(arg){return mongoose.Types.ObjectId(arg)}
 
@@ -67,7 +68,6 @@ async function userCart(req,res){
 }
 
 async function userAddToCart(req,res){
-    console.log('ajax worke');
 
     let userCart=await cartCollection.findOne({userId:req.session.userData._id})
 
@@ -89,6 +89,7 @@ async function userAddToCart(req,res){
         )
         console.log(a);
     }
+
     else{
         await cartCollection.updateOne({userId:req.session.userData._id},
             {
@@ -96,6 +97,13 @@ async function userAddToCart(req,res){
             }
         )
     }
+
+    if(req.query.fromWishList=='true'){
+
+        await wishlistCollection.updateOne({userId:req.session.userData._id},{$pull:{products:req.query.productId}})
+        
+    }
+
     
     res.json({status:true})
 }
@@ -113,19 +121,40 @@ async function userAddFromCart(req,res){
 
 async function userDeductFromCart(req,res){
 
-    let a=await cartCollection.updateOne({userId:req.session.userData._id, 'products.productId':req.query.productId},
-    {
-        $inc:{'products.$.quantity':-1}
+    const qtyCheck =await cartCollection.aggregate([{$match:{"products.productId":mongoose.Types.ObjectId(req.query.productId)}},
+    {$unwind:"$products"},
+    {$match:{"products.productId":mongoose.Types.ObjectId(req.query.productId)}},
+    {$project:{"products.quantity":1,_id:0}}
+    ])
+    
+    if(qtyCheck[0].products.quantity<=1){
+
+        await cartCollection.updateOne({userId:req.session.userData._id},{$pull:{products:{productId:req.query.productId}}})
+        res.redirect('/user/cart')
+
+    }
+    else{
+
+        let a=await cartCollection.updateOne({userId:req.session.userData._id, 'products.productId':req.query.productId},
+            
+            {
+                $inc:{'products.$.quantity':-1}
+            }
+    
+        )
+        res.redirect('/user/cart')
     }
 
-)
-    res.redirect('/user/cart')
+    
+    
+    
 }
 
 async function removeFromCart(req,res){
 
     await cartCollection.updateOne({userId:req.session.userData._id},{$pull:{products:{productId:req.query.productId}}})
     res.redirect('/user/cart')
+
 }
 
 module.exports={

@@ -32,4 +32,69 @@
       color:rgb(68, 68, 68)
     }
   </style>
+  <script>
+    function addToCart(productId){
+        $.ajax({
+            url:'/user/addtocart?productId='+productId,
+            method:'get',
+            success:(response)=>{
+                console.log(response);
+                if(response.status){
+                    let count=$('#cartCount').html()
+                    count=parseInt(count)+1
+                    $('#cartCount').html(count)
+                }
+                
+            }
+        })
+    }
+
+    function addToCartFromWishlist(productId,feedBackFromWishList){
+        $.ajax({
+            url:'/user/addtocart?productId='+productId+`&fromWishList=${feedBackFromWishList}`,
+            method:'get',
+            success:(response)=>{
+                console.log(response);
+                if(response.status){
+                    location.reload()
+                }
+                
+            }
+        })
+    }
+
+    
+    function selected(orderStatus,orderId){
+      $.ajax({
+            url:'/admin/orders/statuschange?status='+orderStatus+'&orderId='+orderId,
+            method:'get',
+            success:(response)=>{
+                console.log(response);
+                if(response.status){
+
+                  $('#'+orderId).html(orderStatus)
+                }
+            }
+        })
+        }
+      
+      function couponApplied(){
+          event.preventDefault()
+          var inputValue = $("#couponCode").val();
+
+        $.ajax({
+            url:'/coupon/applied?couponCode='+inputValue,
+            method:'get',
+            success:(response)=>{
+                console.log(response);
+                if(response.status){
+
+                  $('#'+orderId).html(orderStatus)
+                }
+            }
+        })
+
+      }
+    
+</script>
 </html>

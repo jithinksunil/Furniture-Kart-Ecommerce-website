@@ -8,8 +8,7 @@
 		td:nth-of-type(4):before { content: "Order Date"; }
 		td:nth-of-type(6):before { content: "Total amount"; }
         td:nth-of-type(7):before { content: "Status"; }
-		td:nth-of-type(8):before { content: "Hold/Release"; }
-		td:nth-of-type(9):before { content: "Cancel"; }
+		td:nth-of-type(8):before { content: "Cancel"; }
 	</style>
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" />
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -41,12 +40,7 @@
             </h1>
         </div>
         <div>
-            <%if(salesReport){%>
-                <a href="<%=path%>" target="_blank"  role="button"class="btn btn-danger" style="width: 91px; height:40px">Download</a>
-            <%}else{%>
-                <a href="/admin/genarate/salesreport" role="button"class="btn btn-danger" style="width: 91px; height:40px">Genarate SalesReport</a>
-            <%}%>
-            
+            <a href="/admin/genarate/salesreport" target="_blank" role="button"class="btn btn-danger" style="width: 91px; height:40px">Download</a>
         </div>
     </section>
     
@@ -60,8 +54,7 @@
                     <th>Order Date</th>
                     <th>Total amount</th>
                     <th>Status</th>
-                    <th>Hold/Release</th>
-                    <th>Cancel</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -72,15 +65,19 @@
                         <td class="mx-2"><%= item.address.houseName %></td>
                         <td class="mx-2"><%= item.orderDate %> </td>
                         <td class="mx-2"><%= item.netAmount %> Rs</td>
-                        <td class="mx-2"><%= item.status %></td>
-
-                    <% if(item.action){
-                        %><td class="mx-2"><a href="/admin/orders/ordermangement/un-listaction?id=<%=item._id%>" role="button" class="btn btn-danger" style="width: 91px; height:40px">Hold</a></td><%
-                    }else{
-                        %><td class="mx-2"><a href="/admin/orders/ordermangement/listaction?id=<%=item._id%>" role="button" class="btn btn-success" style="width: 91px; height:40px">Release</a></td><%
-                    }%>
-
-                        <td class="mx-2"><button type="button" class="btn btn-danger" style="width: 80px; height:40px">cancel</button></td>
+                        <td class="mx-2" id="<%= item._id %>"><%= item.status %></td>
+       
+                        <td class="mx-2"><form >
+                            <select name="orderStatus" onclick="selected(value,'<%= item._id %>')">
+                              <option value="<%= item.status %>"><%= item.status %></option>
+                              <option value="Pending">Pending</option>
+                              <option value="Shipped">Shipped</option>
+                              <option value="Out for delivey">Out for delivey</option>
+                              <option value="Deliverd">Deliverd</option>
+                              <option value="Cancel">Cancel</option>
+                            </select>
+                          </form>
+                        </td>
 
                     </tr><%
                 }) 
@@ -91,6 +88,7 @@
     </section>
     
     <%- include('./partials/adminLayoutFooter')%>
+    
     
 </body>
 

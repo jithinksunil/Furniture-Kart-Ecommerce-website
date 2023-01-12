@@ -30,6 +30,9 @@
                                 <h6 class="text-muted"><%= userWishlist[0].wishlistProducts[i].category %></h6>
                                 <h6 class="text-black mb-0"><%= userWishlist[0].wishlistProducts[i].productName %></h6>
                               </div>
+                              <div>
+                                <button class="btn btn-dark" onclick="addToCartFromWishlist('<%= userWishlist[0].wishlistProducts[i]._id %>',true)"> +Cart</button>
+                              </div>
                               <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
                                 <h6 class="mb-0">&#8377; <%= userWishlist[0].wishlistProducts[i].rate %></h6>
                               </div>
