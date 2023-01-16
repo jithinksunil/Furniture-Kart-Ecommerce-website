@@ -83,9 +83,10 @@ function userLogout(req,res){  //user login page
     res.redirect('/')
 }
 
-function userRegistration(req,res){  //user login page
+async function userRegistration(req,res){  //user login page
     let warning=req.query.warning
-    res.render('./userFiles/userRegistrationPage',{userData:req.session.userData,warning})
+    let catData=await catCollection.find({action:true})
+    res.render('./userFiles/userRegistrationPage',{userData:req.session.userData,warning,catData})
 }
 
 function jithin(a){

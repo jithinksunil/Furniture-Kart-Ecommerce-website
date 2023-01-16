@@ -4,6 +4,7 @@ function userSession(req,res,next){
         next()
     }
     else{
+        console.log('ajax reaches here')
         res.redirect('/')
     }
 }
@@ -16,7 +17,18 @@ function withOutUserSession(req,res,next){
         res.redirect('/')
     }
 }
+
+function userSessionForAjax(req,res,next){
+    if(req.session.userData){
+        next()
+    }
+    else{
+        res.json({notLoggedIn:true})
+    }
+}
+
 module.exports={ 
     userSession,
+    userSessionForAjax,
     withOutUserSession
 }

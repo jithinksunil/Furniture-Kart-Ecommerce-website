@@ -1,23 +1,25 @@
 const { model } = require("mongoose")
 const orderCollection = require("../models/orderSchema")
 const cartCollection=require('../models/cartShema')
+const userCollection=require('../models/userSchema')
 const currentDate=require('../config/currentDate')
 var paypal = require('paypal-rest-sdk')
 paypalFunction=require('../config/paypal')
-
 
 module.exports={
     order:async (req,res)=>{
 
         let cartData=await cartCollection.findOne({userId:req.session.userData._id})
-
+        
         if(req.body.paymentMethod=='COD'){
-
+            
+            await userCollection.updateOne({_id:req.session.userData._id},{$push:{couponsApplied:req.body.appliedCouponCode}})
+            
             await orderCollection.insertMany([{
                 userId:req.session.userData._id,
                 products:cartData.products,
-                coupondApplied:'FR01JON23',
-                netAmount:req.query.netAmount,
+                netAmount:parseInt(req.body.netAmount),
+                couponApplied:req.body.appliedCouponCode,
                 address:req.body,
                 paymentMethod:req.body.paymentMethod,
                 orderDate: currentDate(),
@@ -30,8 +32,8 @@ module.exports={
             req.session.onlinePaymentOrder={
                 userId:req.session.userData._id,
                 products:cartData.products,
-                coupondApplied:'FR01JON23',
-                netAmount:req.query.netAmount,
+                netAmount:parseInt(req.body.netAmount),
+                couponApplied:req.body.appliedCouponCode,
                 address:req.body,
                 paymentMethod:req.body.paymentMethod,
                 orderDate: currentDate(),
@@ -51,6 +53,7 @@ module.exports={
     onlinePaymentSuccess:async (req,res)=>{
 
         
+        await userCollection.updateOne({_id:req.session.userData._id},{$push:{couponsApplied:req.body.appliedCouponCode}})
         await orderCollection.insertMany([req.session.onlinePaymentOrder])
         await cartCollection.deleteOne({userId:req.session.userData._id})
         paypalFunction.succesCase(req,res)

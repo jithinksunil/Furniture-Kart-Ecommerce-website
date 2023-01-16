@@ -49,30 +49,30 @@ async function userWishlist(req,res){
 
 async function userAddToWishlist(req,res){
 
-    let userWishlist=await wishlistCollection.findOne({userId:req.session.userData._id})
-
-    if(!userWishlist){
-        await wishlistCollection.insertMany([{userId:req.session.userData._id}])
-        userWishlist=await wishlistCollection.findOne({userId:req.session.userData._id})
-    }
-
-    let itemIndex=userWishlist.products.findIndex((products)=>{
-        return products==req.query.productId
-    })
-
-    if(itemIndex>-1){//-1 if no item matches
-
-        console.log('product alredy exist');
-    }
-    else{
-        await wishlistCollection.updateOne({userId:req.session.userData._id},
-            {
-                $push:{products:req.query.productId}
-            }
-        )
-    }
+        let productAlreadyExist
+        let userWishlist=await wishlistCollection.findOne({userId:req.session.userData._id})
     
-    res.redirect('/')
+        if(!userWishlist){
+            await wishlistCollection.insertMany([{userId:req.session.userData._id}])
+            userWishlist=await wishlistCollection.findOne({userId:req.session.userData._id})
+        }
+    
+        let itemIndex=userWishlist.products.findIndex((products)=>{
+            return products==req.query.productId
+        })
+    
+        if(itemIndex>-1){//-1 if no item matches
+    
+            productAlreadyExist=true
+        }
+        else{
+            await wishlistCollection.updateOne({userId:req.session.userData._id},
+                {
+                    $push:{products:req.query.productId}
+                }
+            )
+        }
+        res.json({status:true,productAlreadyExist})
 }
 
 async function removeFromWishlist(req,res){

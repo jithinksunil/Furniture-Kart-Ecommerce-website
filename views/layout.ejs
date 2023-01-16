@@ -31,70 +31,142 @@
       text-decoration: none;
       color:rgb(68, 68, 68)
     }
-  </style>
-  <script>
-    function addToCart(productId){
-        $.ajax({
-            url:'/user/addtocart?productId='+productId,
-            method:'get',
-            success:(response)=>{
-                console.log(response);
-                if(response.status){
-                    let count=$('#cartCount').html()
-                    count=parseInt(count)+1
-                    $('#cartCount').html(count)
-                }
-                
-            }
-        })
-    }
-
-    function addToCartFromWishlist(productId,feedBackFromWishList){
-        $.ajax({
-            url:'/user/addtocart?productId='+productId+`&fromWishList=${feedBackFromWishList}`,
-            method:'get',
-            success:(response)=>{
-                console.log(response);
-                if(response.status){
-                    location.reload()
-                }
-                
-            }
-        })
-    }
-
     
-    function selected(orderStatus,orderId){
-      $.ajax({
-            url:'/admin/orders/statuschange?status='+orderStatus+'&orderId='+orderId,
-            method:'get',
-            success:(response)=>{
-                console.log(response);
-                if(response.status){
+  </style>
 
-                  $('#'+orderId).html(orderStatus)
-                }
-            }
-        })
-        }
-      
-      function couponApplied(){
-          event.preventDefault()
-          var inputValue = $("#couponCode").val();
+  <script>
 
-        $.ajax({
-            url:'/coupon/applied?couponCode='+inputValue,
-            method:'get',
-            success:(response)=>{
-                console.log(response);
-                if(response.status){
+      let rate
+      let productIndex
 
-                  $('#'+orderId).html(orderStatus)
-                }
-            }
-        })
-
+      function amountChanger(proRate,i){
+        rate=proRate
+        productIndex=i
       }
     
-</script>
+      function addToCart(productId,increment,feedBackFromWishList){
+        
+          $.ajax({
+              url:'/user/addtocart?productId='+productId+'&increment='+increment+`&fromWishList=${feedBackFromWishList}`,
+              method:'get',
+              success:(response)=>{
+                console.log(response);
+                  if(response.status){
+                      let cartCount=$('#cartCount').html()
+                      cartCount=parseInt(cartCount)+parseInt(increment)
+                      $('#cartCount').html(cartCount)
+
+                      let productCount=$('#'+productId).html()
+                      productCount=parseInt(productCount)+parseInt(increment)
+                      $('#'+productId).html(productCount)
+
+
+                      let amount=$('#totalAmount').html()
+                      if(amount){
+                        
+                        let productAmount=$('#'+productIndex).html()
+                        let splitStringOne=productAmount.split(' ')
+                        productAmount=splitStringOne[1]
+                        productAmount=parseInt(productAmount)+parseInt(rate)
+                        splitStringOne[1]=productAmount
+                        productAmount=splitStringOne.join(' ')
+                        $('#'+productIndex).html(productAmount)
+
+                        let splitStringTwo=amount.split(' ')
+                        amount=splitStringTwo[1]
+                        amount=parseInt(amount)+parseInt(rate)
+                        splitStringTwo[1]=amount
+                        amount=splitStringTwo.join(' ')
+                        $('#totalAmount').html(amount)
+                      }
+                      
+
+                  }
+                  if(feedBackFromWishList){
+                    $("#mainDivWishlist").load('/user/wishlist')
+                  }
+                  if(response.productQuantityReachedZero){
+                    $("#mainDivCart").load('/user/cart')
+                  }
+                  if(response.notLoggedIn){
+
+                    alert('logginFirst')
+                  }
+
+              }
+          })
+      }
+
+      function addToWishlist(productId){
+        $.ajax({
+          url:"/user/addtowishlist?productId="+productId,
+          method:'get',
+          success:(response)=>{
+
+              if(response.productAlreadyExist){
+                alert('product exists')
+              }
+              else{
+                alert('product added to Wishlist')
+              }
+              if(response.notLoggedIn){
+
+                alert('logginFirst')
+              }
+          }
+        })
+      }
+
+
+      function selected(orderStatus,orderId){
+        $.ajax({
+              url:'/admin/orders/statuschange?status='+orderStatus+'&orderId='+orderId,
+              method:'get',
+              success:(response)=>{
+                  console.log(response);
+                  if(response.status){
+
+                    $('#'+orderId).html(orderStatus)
+                  }
+              }
+          })
+          }
+        
+        function applyCoupon(totalAmount){
+          event.preventDefault()//to prevent the action of form submition
+          var inputValue = document.getElementById('couponCode').value
+          $.ajax({
+              url:'/coupon/applied?couponCode='+inputValue,
+              method:'get',
+              success:(response)=>{
+                console.log(response);
+                  
+                  if(response.coupon=='appliedNow'){
+                    $('#display').html('you are eligible')
+                    let discount=parseInt(response.couponData.discount/100*totalAmount*(-1))
+                    $('#couponDiscount').html(discount)
+                    let netAmount=parseInt(totalAmount)+discount
+                    $('#netAmount').html(netAmount)
+                    $('#netAmountValue').val(netAmount)
+                    $('#appliedCouponCode').val(response.couponData.couponCode)
+
+                  }else if(response.coupon=='alreadyApplied'){
+                    $('#display').html('Coupon already applied')
+                  }else if(response.coupon=='invalid'){
+                    $('#display').html('Coupon is invalid')
+                  }
+              }
+          })
+
+        }
+
+        function jithin(){
+
+          let afbc=document.getElementById('page').innerHTML
+          
+              document.getElementById(afbc).classList.add("active")
+        }
+
+      
+  </script>
 </html>

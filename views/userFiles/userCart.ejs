@@ -1,10 +1,9 @@
 <head>
   <link rel="stylesheet" href="/public/user/css/cart.css">
 </head>
-<body>
+<body id="mainDivCart">
   <%- include('./partials/navBarLeft')%>
-  <div style="height:4vw"></div>
-
+    <div style="height:4vw"></div>
     <section class="bg-light">
       <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -16,7 +15,7 @@
                     <div class="p-5">
                       <div class="d-flex justify-content-between align-items-center mb-5">
                         <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
-                        <h6 class="mb-0 text-muted">3 items</h6>
+                        <h6 class="mb-0 text-muted"><%= cartCount %>items</h6>
                       </div>
                       <hr class="my-4">
                       <%for(let i=0;i<cartProducts.length;i++){%>
@@ -31,21 +30,13 @@
                             <h6 class="text-black mb-0"><%= cartProducts[i].productDetails[0].productName %></h6>
                           </div>
                           <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                            <div style="display:flex">
-                              <div style="height:1.5rem ;width:1.5rem;border: 1px solid rgb(126, 126, 126);" class="d-flex justify-content-center align-items-center">
-                              <a href="/user/deductfromcart/?productId=<%= cartProducts[i].prod %>" style="text-decoration:none"><h3>-</h3></a>
-                              </div>
-                              <div style="height:1.5rem ;width:1.5rem;border: 1px solid  rgb(126, 126, 126);" class="d-flex justify-content-center align-items-center">
-                                  <h5><%= cartProducts[i].nos %></h5>
-                              </div>
-                              <div style="height:1.5rem ;width:1.5rem;border: 1px solid rgb(126, 126, 126);" class="d-flex justify-content-center align-items-center">
-                                  <a href="/user/addfromcart/?productId=<%= cartProducts[i].prod %>" style="text-decoration:none"><h3>+</h3></a>
-                              </div>
-                              
+                            <button style="border: none;background-color: #d7d7d7;" onclick="amountChanger(-1*'<%=cartProducts[i].productDetails[0].rate %>','<%= i %>'); addToCart('<%= cartProducts[i].prod %>',-1)"> - </button>
+                              <span id= "<%= cartProducts[i].prod %>"> <%= cartProducts[i].nos %> </span>
+                            <button style="border: none;background-color: #d7d7d7;" onclick="amountChanger('<%=cartProducts[i].productDetails[0].rate %>','<%= i %>');addToCart('<%= cartProducts[i].prod %>',1)"> + </button>
                           </div>
-                          </div>
+
                           <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                            <h6 class="mb-0">€ 44.00</h6>
+                            <h6 class="mb-0">&#8377 <%=cartProducts[i].productDetails[0].rate %></h6>
                           </div>
                           <div class="col-md-1 col-lg-1 col-xl-1 text-end">
                             <a href="/user/cart/removeitem?productId=<%= cartProducts[i].prod %>" class="text-muted"><i class="fas fa-times"></i></a>
@@ -65,39 +56,18 @@
                     <div class="p-5">
                       <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
                       <hr class="my-4">
-    
-                      <div class="d-flex justify-content-between mb-4">
-                        <h5 class="text-uppercase">items 3</h5>
-                        <h5>€ 132.00</h5>
-                      </div>
-                      <div class="d-flex justify-content-between mb-4">
-                        <h5 class="text-uppercase">Shipping</h5>
-                        <h5><%= bill.deliverCharge %></h5>
-                      </div>
-    
-                      <div class="mb-4 pb-2">
-                        <select class="select">
-                          <option value="1">Standard-Delivery- €5.00</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
-                          <option value="4">Four</option>
-                        </select>
-                      </div>
-    
-                      <h5 class="text-uppercase mb-3">Give code</h5>
-    
-                      <div class="mb-5">
-                        <div class="form-outline">
-                          <input type="text" id="form3Examplea2" class="form-control form-control-lg" />
-                          <label class="form-label" for="form3Examplea2">Enter your code</label>
+                      <%for(let i=0;i<cartProducts.length;i++){%>
+                        <div class="d-flex justify-content-between mb-4">
+                          <h6 class="text-uppercase"><%= cartProducts[i].productDetails[0].productName %></h6>
+                          <h6 id="<%=i %>">&#8377 <%=(cartProducts[i].productDetails[0].rate)*(cartProducts[i].nos) %></h6>
                         </div>
-                      </div>
-    
+                      <%}%>
+                    
                       <hr class="my-4">
     
                       <div class="d-flex justify-content-between mb-5">
-                        <h5 class="text-uppercase">Total price</h5>
-                        <h5><%= bill.price %></h5>
+                        <h5 class="text-uppercase">Total amount</h5>
+                        <h5  id="totalAmount">&#8377 <%= bill.price %></h5>
                       </div>
     
                       <a href="/user/checkout">
@@ -113,8 +83,5 @@
         </div>
       </div>
     </section>
-
-    
-
-    <%- include('./partials/footer') %>
+  <%- include('./partials/footer') %>
 </body>

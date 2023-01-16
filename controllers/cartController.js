@@ -69,85 +69,69 @@ async function userCart(req,res){
 
 async function userAddToCart(req,res){
 
-    let userCart=await cartCollection.findOne({userId:req.session.userData._id})
-
-    if(!userCart){
-        await cartCollection.insertMany([{userId:req.session.userData._id}])
-        userCart=await cartCollection.findOne({userId:req.session.userData._id})
-    }
-
-    let itemIndex=userCart.products.findIndex((products)=>{
-        return products.productId==req.query.productId
-    })
-
-    if(itemIndex>-1){//-1 if no item matches
-
-        let a=await cartCollection.updateOne({userId:req.session.userData._id, 'products.productId':req.query.productId},
-            {
-                $inc:{'products.$.quantity':1}
-            }
-        )
-        console.log(a);
-    }
-
-    else{
-        await cartCollection.updateOne({userId:req.session.userData._id},
-            {
-                $push:{products:{productId:req.query.productId, quantity:1}}
-            }
-        )
-    }
-
-    if(req.query.fromWishList=='true'){
-
-        await wishlistCollection.updateOne({userId:req.session.userData._id},{$pull:{products:req.query.productId}})
-        
-    }
-
+        let productQuantityReachedZero;
+        let userCart=await cartCollection.findOne({userId:req.session.userData._id})
     
-    res.json({status:true})
-}
-
-async function userAddFromCart(req,res){
-
-    let a=await cartCollection.updateOne({userId:req.session.userData._id, 'products.productId':req.query.productId},
-    {
-        $inc:{'products.$.quantity':1}
-    }
-
-)
-    res.redirect('/user/cart')
-}
-
-async function userDeductFromCart(req,res){
-
-    const qtyCheck =await cartCollection.aggregate([{$match:{"products.productId":mongoose.Types.ObjectId(req.query.productId)}},
-    {$unwind:"$products"},
-    {$match:{"products.productId":mongoose.Types.ObjectId(req.query.productId)}},
-    {$project:{"products.quantity":1,_id:0}}
-    ])
+        if(!userCart){
+            await cartCollection.insertMany([{userId:req.session.userData._id}])
+            userCart=await cartCollection.findOne({userId:req.session.userData._id})
+        }
     
-    if(qtyCheck[0].products.quantity<=1){
-
-        await cartCollection.updateOne({userId:req.session.userData._id},{$pull:{products:{productId:req.query.productId}}})
-        res.redirect('/user/cart')
-
-    }
-    else{
-
-        let a=await cartCollection.updateOne({userId:req.session.userData._id, 'products.productId':req.query.productId},
+        let itemIndex=userCart.products.findIndex((products)=>{
+            return products.productId==req.query.productId
+        })
+    
+        if(itemIndex>-1){//-1 if no item matches
+    
+            if(req.query.increment==1){
+    
+                let a=await cartCollection.updateOne({userId:req.session.userData._id, 'products.productId':req.query.productId},
+                    {
+                        $inc:{'products.$.quantity':1}
+                    }
+                )
+                console.log(a);
+            }
+            else if(req.query.increment==-1){
+    
+                const qtyCheck =await cartCollection.aggregate([{$match:{userId:mongoose.Types.ObjectId(req.session.userData._id)}},
+                    {$unwind:"$products"},
+                    {$match:{"products.productId":mongoose.Types.ObjectId(req.query.productId)}},
+                    {$project:{"products.quantity":1,_id:0}}
+                ])
+                console.log(qtyCheck);
+                    
+                if(qtyCheck[0].products.quantity>1){
+    
+                    await cartCollection.updateOne({userId:req.session.userData._id, 'products.productId':req.query.productId},
+                        {
+                            $inc:{'products.$.quantity':-1}
+                        }
+                    )
+                }
+                else{
+    
+                    await cartCollection.updateOne({userId:req.session.userData._id},{$pull:{products:{productId:req.query.productId}}})
+                    productQuantityReachedZero=true
+                    
+                }
+            }
+        }
+        else{
+            await cartCollection.updateOne({userId:req.session.userData._id},
+                {
+                    $push:{products:{productId:req.query.productId, quantity:1}}
+                }
+            )
+        }
+    
+        if(req.query.fromWishList=='true'){
+    
+            await wishlistCollection.updateOne({userId:req.session.userData._id},{$pull:{products:req.query.productId}})
             
-            {
-                $inc:{'products.$.quantity':-1}
-            }
-    
-        )
-        res.redirect('/user/cart')
-    }
+        }
 
-    
-    
-    
+        res.json({status:true,productQuantityReachedZero})
 }
 
 async function removeFromCart(req,res){
@@ -160,8 +144,5 @@ async function removeFromCart(req,res){
 module.exports={
     userCart,
     userAddToCart,
-    userAddFromCart,
-    userDeductFromCart,
     removeFromCart
-    
 }

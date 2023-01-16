@@ -23,25 +23,29 @@
      
         <% for(let i=0;i<productData.length;i++){%>
 
-          <a href="#">
-            <div class="tile-outer spt-5 pb-3 pt-1 card mx-4 my-4">
-              <div class="card-body float-right d-inline-block">
-                <a href="/user/addtowishlist?productId=<%= productData[i]._id %>" style="font-size:larger;float:right"><i class=" fa-regular fa-heart mx-4" ></i></a>
-              </div>
+
+            <div class="tile-outer spt-5 pb-3 pt-3 card mx-4 my-4">
+
+                <div style="float:right">
+                  <button onclick="addToWishlist('<%= productData[i]._id %>')" style="font-size:larger;float:right;border:none;background-color:white;"><i class=" fa-regular fa-heart mx-4" ></i></button>
+                </div>
 
               <div class="tiles mx-4 mb-2">
                 <div class="innerClass shadow" style="border-radius:0.5rem">  
                   <img src="/products/images/<%=productData[i].productImage %>" alt="" class="img-fluid" style="border-radius:0.4rem">
                 </div>
+                
                 <h4 class="text-center"><%=productData[i].productName%></h4>
                 <h5 class="text-center">&#8377 <%=productData[i].rate %></h5>
+                 
               </div>
+              
               <div class="card-body d-flex justify-content-center">
                 <a href="/productpage/<%= productData[i]._id %>" class="btn btn-dark" style="font-size: small;">View Product</a>
-                </div>
+              </div>
               
             </div>
-          </a>
+
         <%}%>
     </div>
   

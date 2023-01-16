@@ -8,7 +8,9 @@ const checkoutController=require('../controllers/checkOutController')
 const orderController=require('../controllers/orderController')
 const userSession = require('../middlewares/userSessionMW')
 const userSessionMW=userSession.userSession
+const userSessionMWForAjax=userSession.userSessionForAjax
 const withOutUserSessionMW=userSession.withOutUserSession
+
 
 
 router.get('/',userController.home)
@@ -27,13 +29,11 @@ router.get('/productpage/:productid',productController.productPage)
 
 
 router.get('/user/cart',userSessionMW,cartController.userCart)
-router.get('/user/addtocart',userSessionMW,cartController.userAddToCart)
-router.get('/user/addfromcart',userSessionMW,cartController.userAddFromCart)
-router.get('/user/deductfromcart',userSessionMW,cartController.userDeductFromCart)
+router.get('/user/addtocart',userSessionMWForAjax,cartController.userAddToCart)
 router.get('/user/cart/removeitem',userSessionMW,cartController.removeFromCart)
 
 router.get('/user/wishlist',userSessionMW,wishlistController.userWishlist)
-router.get('/user/addtowishlist',userSessionMW,wishlistController.userAddToWishlist)
+router.get('/user/addtowishlist',userSessionMWForAjax,wishlistController.userAddToWishlist)
 router.get('/user/wishlist/removeitem',userSessionMW,wishlistController.removeFromWishlist)
 
 router.get('/user/checkout',userSessionMW,checkoutController.checkOut)

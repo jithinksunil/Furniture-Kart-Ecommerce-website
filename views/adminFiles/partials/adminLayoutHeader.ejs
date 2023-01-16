@@ -17,7 +17,7 @@
     </script>
   
   </head>
-  <body>
+  <body onload="jithin()">
 
     <div id="app">
     
@@ -83,45 +83,45 @@
         </div>
       </a>
    
-      <div class="menu is-menu-main">
+      <div class="menu is-menu-main" id="myList">
         <ul class="menu-list">
-          <li >
+          <li id="Dashboard" >
             <a href="/admin/dashboard">
               <span class="icon"><i class="mdi mdi-desktop-mac"></i></span>
-              <span class="menu-item-label">Dashboard</span>
+              <span class="menu-item-label" id="dashBoard">Dashboard</span>
             </a>
           </li>
-          <li class="--set-active-profile-html">
+          <li class="--set-active-profile-html" id="Users">
             <a href="/admin/usermangement">
               <span class="icon"><i class="mdi mdi-account-multiple"></i></span>
               <span class="menu-item-label">Users</span>
             </a>
           </li>
-          <li class="--set-active-profile-html">
+          <li class="--set-active-profile-html" id="Product management">
             <a href="/admin/products/productmangement">
               <span class="icon"><i class="mdi mdi-account-multiple"></i></span>
               <span>Product management</span>
             </a>
           </li>
-          <li class="--set-active-profile-html">
+          <li class="--set-active-profile-html" id="Category management">
             <a href="/admin/products/categorymangement">
               <span class="icon"><i class="mdi mdi-account-multiple"></i></span>
               <span>Category management</span>
             </a>
           </li>
-          <li>
+          <li id="Orders">
             <a href="/admin/orders" class="has-icon">
               <span class="icon"><i class="mdi mdi-buffer"></i></span>
               <span class="menu-item-label">Orders</span>
             </a>
           </li>
-          <li class="--set-active-tables-html">
+          <li class="--set-active-tables-html" id="Coupons">
             <a href="/admin/coupons">
               <span class="icon"><i class="mdi mdi-table"></i></span>
               <span class="menu-item-label">Coupons</span>
             </a>
           </li>
-          <li class="--set-active-tables-html">
+          <li class="--set-active-tables-html" id="Banners">
             <a href="/admin/banners">
               <span class="icon"><i class="mdi mdi-table"></i></span>
               <span class="menu-item-label">Banners</span>

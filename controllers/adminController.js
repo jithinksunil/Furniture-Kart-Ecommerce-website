@@ -184,7 +184,6 @@ async function orderManagement(req,res){
         foreignField:'_id',
         as:'user'
     }}])
-    console.log(orderData)
     res.render('./adminFiles/adminOrderManagement',{orderData,salesReport,path})
 }
 
@@ -239,6 +238,7 @@ async function salesReport(req,res){
 async function couponManagement(req,res){
 
     let couponData= await couponCollection.find()
+    console.log(couponData);
 
     res.render('./adminFiles/adminCouponManagement',{couponData})
 }
