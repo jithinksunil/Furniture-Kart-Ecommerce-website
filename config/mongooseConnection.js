@@ -2,7 +2,7 @@ const mongoose=require('mongoose')
 
 /********************Connection setUp of mongoose Driver**************************/ 
 function mongodb(){
-    mongoose.connect('mongodb://127.0.0.1:27017/furniture_kart_database',{
+    mongoose.connect('mongodb+srv://Jithinksunil:Monuttan2652@cluster0.rz3966l.mongodb.net/furniture_kart_database?retryWrites=true&w=majority',{
         useNewUrlParser:true,
         useUnifiedTopology:true
         },(err)=>{
