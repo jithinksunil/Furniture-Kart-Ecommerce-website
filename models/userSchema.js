@@ -8,7 +8,15 @@ const newSchema=new mongoose.Schema({//defining structure of collections
     password:String,
     age:Number,
     action:Boolean,
-    couponsApplied:[String]
+    couponsApplied:[String],
+    addresses:[{
+        houseName:String,
+        area:String,
+        landmark:String,
+        city:String,
+        state:String,
+        pin:Number
+    }]
     
 })
 

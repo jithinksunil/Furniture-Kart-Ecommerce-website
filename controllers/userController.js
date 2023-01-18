@@ -217,6 +217,76 @@ async function forgotPasswordUpdation(req,res){
     // res.redirect('/forgotpassword/otppage')
 }
 
+async function userProfile(req,res){
+
+    const userData=await userCollection.findOne({_id:req.session.userData._id})
+    let catData=await catCollection.find({action:true})
+    let cartCount=0
+    try{
+        let userCart=await cartCollection.findOne({userId:req.session.userData._id})
+        for(let i=0;i<userCart.products.length;i++){
+            cartCount=cartCount+userCart.products[i].quantity
+        }
+    }
+    catch(err){
+        console.log(err);
+    }
+    res.render('./userFiles/userProfilePage',{userData,cartCount,catData})
+}
+
+async function changePassword(req,res){
+    
+    const userData=await userCollection.findOne({_id:req.session.userData._id})
+    let catData=await catCollection.find({action:true})
+    let cartCount=0
+    try{
+        let userCart=await cartCollection.findOne({userId:req.session.userData._id})
+        for(let i=0;i<userCart.products.length;i++){
+            cartCount=cartCount+userCart.products[i].quantity
+        }
+    }
+    catch(err){
+        console.log(err);
+    }
+    res.render('./userFiles/userChangePasswordPage',{userData,cartCount,catData})
+}
+
+async function updatePassword(req,res){
+    
+    await userCollection.updateOne({_id:req.session.userData._id,password:req.body.currentPassword},{password:req.body.newPassword})
+    res.redirect('/user/profile')
+}
+
+async function editAccount(req,res){
+    
+    let userData=await userCollection.findOne({_id:req.session.userData._id})
+    let catData=await catCollection.find({action:true})
+    let cartCount=0
+    try{
+        let userCart=await cartCollection.findOne({userId:req.session.userData._id})
+        for(let i=0;i<userCart.products.length;i++){
+            cartCount=cartCount+userCart.products[i].quantity
+        }
+    }
+    catch(err){
+        console.log(err);
+    }
+    res.render('./userFiles/editAccountPage',{userData,cartCount,catData})
+}
+
+async function updateAccount(req,res){
+
+    let userData={
+        fName:req.body.fName,
+        lName:req.body.lName,
+        age:req.body.age,
+        email:req.body.email
+    }
+    
+    await userCollection.updateOne({_id:req.session.userData._id,password:req.body.currentPassword},userData)
+    res.redirect('/user/profile')
+}
+
 async function categoriesPage(req,res){
     let catData=await catCollection.find({action:true})
     
@@ -281,6 +351,11 @@ module.exports={
     forgotPasswordNewPasswordPage,
     forgotPasswordOtpPage,
     forgotPasswordUpdation,
+    userProfile,
+    changePassword,
+    updatePassword,
+    editAccount,
+    updateAccount,
     categoriesPage
 }
 

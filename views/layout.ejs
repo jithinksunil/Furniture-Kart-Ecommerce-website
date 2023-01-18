@@ -167,6 +167,53 @@
               document.getElementById(afbc).classList.add("active")
         }
 
+        function selectAddress(
+          houseName,
+          area,
+          landmark,
+          city,
+          pin,
+          state
+        )
+        {
+          document.getElementById("houseName").value =houseName,
+          document.getElementById("area").value =area,
+          document.getElementById("landmark").value =landmark,
+          document.getElementById("city").value =city,
+          document.getElementById("pin").value =pin,
+          document.getElementById("state").value =state
+        }
+
+        function deleteAddress(addressId){
+          $.ajax({
+            url:'/delete/address?addressId='+addressId,
+            method:'get',
+            success:(response)=>{
+              location.reload()
+            }
+          })
+        }
+
+        function addAddress(){
+          event.preventDefault()//to prevent the action of form submition
+          let data={}
+          data.houseName = document.getElementById('houseName').value
+          data.area= document.getElementById('area').value
+          data.landmark= document.getElementById('landmark').value
+          data.city= document.getElementById('city').value
+          data.pin= document.getElementById('pin').value
+          data.state= document.getElementById('state').value
+          $.ajax({
+            url:'/add/address',
+            method:'post',
+            data:data,
+            success:(response)=>{
+              location.reload()
+            }
+          })
+
+        }
+
       
   </script>
 </html>

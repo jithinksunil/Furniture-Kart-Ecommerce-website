@@ -52,7 +52,6 @@ module.exports={
     },
     onlinePaymentSuccess:async (req,res)=>{
 
-        
         await userCollection.updateOne({_id:req.session.userData._id},{$push:{couponsApplied:req.body.appliedCouponCode}})
         await orderCollection.insertMany([req.session.onlinePaymentOrder])
         await cartCollection.deleteOne({userId:req.session.userData._id})

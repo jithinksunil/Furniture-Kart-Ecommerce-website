@@ -25,6 +25,11 @@ router.get('/user/forgotpassword/otppage',userController.forgotPasswordOtpPage)
 router.post('/forgotpassword/newpassword',userController.forgotPasswordNewPasswordPage)
 router.post('/forgotpassword/passwordupdation',userController.forgotPasswordUpdation)
 router.get('/user/categories/:category/:page',userController.categoriesPage)
+router.get('/user/profile',userSessionMW,userController.userProfile)
+router.get('/change/password',userSessionMW,userController.changePassword)
+router.post('/update/password',userSessionMW,userController.updatePassword)
+router.get('/edit/account',userSessionMW,userController.editAccount)
+router.post('/update/account',userSessionMW,userController.updateAccount)
 router.get('/productpage/:productid',productController.productPage)
 
 
@@ -37,6 +42,8 @@ router.get('/user/addtowishlist',userSessionMWForAjax,wishlistController.userAdd
 router.get('/user/wishlist/removeitem',userSessionMW,wishlistController.removeFromWishlist)
 
 router.get('/user/checkout',userSessionMW,checkoutController.checkOut)
+router.get('/delete/address',userSessionMW,checkoutController.deleteAddress)
+router.post('/add/address',userSessionMW,checkoutController.addAddress)
 router.get('/coupon/applied',checkoutController.couponApply)
 router.post('/user/order',userSessionMW,orderController.order)
 router.get('/oder/completed',userSessionMW,orderController.orderCompleted)

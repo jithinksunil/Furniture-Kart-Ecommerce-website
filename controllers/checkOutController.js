@@ -42,7 +42,30 @@ module.exports={
             price,deliverCharge,total
         }
 
-        res.render('./userFiles/checkOutPage',{price,cartCount,catData,userData:req.session.userData})
+        let addressData=await userCollection.aggregate([{$match:{_id:mongoose.Types.ObjectId(req.session.userData._id)}},{$unwind:"$addresses"},{$project:{
+            houseName:"$addresses.houseName",
+            area:'$addresses.area',
+            landmark:'$addresses.landmark',
+            city:'$addresses.city',
+            state:'$addresses.state',
+            pin:'$addresses.pin',
+            addressId:'$addresses._id',
+            _id:0
+        }}])
+        console.log(addressData);
+        res.render('./userFiles/checkOutPage',{price,cartCount,catData,userData:req.session.userData,addressData})
+    },
+
+    deleteAddress:async (req,res)=>{
+
+        await userCollection.updateOne({_id:req.session.userData._id},{$pull:{addresses:{_id:mongoose.Types.ObjectId(req.query.addressId)}}})
+        res.json({status:true})
+    },
+    
+    addAddress:async (req,res)=>{
+        req.body.pin=parseInt(req.body.pin)
+        await userCollection.updateOne({_id:req.session.userData._id},{$push:{addresses:req.body}})
+        res.json({status:true})
     },
 
     couponApply:async (req,res)=>{

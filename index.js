@@ -5,6 +5,8 @@ const expressLayouts=require('express-ejs-layouts')
 const userRouter=require('./routes/userRoute')
 const adminRouter=require('./routes/adminRoute')
 const path=require('path')
+const dotenv = require("dotenv")
+dotenv.config()//will convert the .env file into an object
 
 /*---------------------------Setups-----------------------------*/
 app.use(express.urlencoded({extended:true}))//to get data from post method
@@ -20,6 +22,7 @@ app.use((req, res, next) => {//setup cache
     next();
 });
 
+
 const morgan=require('morgan')//to check weather css are loaded or not
 app.use(morgan("dev"))
 
@@ -30,9 +33,11 @@ app.set('views','./views')//setting up directory for view engine, here views is 
 app.set('view engine','ejs')//setting up  view engine
 
 const mongodb=require('./config/mongooseConnection')
-mongodb()//involked the imported function fron mongooseConnection.
 
-app.listen(3000,()=>console.log('Server started'))
+mongodb()//involked the imported function fron mongooseConnection.
+console.log(process.env.PORT);
+app.listen(process.env.PORT,()=>console.log('Server started'))
+
 
 app.use('/',userRouter) //enable the user router
 app.use('/',adminRouter)//enable the admin router

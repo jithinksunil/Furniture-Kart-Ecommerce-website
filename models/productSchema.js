@@ -2,7 +2,7 @@ const mongoose=require('mongoose')
 
 const newSchema=new mongoose.Schema({//defining structure of collections
     productName:String,
-    productImage:String,
+    productImage:[{public_id:String,cloudunaryUrl:String}],
     category:String,
     description:String,
     rate:Number,

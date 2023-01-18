@@ -64,7 +64,7 @@
           </ul>
           <div>
             <% if(userData){%>
-              <a class="navbar-brand " title="Profile page"  href="#?userId=<%=userData._id %>"><%=userData.fName %></a>
+              <a class="navbar-brand " title="Profile page"  href="/user/profile"><%=userData.fName %></a>
               <a href="/user/logout"  title="Log-out" ><i class="fa-solid fa-right-from-bracket"></i></a>
               
               <%}else{%>

@@ -6,10 +6,10 @@ const cartCollection=require('../models/cartShema')
 const orderCollection = require('../models/orderSchema')
 const couponCollection=require('../models/couponShema')
 const bannerCollection = require('../models/bannerSchema')
-const sharp=require('sharp')
 const pdf=require('pdf-creator-node')
 const fs=require('fs')
 const path=require('path')
+const cloudinary=require('../config/cloudinary')
 
 function adminLogin(req,res){
     res.render('./adminFiles/adminLoginPage')
@@ -81,24 +81,22 @@ async function categoryManagement(req,res){
 }
 
 async function addCategory(req,res){
-
-    
-    if(req.files){
-        console.log(req.files)
+    if(req.file){
         try{
-            const name=Date.now()+'-'+req.files[0].originalname;
-            await sharp(req.files[0].buffer).resize({width:750,height:750}).toFile('./public/categories/images/'+name)
+            const result = await cloudinary.uploader.upload(
+                req.file.path,{
+                    transformation: [
+                    { width: 485, height: 485, gravity: "face", crop: "fill" }]
+                }
+            )
+            console.log(result);
+
             await catCollection.insertMany(
                 [{
                     catName:req.body.catName,
-                    catImage:[name],
+                    catImage:[{public_id:result.public_id, cloudunaryUrl:result.secure_url}]
                 }]
             )
-            for(let i=1;i<req.files.length;i++){
-                const name=Date.now()+'-'+req.files[i].originalname;
-                await sharp(req.files[i].buffer).resize({width:750,height:750}).toFile('./public/categories/images/'+name)
-                await catCollection.updateOne({catName:req.body.catName},{$push:{catImage:name}})
-            }
             
             res.redirect('/admin/products/categorymangement')
         }
@@ -134,16 +132,21 @@ async function productAddPage(req,res){
 }
 
 async function addProductCompleted(req,res){
-
-    if(req.file){
-        console.log(req.file)
+    if(req.files){
+        console.log(req.files)
         try{
-            const name=Date.now()+'-'+req.file.originalname;
-            await sharp(req.file.buffer).resize({width:10000,height:12000}).toFile('./public/products/images/'+name)
+
+            const result = await cloudinary.uploader.upload(
+                req.files[0].path,{
+                    transformation: [
+                    { width: 485, height: 485, gravity: "face", crop: "fill" }]
+                }
+            )
+
             await productCollection.insertMany(
                 [{
                     productName:req.body.productName,
-                    productImage:name,
+                    productImage:[{public_id:result.public_id, cloudunaryUrl:result.secure_url}],
                     category:req.body.catagoryName,
                     description:req.body.description,
                     rate:req.body.rate,
@@ -151,9 +154,23 @@ async function addProductCompleted(req,res){
                     action:true
                 }]
             )
+
+            for(let i=1;i<req.files.length;i++){
+                const result = await cloudinary.uploader.upload( 
+                    req.files[i].path,{
+                        transformation: [
+                        { width: 485, height: 485, gravity: "face", crop: "fill" }]
+                    }
+                )
+                await productCollection.updateOne({productName:req.body.productName,description:req.body.description},{
+                    $push:{productImage:{public_id:result.public_id, cloudunaryUrl:result.secure_url}}
+                })
+            }
+
             res.redirect('/admin/products/productmangement')
         }
         catch(err){
+            console.log(err);
             res.redirect('/admin/products/productmangement')
         }
     }
