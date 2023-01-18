@@ -1,4 +1,6 @@
 var paypal = require('paypal-rest-sdk')
+const dotenv = require("dotenv")
+dotenv.config()//will convert the .env file into an object
 
 module.exports={
     paypalIntergration:(res,userId,totalAmount)=>{
@@ -14,8 +16,8 @@ module.exports={
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": "http://localhost:3000/onlinepayment/success",
-                "cancel_url": "http://localhost:3000/onlinepayment/cancel"
+                "return_url": `${process.env.MY_DOMAIN}/onlinepayment/success`,
+                "cancel_url": `${process.env.MY_DOMAIN}/onlinepayment/cancel`
             },
             "transactions": [{
                 "item_list": {
