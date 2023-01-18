@@ -16,8 +16,8 @@ module.exports={
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": `${process.env.MY_DOMAIN}/onlinepayment/success`,
-                "cancel_url": `${process.env.MY_DOMAIN}/onlinepayment/cancel`
+                "return_url": `${process.env.MY_DOMAIN_IN_PAYPAL}/onlinepayment/success`,
+                "cancel_url": `${process.env.MY_DOMAIN_IN_PAYPAL}/onlinepayment/cancel`
             },
             "transactions": [{
                 "item_list": {
