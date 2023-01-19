@@ -93,7 +93,7 @@
     <%catData.forEach((item)=>{%>
 
       <a href="/user/categories/<%= item.catName %>/1">
-        <div class="tiles-1 shadow p-3 mb-5 bg-white rounded mx-4" style="background-image:url(/categories/images/<%= item.catImage %>);background-size: 100%;background-repeat: no-repeat">
+        <div class="tiles-1 shadow p-3 mb-5 bg-white rounded mx-4" style="background-image:url('<%= item.catImage[0].cloudunaryUrlcloudunaryUrl %>');background-size: 100%;background-repeat: no-repeat">
           <h3 class="text-center"><%= item.catName %></h3>
         </div>
       </a>
@@ -118,7 +118,7 @@
       <a href="/productpage/<%= recProducts[i]._id %>">
         <div class="tiles my-5 mx-4 ">
           <div class="innerClass shadow" style="border-radius:0.5rem">  
-            <img src="/products/images/<%= recProducts[i].productImage %>" alt="" class="img-fluid" style="border-radius:0.4rem">
+            <img src="<%= recProducts[i].productImage[0].cloudunaryUrl %>" alt="" class="img-fluid" style="border-radius:0.4rem">
           </div>
           <h3 class="text-center"><%= recProducts[i].productName %></h3>
           <h5 class="text-center">&#8377 <%= recProducts[i].rate %></h5>
