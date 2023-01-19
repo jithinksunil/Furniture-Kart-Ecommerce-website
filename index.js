@@ -22,7 +22,6 @@ app.use((req, res, next) => {//setup cache
     next();
 });
 
-
 const morgan=require('morgan')//to check weather css are loaded or not
 app.use(morgan("dev"))
 
@@ -34,10 +33,8 @@ app.set('view engine','ejs')//setting up  view engine
 
 const mongodb=require('./config/mongooseConnection')
 
-mongodb()//involked the imported function fron mongooseConnection.
-console.log(process.env.PORT);
+mongodb()//involked the imported function from mongooseConnection.
 app.listen(process.env.PORT,()=>console.log('Server started'))
-
 
 app.use('/',userRouter) //enable the user router
 app.use('/',adminRouter)//enable the admin router

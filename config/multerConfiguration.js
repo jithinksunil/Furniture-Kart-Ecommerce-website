@@ -37,6 +37,7 @@ const uploadProducts = multer({
         }
         else{
             callback(null,false)
+            
             // return callback(new Error('only jpg jpeg png and gif file are allowed'))
         }
     }
