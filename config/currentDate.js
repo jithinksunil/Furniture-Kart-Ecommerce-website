@@ -3,6 +3,7 @@ function currentDate(){
     var d = new Date(),
     month = '' + (d.getMonth() + 1),
     day = '' + d.getDate(),
+    
     year = d.getFullYear();
 
     if (month.length < 2) 
