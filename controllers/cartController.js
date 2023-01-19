@@ -30,22 +30,6 @@ async function userCart(req,res){
                 as:'productDetails'
             }
         }
-        // ,{
-        //     $lookup:{
-        //         from:'product_collections',
-        //         let:{productList:'$products.productId'},
-        //         pipeline:[
-        //             {
-        //                 $match:{
-        //                     $expr:{
-        //                         $in:['$_id','$$productList']
-        //                     }
-        //                 }
-        //             }
-        //         ],
-        //         as:'cartProducts'
-        //     }
-        // }
     ])
 
     let price=0;

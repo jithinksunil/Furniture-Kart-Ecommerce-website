@@ -212,9 +212,6 @@ async function forgotPasswordUpdation(req,res){
 
     await userCollection.updateOne({email:req.query.userEmail},{password:req.body.password})
     res.redirect('/')
-    // req.session.forgotPasswordEmail=req.query.userEmail
-    // req.session.password=req.body.password
-    // res.redirect('/forgotpassword/otppage')
 }
 
 async function userProfile(req,res){
@@ -298,9 +295,6 @@ async function categoriesPage(req,res){
     if(req.query.search){
         search=req.query.search
     }
-    // if(req.query.page){
-    //     page=parseInt(req.query.page)
-    // }
     productData=await productCollection.find({action:true,category:req.params.category,$or:[
         {productName:{$regex:search,$options:'i'}},
         {description:{$regex:search,$options:'i'}},
@@ -333,9 +327,7 @@ async function categoriesPage(req,res){
         catData,
         cartCount
     })
-    
-    
-    // res.render('./userFiles/categoriesPage',{productData})
+
 }
 
 module.exports={

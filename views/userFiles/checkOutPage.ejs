@@ -1,200 +1,203 @@
-<%- include('./partials/navBarLeft')%>
-<div style="height:8vw"></div>
-
-<div class="container">
-    <div class="row">
-      <div class="col-md-8 mb-4">
-        <div class="card mb-4">
-          <div class="card-header py-3">
-            <h5 class="mb-0">Biling details</h5>
-          </div>
-          <div class="card-body">
-            <form id="checkout" action="/user/order" method="post">
-              <!-- Text input -->
-              <div class="form-outline mb-4">
-                <input type="text" id="houseName" name="houseName" class="form-control" />
-                <label class="form-label" for="form7Example4">House Name</label>
-                <p id="areaError" style="color: red"></p>
-              </div>
-              <!-- Text input -->
-              <div class="form-outline mb-4">
-                <input type="text" id="area" name="area" class="form-control" />
-                <label class="form-label" for="form7Example4">Area</label>
-                <p id="areaError" style="color: red"></p>
-              </div>
+<body>
   
-              <!-- Email input -->
-              <div class="form-outline mb-4">
-                <input
-                  type=""
-                  id="landmark"
-                  name="landmark"
-                  class="form-control"
-                />
-                <label class="form-label" for="form7Example5">Landmark</label>
-                <p id="landmarkError" style="color: red"></p>
-              </div>
+  <%- include('./partials/navBarLeft')%>
+  <div style="height:8vw"></div>
   
-              <!-- Number input -->
-              <div class="form-outline mb-4">
-                <input type="" id="city" name="city" class="form-control" />
-                <label class="form-label" for="form7Example6">City</label>
-                <p id="cityError" style="color: red"></p>
-              </div>
-              <div class="form-outline mb-4">
-                <input type="" id="state" name="state" class="form-control" />
-                <label class="form-label" for="form7Example6">State</label>
-                <p id="stateError" style="color: red"></p>
-              </div>
-              <div class="form-outline mb-4">
-                <input type="number" id="pin" name="pin" class="form-control" />
-                <label class="form-label" for="form7Example6">Pincode</label>
-                <p id="pincodeError" style="color: red"></p>
-              </div>
-              
-                <button onclick="addAddress()" style="font-size:larger;float:right;border:none;background-color:white;"><i class="fa-solid fa-plus"></i></button>
-              
-              <div class="custom-control custom-radio">
-                <input
-                  id="credit"
-                  name="paymentMethod"
-                  type="radio"
-                  value="COD"
-                  class="custom-control-input"
-                  checked
-                  required
-                />
-                <label class="custom-control-label" for="credit">COD</label>
-              </div>
-              <div class="custom-control custom-radio">
-                <input
-                  id="debit"
-                  name="paymentMethod"
-                  type="radio"
-                  value="Online"
-                  class="custom-control-input"
-                  required
-                />
-                <label class="custom-control-label" for="debit">Online</label>
-              </div>
-              <div class="mt-3">
-                <button
-                  type="submit"
-                  value="submit"
-                  class="btn btn-lg btn-dark"
-                >
-                  Make purchase
-                </button>
-              </div>
-          </div>
-        </div>
-      </div>
-  
-      <div class="col-md-4 mb-4">
-        <div class="card mb-4">
-          <div class="card-header py-3">
-            <h5 class="mb-0">Summary</h5>
-          </div>
-          <div class="card-body">
-            <ul class="list-group list-group-flush ">
-              <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                Total amount
-                <span>Rs.<%= price %></span>
-              </li>
-              <li
-                class="list-group-item d-flex justify-content-between align-items-center px-0"
-              >
-                Shipping
-                <span>Free</span>
-              </li>
-              <li
-                class="list-group-item d-flex justify-content-between align-items-center px-0"
-              >
-                <h5 class="text-uppercase mb-5">Give code</h5>
-                <div>
-                  <div class="form-outline mt-3">
-                    
-                      <input
-                        type="text"
-                        id="couponCode" 
-                        class="form-control form-control-lg"
-                      />
-                      <p id="display"></p>
-                      <button onclick="applyCoupon('<%= price %>')">Apply Coupon</button>
-
-                    
-                  </div>
-
+  <div class="container">
+      <div class="row">
+        <div class="col-md-8 mb-4">
+          <div class="card mb-4">
+            <div class="card-header py-3">
+              <h5 class="mb-0">Biling details</h5>
+            </div>
+            <div class="card-body">
+              <form id="checkout" action="/user/order" method="post">
+                <!-- Text input -->
+                <div class="form-outline mb-4">
+                  <input type="text" id="houseName" name="houseName" class="form-control" />
+                  <label class="form-label" for="form7Example4">House Name</label>
+                  <p id="areaError" style="color: red"></p>
+                </div>
+                <!-- Text input -->
+                <div class="form-outline mb-4">
+                  <input type="text" id="area" name="area" class="form-control" />
+                  <label class="form-label" for="form7Example4">Area</label>
+                  <p id="areaError" style="color: red"></p>
+                </div>
+    
+                <!-- Email input -->
+                <div class="form-outline mb-4">
+                  <input
+                    type=""
+                    id="landmark"
+                    name="landmark"
+                    class="form-control"
+                  />
+                  <label class="form-label" for="form7Example5">Landmark</label>
+                  <p id="landmarkError" style="color: red"></p>
+                </div>
+    
+                <!-- Number input -->
+                <div class="form-outline mb-4">
+                  <input type="" id="city" name="city" class="form-control" />
+                  <label class="form-label" for="form7Example6">City</label>
+                  <p id="cityError" style="color: red"></p>
+                </div>
+                <div class="form-outline mb-4">
+                  <input type="" id="state" name="state" class="form-control" />
+                  <label class="form-label" for="form7Example6">State</label>
+                  <p id="stateError" style="color: red"></p>
+                </div>
+                <div class="form-outline mb-4">
+                  <input type="number" id="pin" name="pin" class="form-control" />
+                  <label class="form-label" for="form7Example6">Pincode</label>
+                  <p id="pincodeError" style="color: red"></p>
                 </div>
                 
-              </li>
-               <li
-                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3"
-              >
-                <div>
-                  <strong>Discount Applied(Rs)</strong>
+                  <button onclick="addAddress()" style="font-size:larger;float:right;border:none;background-color:white;"><i class="fa-solid fa-plus"></i></button>
+                
+                <div class="custom-control custom-radio">
+                  <input
+                    id="credit"
+                    name="paymentMethod"
+                    type="radio"
+                    value="COD"
+                    class="custom-control-input"
+                    checked
+                    required
+                  />
+                  <label class="custom-control-label" for="credit">COD</label>
                 </div>
-                <span id="couponDiscount"></span>
-                <input type="hidden" name="appliedCouponCode" id="appliedCouponCode">
-              </li>
-               
-              <li
-                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3"
-              >
-                <div>
-                  <strong>Net Amount (Rs)</strong>
+                <div class="custom-control custom-radio">
+                  <input
+                    id="debit"
+                    name="paymentMethod"
+                    type="radio"
+                    value="Online"
+                    class="custom-control-input"
+                    required
+                  />
+                  <label class="custom-control-label" for="debit">Online</label>
                 </div>
-                <span id="netAmount"><%= price %></span>
-                <input type="hidden" name="netAmount" id="netAmountValue" value="<%= price %>">
-              </li>
-            </ul>
+                <div class="mt-3">
+                  <button
+                    type="submit"
+                    value="submit"
+                    class="btn btn-lg btn-dark"
+                  >
+                    Make purchase
+                  </button>
+                </div>
+            </div>
           </div>
-          </form>
         </div>
-
-
-        <div class="card mb-4">
-          <div class="card-header py-3">
-            <h5 class="mb-0">Addresses</h5>
-          </div>
-          <div class="card-body">
-            <% addressData.forEach((item)=>{%>
-              <input type="radio" value="<%= item._id %>" name="address" id="addressSelector" onclick="selectAddress(
-                '<%= item.houseName %>',
-                '<%= item.area %>',
-                '<%= item.landmark %>',
-                '<%= item.city %>',
-                '<%= item.pin %>',
-                '<%= item.state %>'
-              )" required checked />
+    
+        <div class="col-md-4 mb-4">
+          <div class="card mb-4">
+            <div class="card-header py-3">
+              <h5 class="mb-0">Summary</h5>
+            </div>
+            <div class="card-body">
               <ul class="list-group list-group-flush ">
                 <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                  <%= item.houseName %>
+                  Total amount
+                  <span>Rs.<%= price %></span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                  <%= item.area %>
+                <li
+                  class="list-group-item d-flex justify-content-between align-items-center px-0"
+                >
+                  Shipping
+                  <span>Free</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                  <%= item.landmark %>
+                <li
+                  class="list-group-item d-flex justify-content-between align-items-center px-0"
+                >
+                  <h5 class="text-uppercase mb-5">Give code</h5>
+                  <div>
+                    <div class="form-outline mt-3">
+                      
+                        <input
+                          type="text"
+                          id="couponCode" 
+                          class="form-control form-control-lg"
+                        />
+                        <p id="display"></p>
+                        <button onclick="applyCoupon('<%= price %>')">Apply Coupon</button>
+  
+                      
+                    </div>
+  
+                  </div>
+                  
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                  <%= item.city %>
+                 <li
+                  class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3"
+                >
+                  <div>
+                    <strong>Discount Applied(Rs)</strong>
+                  </div>
+                  <span id="couponDiscount"></span>
+                  <input type="hidden" name="appliedCouponCode" id="appliedCouponCode">
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                  <%= item.state %>
+                 
+                <li
+                  class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3"
+                >
+                  <div>
+                    <strong>Net Amount (Rs)</strong>
+                  </div>
+                  <span id="netAmount"><%= price %></span>
+                  <input type="hidden" name="netAmount" id="netAmountValue" value="<%= price %>">
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                  <%= item.pin %>
-                </li>
-                <button onclick="deleteAddress('<%= item.addressId %>')" style="font-size:larger;float:right;border:none;background-color:white;"><i class="fa-solid fa-trash"></i></button>
               </ul>
-              
-              <hr>
-              <%})%>
+            </div>
+            </form>
           </div>
-          </form>
+  
+  
+          <div class="card mb-4">
+            <div class="card-header py-3">
+              <h5 class="mb-0">Addresses</h5>
+            </div>
+            <div class="card-body">
+              <% addressData.forEach((item)=>{%>
+                <input type="radio" value="<%= item._id %>" name="address" id="addressSelector" onclick="selectAddress(
+                  '<%= item.houseName %>',
+                  '<%= item.area %>',
+                  '<%= item.landmark %>',
+                  '<%= item.city %>',
+                  '<%= item.pin %>',
+                  '<%= item.state %>'
+                )" required checked />
+                <ul class="list-group list-group-flush ">
+                  <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                    <%= item.houseName %>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                    <%= item.area %>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                    <%= item.landmark %>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                    <%= item.city %>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                    <%= item.state %>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                    <%= item.pin %>
+                  </li>
+                  <button onclick="deleteAddress('<%= item.addressId %>')" style="font-size:larger;float:right;border:none;background-color:white;"><i class="fa-solid fa-trash"></i></button>
+                </ul>
+                
+                <hr>
+                <%})%>
+            </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <%- include('./partials/footer') %>
+    <%- include('./partials/footer') %>
+</body>

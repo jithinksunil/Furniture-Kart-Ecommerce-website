@@ -1,5 +1,6 @@
 <head>
-  <style>
+
+ <style>
     
     body{
       background-color: rgb(255, 255, 255);
@@ -60,17 +61,18 @@
   </style>
 </head>
 <body>
+  
   <div class="container-fluid px-0">
     <%- include('./partials/navBarFinal')%>
-
+  
     <div id="carouselExampleControls" class="carousel slide mb-5" data-bs-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="/banners/<%= bannerData[0].bannerImage %>" class="d-block w-100" alt="...">
+          <img src="/banners/<%= bannerData[0]?.bannerImage %>" class="d-block w-100" alt="...">
         </div>
         <%for(let i=1;i<bannerData.length;i++){%>
           <div class="carousel-item">
-            <img src="/banners/<%= bannerData[i].bannerImage %>" class="d-block w-100" alt="...">
+            <img src="/banners/<%= bannerData[i]?.bannerImage %>" class="d-block w-100" alt="...">
           </div>
         <%}%>
         
@@ -91,45 +93,45 @@
   
   <div class="catlist px-md-5 bg-light" >
     <%catData.forEach((item)=>{%>
-
-      <a href="/user/categories/<%= item.catName %>/1">
-        <div class="tiles-1 shadow p-3 mb-5 bg-white rounded mx-4" style="background-image:url('<%= item.catImage[0].cloudunaryUrlcloudunaryUrl %>');background-size: 100%;background-repeat: no-repeat">
-          <h3 class="text-center"><%= item.catName %></h3>
+  
+      <a href="/user/categories/<%= item?.catName %>/1">
+        <div class="tiles-1 shadow p-3 mb-5 bg-white rounded mx-4" style="background-image:url('<%= item?.catImage[0]?.cloudunaryUrlcloudunaryUrl %>');background-size: 100%;background-repeat: no-repeat">
+          <h3 class="text-center"><%= item?.catName %></h3>
         </div>
       </a>
-
+  
     <%})%>
-
+  
   </div>
   
   <div class="catlist my-5">
     <img src="/home displaym Images/furnitures home page panorama views.jpg" alt="" class="img-fluid">
-
-  </div>
-
   
-<div class="mb-5 bg-light pt-5">
+  </div>
+  
+  
+  <div class="mb-5 bg-light pt-5">
   <div>
     <h2 style="text-align: center;font-style: normal">Trending Products</h2>
   </div>
-
+  
   <div class="catlist px-5">
     <%for(let i=0; i < 4 ; i++){%>
-      <a href="/productpage/<%= recProducts[i]._id %>">
+      <a href="/productpage/<%= recProducts[i]?._id %>">
         <div class="tiles my-5 mx-4 ">
           <div class="innerClass shadow" style="border-radius:0.5rem">  
-            <img src="<%= recProducts[i].productImage[0].cloudunaryUrl %>" alt="" class="img-fluid" style="border-radius:0.4rem">
+            <img src="<%= recProducts[i]?.productImage[0]?.cloudunaryUrl %>" alt="" class="img-fluid" style="border-radius:0.4rem">
           </div>
-          <h3 class="text-center"><%= recProducts[i].productName %></h3>
-          <h5 class="text-center">&#8377 <%= recProducts[i].rate %></h5>
+          <h3 class="text-center"><%= recProducts[i]?.productName %></h3>
+          <h5 class="text-center">&#8377 <%= recProducts[i]?.rate %></h5>
         </div>
       </a>
     <%}%>
-
+  
     
   </div>
-</div>
-
-<%- include('./partials/footer')%>
+  </div>
   
+  <%- include('./partials/footer')%>
 </body>
+  
