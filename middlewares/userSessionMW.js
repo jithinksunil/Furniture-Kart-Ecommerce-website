@@ -4,7 +4,7 @@ function userSession(req,res,next){
         next()
     }
     else{
-        console.log('ajax reaches here')
+
         res.redirect('/')
     }
 }

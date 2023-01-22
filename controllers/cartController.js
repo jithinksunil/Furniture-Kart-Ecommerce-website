@@ -41,7 +41,6 @@ async function userCart(req,res){
     let bill={
         price,deliverCharge,total
     }
-    console.log(cartProducts);
 
     let userCart=await cartCollection.findOne({userId:req.query.userId})
     if(!userCart){
@@ -74,7 +73,6 @@ async function userAddToCart(req,res){
                         $inc:{'products.$.quantity':1}
                     }
                 )
-                console.log(a);
             }
             else if(req.query.increment==-1){
     
@@ -83,7 +81,6 @@ async function userAddToCart(req,res){
                     {$match:{"products.productId":mongoose.Types.ObjectId(req.query.productId)}},
                     {$project:{"products.quantity":1,_id:0}}
                 ])
-                console.log(qtyCheck);
                     
                 if(qtyCheck[0].products.quantity>1){
     
@@ -121,7 +118,7 @@ async function userAddToCart(req,res){
 async function removeFromCart(req,res){
 
     await cartCollection.updateOne({userId:req.session.userData._id},{$pull:{products:{productId:req.query.productId}}})
-    res.redirect('/user/cart')
+    res.redirect('/cart')
 
 }
 

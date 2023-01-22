@@ -1,6 +1,9 @@
 <head>
 
  <style>
+    .searchBox{
+      display: none !important;
+    }
     
     body{
       background-color: rgb(255, 255, 255);
@@ -59,16 +62,61 @@
     }
 
   </style>
+  <style>
+    /* CSS */
+.button-47 {
+  align-items: center;
+  background: #FFFFFF;
+  border: 0 solid #E2E8F0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+  color: #1A202C;
+  display: inline-flex;
+  font-family: Inter, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  height: 2rem;
+  justify-content: center;
+  line-height: 24px;
+  overflow-wrap: break-word;
+  padding: 24px;
+  text-decoration: none;
+  width: auto;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin-top: 1rem;
+}
+  </style>
 </head>
 <body>
-  
   <div class="container-fluid px-0">
-    <%- include('./partials/navBarFinal')%>
-  
+    <div id="navBarFinal">
+      <%- include('./partials/navBarFinal')%>
+    </div>
+    <div style="z-index: 10;" id="navBarLeft">
+      <%- include('./partials/navBarLeft')%>
+    </div>
     <div id="carouselExampleControls" class="carousel slide mb-5" data-bs-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="/banners/<%= bannerData[0]?.bannerImage %>" class="d-block w-100" alt="...">
+          <!-- <img src="/banners/<%= bannerData[0]?.bannerImage %>" class="d-block w-100" alt="..."> -->
+          <div style="position: relative;">
+            <video style="height:100vh;object-fit: cover" audio muted loop autoplay  width="100%">
+              <source src="/public/banners/final.mp4" type="video/mp4">
+            </video>
+            <div class=" px-5" style=" position: absolute;z-index: 1;top:60vh;">
+              <h1 style="color: rgb(255, 255, 255)">Last Word for Laxury!</h1>
+              <h5 style="color: rgb(255, 255, 255)">Our Inspiration and solutions can <br>help you  bring ideas into your life</h5>
+              <!-- HTML !-->
+              <button class="button-47" role="button">Shop now!</button>
+
+
+            </div>
+          </div>
+          
         </div>
         <%for(let i=1;i<bannerData.length;i++){%>
           <div class="carousel-item">
@@ -94,7 +142,7 @@
   <div class="catlist px-md-5 bg-light" >
     <%catData.forEach((item)=>{%>
   
-      <a href="/user/categories/<%= item?.catName %>/1">
+      <a href="/product/categories/<%= item?.catName %>">
         <div class="tiles-1 shadow p-3 mb-5 bg-white rounded mx-4" style="background-image:url('<%= item?.catImage[0]?.cloudunaryUrlcloudunaryUrl %>');background-size: 100%;background-repeat: no-repeat">
           <h3 class="text-center"><%= item?.catName %></h3>
         </div>
@@ -117,7 +165,7 @@
   
   <div class="catlist px-5">
     <%for(let i=0; i < 4 ; i++){%>
-      <a href="/productpage/<%= recProducts[i]?._id %>">
+      <a href="/product/productpage/<%= recProducts[i]?._id %>">
         <div class="tiles my-5 mx-4 ">
           <div class="innerClass shadow" style="border-radius:0.5rem">  
             <img src="<%= recProducts[i]?.productImage[0]?.cloudunaryUrl %>" alt="" class="img-fluid" style="border-radius:0.4rem">
@@ -133,5 +181,22 @@
   </div>
   
   <%- include('./partials/footer')%>
+  <script>
+    var viewPortHeight=window.innerHeight
+    window.onscroll = function(){myFunction()}
+    window.onload=function(){myFunction()}
+    function myFunction(){
+      var currentOffset=window.pageYOffset
+      if(currentOffset>=viewPortHeight*0.9){
+        document.getElementById('navBarLeft').style.display = "block"
+        document.getElementById('navBarFinal').style.display = "none"
+      }else{
+        document.getElementById('navBarLeft').style.display = "none"
+        document.getElementById('navBarFinal').style.display = "block"
+      }
+    }
+    
+
+  </script>
 </body>
   

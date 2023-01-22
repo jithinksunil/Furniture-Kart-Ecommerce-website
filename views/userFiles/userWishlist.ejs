@@ -15,11 +15,11 @@
                       <div class="p-5"  >
                         <div class="d-flex justify-content-between align-items-center mb-5">
                           <h1 class="fw-bold mb-0 text-black">Wish List</h1>
-                          <h6 class="mb-0 text-muted"><%= userWishlist[0].wishlistProducts.length %> items</h6>
+                          <h6 class="mb-0 text-muted"><%= userWishlist[0]?.wishlistProducts?.length || 0 %> items</h6>
                         </div>
                         <hr class="my-4">
                       
-                        <% for(let i=0;i<userWishlist[0].wishlistProducts.length;i++){%>
+                        <% for(let i=0;i<userWishlist[0]?.wishlistProducts?.length||0;i++){%>
                             <div class="row mb-4 d-flex justify-content-between align-items-center">
                               <div class="col-md-2 col-lg-2 col-xl-2">
                                 <img
@@ -37,7 +37,7 @@
                                 <h6 class="mb-0">&#8377; <%= userWishlist[0].wishlistProducts[i].rate %></h6>
                               </div>
                               <div>
-                                <a href="/user/wishlist/removeitem?productId=<%=userWishlist[0].wishlistProducts[i]._id %>"class="mx-5 text-decoration-none">Remove</a>
+                                <a href="/wishlist/removeitem?productId=<%=userWishlist[0].wishlistProducts[i]._id %>"class="mx-5 text-decoration-none">Remove</a>
                             </div>
                 
                               <div class="col-md-1 col-lg-1 col-xl-1 text-end">

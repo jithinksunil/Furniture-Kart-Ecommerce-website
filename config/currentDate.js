@@ -1,6 +1,6 @@
 function currentDate(){
 
-    var d = new Date(),
+    let d = new Date(),
     month = '' + (d.getMonth() + 1),
     day = '' + d.getDate(),
     

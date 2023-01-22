@@ -5,6 +5,7 @@ const userCollection = require("../models/userSchema")
 const otpfunctions=require('../config/otpConfiguration')
 const bannerCollection = require('../models/bannerSchema')
 const { query } = require('express')
+const { search } = require('../routes/userRoute')
 async function home(req,res){
 
     let bannerData=await bannerCollection.find({action:true})
@@ -23,39 +24,6 @@ async function home(req,res){
     res.render('./userFiles/userHomePage',{catData,recProducts,userData:req.session.userData,bannerData,cartCount})
 }
 
-async function shopPage(req,res){  //user login page
-
-    // let search=''
-    
-    // let page=1
-    // let productData
-    // let limit=9;
-    // if(req.query.search){
-    //     let search=req.query.search
-    // }
-    // if(req.query.page){
-    //     page=parseInt(req.query.page)
-    // }
-    // productData=await productCollection.find({action:true,$or:[
-    //     {productName:{$regex:search,$options:'i'}},
-    //     {description:{$regex:search,$options:'i'}},
-    //     {category:{$regex:search,$options:'i'}}
-    // ]}).limit(limit).skip((page-1)*limit)
-
-    // let count=await productCollection.find({action:true,$or:[
-    //     {productName:{$regex:search,$options:'i'}},
-    //     {description:{$regex:search,$options:'i'}},
-    //     {category:{$regex:search,$options:'i'}}
-    // ]}).count()
-
-    // res.render('./userFiles/homePage',{
-    //     userData:req.session.userData,
-    //     productData:productData,
-    //     totalPages:(count/limit),
-    //     currentPage:page
-    // })
-}
-
 function userLogin(req,res){  //user login page
     let warning=req.query.warning
     res.render('./userFiles/userLoginPage',{userData:req.session.userData,warning})
@@ -66,15 +34,14 @@ async function userValidation(req,res){  //user login validation
     try{
         if(userData.password==req.body.password){
             req.session.userData=userData
-            a.name=userData.fName
             res.redirect('/')
         }
         else{
-            res.redirect(`/user/login?warning=${true}`)
+            res.redirect(`/login?warning=${true}`)
         }
     }
     catch(err){
-        res.redirect(`/user/login?warning=${true}`)
+        res.redirect(`/login?warning=${true}`)
     }
 }
 
@@ -89,56 +56,43 @@ async function userRegistration(req,res){  //user login page
     res.render('./userFiles/userRegistrationPage',{userData:req.session.userData,warning,catData})
 }
 
-function jithin(a){
-    a();
-}
-
 
 async function userRegistrationOtp(req,res){  //user login page
-
-    let newUser=await userCollection.aggregate([{$match:{email:req.body.email}},{$project:{"email":1}}])
-    console.log(newUser)
-    try{
-        if(req.body.email==newUser[0].email){
+    let newUser
+    console.log(req.body);
+    newUser=await userCollection.findOne({email:req.body.email})
+    console.log(newUser);
+    if(newUser){
             
-            res.redirect(`/user/registration?warning=${true}`)
-            
-        }
-    }
-    catch(err){
-
-        let otpgen=otpfunctions.otp()
-        let mailOptions=otpfunctions.mailObject(req.body.email,otpgen)
-        otpfunctions.mailService(mailOptions)
+        res.redirect(`/registration?warning=${true}`)
         
-        let userData={
+    }
+    else{
+
+        req.session.registrationData={
             fName:req.body.fName,
             lName:req.body.lName,
             age:req.body.age,
             email:req.body.email,
-            password:req.body.password,
+            password:req.body.password
         }
-        req.session.registrationData=userData
-        req.session.otp= otpgen
-        console.log(req.session);
-        
-        setTimeout(() => {
-            // req.session.otp= Math.floor(1000 + Math.random() * 9000)//reassigning session inside the settime out is not reflecting the changes out side.why?
-            req.session.destroy()
-            console.log('otp expired');
-        },20000);
-        
+        let otpgen=otpfunctions.otp()
+        console.log(otpgen);
+        let mailOptions=otpfunctions.mailObject(req.body.email,otpgen)
+        otpfunctions.mailService(mailOptions)
+        req.session.registrationData.otp= otpgen
+        req.session.registrationData.expiry=Date.now()+60000
         res.render('./userFiles/otp')
-
     }
-
 }
-
-
-
-async function userRegistrationOtpValidation(req,res){  //user login page
     
-    if(req.session.otp==req.body.otp){
+async function userRegistrationOtpValidation(req,res){  //user login page
+    let currentTime=Date.now()
+    let expiryTime=req.session.registrationData.expiry
+    let otp=req.session.registrationData.otp
+
+    if(currentTime<=expiryTime&&otp==req.body.otp){
+
         await userCollection.insertMany([
             {
                 fName:req.session.registrationData.fName,
@@ -148,11 +102,9 @@ async function userRegistrationOtpValidation(req,res){  //user login page
                 password:req.session.registrationData.password
             }
         ])
-        req.session.destroy()
+        req.session.userData=req.session.registrationData
+        req.session.registrationData=null
         res.redirect('/')
-    }
-    else{
-        res.send('otp expired')
     }
 }
 
@@ -164,53 +116,50 @@ function forgotPasswordPage(req,res){
 
 async function forgotPasswordOtpPage(req,res){
 
-    let userData=await userCollection.aggregate([{$match:{email:req.query.userEmail}},{$project:{'email':1}}])
-    
-    try{   
-        if(userData[0].email==req.query.userEmail){
-            
-            let userEmail=req.query.userEmail
+    let userEmail=req.query.userEmail
+    let userData=await userCollection.findOne({email:userEmail})
+    let warning=req.query.warning
 
-            let warning=req.query.warning
-            if(!warning){
-                let otpgen=otpfunctions.otp()
-                let mailOptions=otpfunctions.mailObject(req.query.userEmail,otpgen)
-                otpfunctions.mailService(mailOptions);
-                req.session.forgotPasswordOtp=otpgen
-                setTimeout(() => {
-                    req.session.destroy()
-                    console.log('otp expired');
-                },20000);
-            }
-            
-            res.render('./userFiles/forgotPasswordOtp',{warning,userEmail})
+    if(userData){
+        if(!warning){
+            let otpgen=otpfunctions.otp()
+            console.log(otpgen);
+            let mailOptions=otpfunctions.mailObject(userEmail,otpgen)
+            otpfunctions.mailService(mailOptions);
+            req.session.forgotPasswordOtp=otpgen
+            req.session.forgotPasswordOtpExpiry=Date.now()+60000
         }
+        res.render('./userFiles/forgotPasswordOtp',{userEmail,warning:req.query.warning})
     }
-    catch(err){
-        res.redirect(`/user/forgotpassword?warning=${true}`)
+    else{
+        res.redirect(`/forgotpassword?warning=${true}`)
     }
 }
 
 
 async function forgotPasswordNewPasswordPage(req,res){
 
-    if(req.session.forgotPasswordOtp==req.body.otp){
-        req.session.destroy()
-        res.render('./userFiles/forgotPasswordNewPasswordPage',{userEmail:req.query.userEmail})
+    let currentTime=Date.now()
+    let expiryTime=req.session.forgotPasswordOtpExpiry
+    let otp=req.session.forgotPasswordOtp
+    let userEmail=req.body.userEmail
 
+    console.log(currentTime);
+    console.log(expiryTime);
+
+    if(currentTime<=expiryTime && otp==req.body.otp){
+        console.log('hello');
+        res.render('./userFiles/forgotPasswordNewPasswordPage',{userEmail})
     }
     else{
-        req.session.destroy()
-        res.redirect(`/user/forgotpassword/otppage?warning=${true}&userEmail=${req.query.userEmail}`)
+        res.redirect(`/forgotpassword/otppage?warning=${true}&userEmail=${userEmail}`)
     }
-    
 }
 
 async function forgotPasswordUpdation(req,res){
-    console.log(req.query.userEmail);
-    console.log(req.body.password);
 
-    await userCollection.updateOne({email:req.query.userEmail},{password:req.body.password})
+    await userCollection.updateOne({email:req.body.userEmail},{password:req.body.password})
+    req.session.userData=await userCollection.findOne({email:req.body.userEmail})
     res.redirect('/')
 }
 
@@ -251,7 +200,7 @@ async function changePassword(req,res){
 async function updatePassword(req,res){
     
     await userCollection.updateOne({_id:req.session.userData._id,password:req.body.currentPassword},{password:req.body.newPassword})
-    res.redirect('/user/profile')
+    res.redirect('/profile')
 }
 
 async function editAccount(req,res){
@@ -281,58 +230,11 @@ async function updateAccount(req,res){
     }
     
     await userCollection.updateOne({_id:req.session.userData._id,password:req.body.currentPassword},userData)
-    res.redirect('/user/profile')
-}
-
-async function categoriesPage(req,res){
-    let catData=await catCollection.find({action:true})
-    
-    let search=''
-    
-    let page=parseInt(req.params.page)
-    // let productData
-    let limit=12
-    if(req.query.search){
-        search=req.query.search
-    }
-    productData=await productCollection.find({action:true,category:req.params.category,$or:[
-        {productName:{$regex:search,$options:'i'}},
-        {description:{$regex:search,$options:'i'}},
-        {category:{$regex:search,$options:'i'}}
-    ]}).limit(limit).skip((page-1)*limit)
-
-    let count=await productCollection.find({action:true,$or:[
-        {productName:{$regex:search,$options:'i'}},
-        {description:{$regex:search,$options:'i'}},
-        {category:{$regex:search,$options:'i'}}
-    ]}).count()
-
-    let cartCount=0
-    try{
-        let userCart=await cartCollection.findOne({userId:req.session.userData._id})
-        for(let i=0;i<userCart.products.length;i++){
-            cartCount=cartCount+userCart.products[i].quantity
-        }
-    }
-    catch(err){
-        console.log(err);
-    }
-
-    res.render('./userFiles/categoriesPage',{
-        userData:req.session.userData,
-        productData:productData,
-        totalPages:(count/limit),
-        currentPage:page,
-        catName:req.params.category,
-        catData,
-        cartCount
-    })
-
+    res.redirect('/profile')
 }
 
 module.exports={
     home,
-    shopPage,
     userLogin,
     userValidation,
     userLogout,
@@ -347,7 +249,6 @@ module.exports={
     changePassword,
     updatePassword,
     editAccount,
-    updateAccount,
-    categoriesPage
+    updateAccount
 }
 

@@ -1,4 +1,4 @@
-var paypal = require('paypal-rest-sdk')
+let paypal = require('paypal-rest-sdk')
 const dotenv = require("dotenv")
 dotenv.config()//will convert the .env file into an object
 
@@ -16,8 +16,8 @@ module.exports={
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": `${process.env.MY_DOMAIN_IN_PAYPAL}/onlinepayment/success`,
-                "cancel_url": `${process.env.MY_DOMAIN_IN_PAYPAL}/onlinepayment/cancel`
+                "return_url": `${process.env.MY_DOMAIN_IN_PAYPAL}/order/onlinepayment/success`,
+                "cancel_url": `${process.env.MY_DOMAIN_IN_PAYPAL}/order/onlinepayment/cancel`
             },
             "transactions": [{
                 "item_list": {
@@ -43,7 +43,6 @@ module.exports={
             } else {
               for (let i = 0; i < payment.links.length; i++) {
                 if (payment.links[i].rel === "approval_url") {
-                    console.log(payment.links[i].href)
                     res.redirect(payment.links[i].href)
                 }
             }
@@ -72,7 +71,7 @@ module.exports={
         } else {
             console.log("Get Payment Response");
             console.log(JSON.stringify(payment));
-            res.redirect('/oder/completed')
+            res.redirect('/order/completed')
         }
     });
     }

@@ -9,7 +9,7 @@ function mongodb(){
         useUnifiedTopology:true
         },(err)=>{
         if(err){
-            console.log(err)
+            console.log("Data base couldn't connect")
         }else{
             console.log('Data Base connected')
         }

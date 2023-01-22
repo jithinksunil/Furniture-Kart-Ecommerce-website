@@ -3,7 +3,6 @@ const nodemailer=require('nodemailer')
 function otp(){
 
     let otpgen= Math.floor(1000 + Math.random() * 9000)
-    console.log(otpgen);
     return otpgen
     
 }
@@ -23,7 +22,7 @@ function mailObject(email,otpgen){
 
 function mailService(mailOptions){
 
-    var transporter = nodemailer.createTransport({
+    let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
             user: 'jithinksunil96@gmail.com',

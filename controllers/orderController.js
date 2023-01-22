@@ -3,7 +3,7 @@ const orderCollection = require("../models/orderSchema")
 const cartCollection=require('../models/cartShema')
 const userCollection=require('../models/userSchema')
 const currentDate=require('../config/currentDate')
-var paypal = require('paypal-rest-sdk')
+let paypal = require('paypal-rest-sdk')
 paypalFunction=require('../config/paypal')
 
 module.exports={
@@ -26,7 +26,7 @@ module.exports={
                 orderMonth:parseInt(currentDate().split('/')[1])
             }])
             await cartCollection.deleteOne({userId:req.session.userData._id})
-            res.redirect('/oder/completed')
+            res.redirect('/order/completed')
         }
         else if(req.body.paymentMethod=='Online'){
             req.session.onlinePaymentOrder={
@@ -39,7 +39,7 @@ module.exports={
                 orderDate: currentDate(),
                 orderMonth:parseInt(currentDate().split('/')[1])
             }
-            res.redirect('/onlinepayment/gateway')
+            res.redirect('/order/onlinepayment/gateway')
         }
         
     },

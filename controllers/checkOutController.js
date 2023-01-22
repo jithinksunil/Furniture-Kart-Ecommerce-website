@@ -2,6 +2,7 @@ const { default: mongoose, trusted } = require('mongoose');
 const cartCollection=require('../models/cartShema')
 const catCollection=require('../models/categorySchema');
 const userCollection = require('../models/userSchema');
+const productCollection = require('../models/productSchema');
 const couponCollection=require('../models/couponShema')
 
 module.exports={
@@ -18,30 +19,31 @@ module.exports={
             console.log(err);
         }
 
-        let cartProducts=await cartCollection.aggregate([
-            {$match:{userId:mongoose.Types.ObjectId(req.session.userData._id)}},
-            {$unwind:'$products'},
-            {$project:{prod:'$products.productId',nos:'$products.quantity'}},
-            {
-                $lookup:{
-                    from:'product_collections',
-                    localField:'prod',
-                    foreignField:'_id',
-                    as:'productDetails'
-                }
-            }
-        ])
-    
         let price=0;
-        for(let i=0;i<cartProducts.length;i++){
-            price=price+(parseInt(cartProducts[i].nos)*parseInt(cartProducts[i].productDetails[0].rate))
-        }
-        let deliverCharge=40
-        let total=price+deliverCharge
-        let bill={
-            price,deliverCharge,total
-        }
+        if(req.query.buyFrom=='cart'){
+            let cartProducts=await cartCollection.aggregate([
+                {$match:{userId:mongoose.Types.ObjectId(req.session.userData._id)}},
+                {$unwind:'$products'},
+                {$project:{prod:'$products.productId',nos:'$products.quantity'}},
+                {
+                    $lookup:{
+                        from:'product_collections',
+                        localField:'prod',
+                        foreignField:'_id',
+                        as:'productDetails'
+                    }
+                }
+            ])
 
+            for(let i=0;i<cartProducts.length;i++){
+                price=price+(parseInt(cartProducts[i].nos)*parseInt(cartProducts[i].productDetails[0].rate))
+            }
+        }
+        else if(req.query.buyFrom=='productPage'){
+            let productData=await productCollection.findOne({_id:req.query.productId})
+            price=parseInt(productData.rate)
+        }
+        
         let addressData=await userCollection.aggregate([{$match:{_id:mongoose.Types.ObjectId(req.session.userData._id)}},{$unwind:"$addresses"},{$project:{
             houseName:"$addresses.houseName",
             area:'$addresses.area',
@@ -52,7 +54,6 @@ module.exports={
             addressId:'$addresses._id',
             _id:0
         }}])
-        console.log(addressData);
         res.render('./userFiles/checkOutPage',{price,cartCount,catData,userData:req.session.userData,addressData})
     },
 
@@ -79,7 +80,6 @@ module.exports={
             })
             if(couponExist==-1){
                 let couponData=await couponCollection.findOne({couponCode:req.query.couponCode})
-                console.log(couponData);
                 res.json({coupon:'appliedNow',couponData})
             }else{
                 res.json({coupon:'alreadyApplied'})

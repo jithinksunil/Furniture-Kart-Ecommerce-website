@@ -38,7 +38,6 @@ async function userWishlist(req,res){
         }
     ])
 
-    console.log(userWishlist);
     
     if(!userWishlist){
         await wishlistCollection.insertMany([{userId:req.query.userId}])
@@ -77,9 +76,8 @@ async function userAddToWishlist(req,res){
 
 async function removeFromWishlist(req,res){
 
-    console.log(req.query.productId);
     await wishlistCollection.updateOne({userId:req.session.userData._id},{$pull:{products:req.query.productId}})
-    res.redirect('/user/wishlist')
+    res.redirect('/wishlist')
 
 }
 

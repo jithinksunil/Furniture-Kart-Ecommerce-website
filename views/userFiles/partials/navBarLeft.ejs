@@ -1,4 +1,8 @@
 <style>
+    .navbar{
+      -webkit-box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.05);
+      box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.05);
+    }
       .navbar-toggler:focus{
       box-shadow: none;
     }
@@ -7,7 +11,7 @@
     }
 </style>
 <div style="width:100vw;position:fixed;top:0; z-index: 2;display: flex;justify-content: center">
-    <nav class="navbar navbar-expand-lg px-5" style="width:100vw; height:auto;background-color:white;border-bottom:1px solid rgb(220, 220, 220)">
+    <nav class="navbar navbar-expand-lg px-5" style="width:100vw; height:auto;background-color:white">
       <div class="container-fluid my-2" style=" display:flex;align-items:center">
         <div >
           <a class="navbar-brand " href="/">Furniture Kart</a>
@@ -21,47 +25,31 @@
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span style="width:1rem;height:1rem" class="navbar-toggler-icon"></span>
+        <span style="width:1rem;height:1rem"><i class="fa-solid fa-bars"></i></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             
             <li class="nav-item">
               <% if(userData){%>
-                <a class="nav-link" href="/user/cart?userId=<%=userData._id %>">Cart<span class="badge text-bg-success" id="cartCount"><%= cartCount %></span><i class="fa-solid fa-cart-shopping text-primary"></i></a>
+                <a class="nav-link" href="/cart?userId=<%=userData._id %>">Cart<span class="badge text-bg-success" id="cartCount"><%= cartCount %></span><i class="fa-solid fa-cart-shopping text-primary"></i></a>
               <%}
               else{%>
-                <a class="nav-link" href="/user/login">Cart <i class="fa-solid fa-cart-shopping text-primary"></i></a>
+                <a class="nav-link" href="/login">Cart <i class="fa-solid fa-cart-shopping text-primary"></i></a>
               <%}%>
-            </li>
-            
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle text-muted"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Categories
-              </a>
-              <ul class="dropdown-menu">
-                <%catData.forEach((item)=>{%>
-
-                  <li></li><a href="/user/categories/<%= item.catName %>/1" style="margin-left:1rem"><%= item.catName %></a></li>
-            
-                <%})%>
-              </ul>
             </li>
             <li class="nav-item">
               <% if(userData){%>
-                <a class="nav-link" href="/user/wishlist?userId=<%=userData._id %>" title="Wishlist">Wishlist <i class="fa-solid fa-heart text-primary"></i></a>
+                <a class="nav-link" href="/wishlist?userId=<%=userData._id %>" title="Wishlist">Wishlist <i class="fa-solid fa-heart text-primary"></i></a>
               <%}
               else{%>
-                <a class="nav-link" href="/user/login" title="Wishlist">Wishlist <i class="fa-solid fa-heart text-primary"></i></a>
+                <a class="nav-link" href="/login" title="Wishlist">Wishlist <i class="fa-solid fa-heart text-primary"></i></a>
               <%}%>
             </li>
-            <div class="mx-3 ">
+            <li class="nav-item">
+              <a class="nav-link" href="/product/categories/all" title="Wishlist">Shop</a>
+            </li>
+            <div class="mx-3 searchBox">
               <form class="d-flex text-danger" role="search">
                 <input
                   class="form-control me-2"
@@ -78,10 +66,10 @@
           <div>
             <% if(userData){%>
               <a class="navbar-brand " title="Profile page"  href="#?userId=<%=userData._id %>"><%=userData.fName %></a>
-              <a href="/user/logout"  title="Log-out" ><i class="fa-solid fa-right-from-bracket"></i></a>
+              <a href="/logout"  title="Log-out" ><i class="fa-solid fa-right-from-bracket text-primary"></i></a>
               
               <%}else{%>
-                <a href="/user/login"><i class="fa-solid fa-right-to-bracket text-primary"></i> LogIn</a>
+                <a href="/login"><i class="fa-solid fa-right-to-bracket text-primary"></i> LogIn</a>
                 <%}%>
           </div>
           

@@ -38,7 +38,6 @@ async function adminDashBoard(req,res){
         orderPerMonth.push(numberOfOrders)
     }
     
-    console.log(orderPerMonth);
     let dashBoardData={
         users:await userCollection.count(),
         products:await productCollection.count(),
@@ -49,7 +48,6 @@ async function adminDashBoard(req,res){
         outForDelivey:await orderCollection.find({status:'Out for delivey'}).count(),
         shipped:await orderCollection.find({status:'Shipped'}).count()
     }
-    console.log(dashBoardData.deliverd);
     await orderCollection.find({status:'Deliverd'})
 
     res.render('./adminFiles/adminDashBoard',{data:dashBoardData,orderPerMonth})
@@ -89,7 +87,6 @@ async function addCategory(req,res){
                     { width: 485, height: 485, gravity: "face", crop: "fill" }]
                 }
             )
-            console.log(result);
 
             await catCollection.insertMany(
                 [{
@@ -133,7 +130,6 @@ async function productAddPage(req,res){
 
 async function addProductCompleted(req,res){
     if(req.files){
-        console.log(req.files)
         try{
 
             const result = await cloudinary.uploader.upload(
@@ -255,7 +251,6 @@ async function salesReport(req,res){
 async function couponManagement(req,res){
 
     let couponData= await couponCollection.find()
-    console.log(couponData);
 
     res.render('./adminFiles/adminCouponManagement',{couponData})
 }
@@ -276,7 +271,6 @@ async function bannerManagement(req,res){
 }
 
 async function blockBanner(req,res){
-    console.log(req.query.id);
 
     await bannerCollection.updateOne({_id:req.query.id},{action:false})
 

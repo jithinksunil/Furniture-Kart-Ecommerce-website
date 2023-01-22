@@ -24,6 +24,8 @@
   <div style="height:5vw" class="my-3"></div>
   
     <div class="container-fluid px-0 bg-light " >
+      <a href="/product/categories/<%= catName %>?search=<%= search %>&sort=1">Sort-Ascending</a>----
+      <a href="/product/categories/<%= catName %>?search=<%= search %>&sort=-1">Sort-Descending</a>
       <div class="flex-container" >
        
           <% for(let i=0;i<productData.length;i++){%>
@@ -46,7 +48,7 @@
                 </div>
                 
                 <div class="card-body d-flex justify-content-center">
-                  <a href="/productpage/<%= productData[i]._id %>" class="btn btn-dark" style="font-size: small;">View Product</a>
+                  <a href="/product/productpage/<%= productData[i]._id %>" class="btn btn-dark" style="font-size: small;">View Product</a>
                 </div>
                 
               </div>
@@ -60,24 +62,24 @@
         <div style="display:flex; border: 1px solid rgb(13,110,253);border-radius: .5rem; margin: 3rem;">
     
           <% if(currentPage>1){%>
-            <a href="/user/categories/<%= catName %>/<%= currentPage-1 %>">Previous page</a>
+            <a href="/product/categories/<%= catName %>?search=<%= search %>&sort=<%=sort%>&page=<%= currentPage-1 %>">Previous page</a>
           <%}%>
     
           <% for(let j=0;j<totalPages;j++){%>
             <% if(currentPage==j+1){%>
               <div style="display:flex; justify-content: center;align-items: center; height: 1.5rem; width: 1.5rem; background-color:rgb(13,110,253) ">
-                <a style="color: aliceblue;" href="/user/categories/<%= catName %>/<%= j+1 %>"><%= j+1 %></a>
+                <a style="color: aliceblue;" href="/product/categories/<%= catName %>?search=<%= search %>&sort=<%=sort%>&page=<%= j+1 %>"><%= j+1 %></a>
               </div>
               <%}
               else{%>
                 <div style="display:flex; justify-content: center;align-items: center; height: 2 rem; width: 1.5rem;">
-                  <a href="/user/categories/<%= catName %>/<%=j+1 %>"><%= j+1 %></a>
+                  <a href="/product/categories/<%= catName %>?search=<%= search %>&sort=<%=sort%>&page=<%=j+1 %>"><%= j+1 %></a>
                 </div>
               <%}%>
           <%}%>
           
           <%if(currentPage<totalPages){%>
-            <a href="/user/categories/<%= catName %>/<%= currentPage+1 %>">Next Page</a>
+            <a href="/product/categories/<%= catName %>?search=<%= search %>&sort=<%=sort%>&page=<%= currentPage+1 %>">Next Page</a>
           <%}%>
     
         </div>
