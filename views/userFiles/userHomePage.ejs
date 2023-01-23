@@ -32,33 +32,39 @@
       justify-content: center;
       align-items: center;
       color: white;
-      height:18rem;
-      width:18rem;
-      margin:18px
+      height:26rem;
+      width:22rem;
+      border-radius: 2rem;
+      transition: transform 1s;
+      
     }
 
     .tiles-1:hover{
       transform:scale(1.1)
     }
 
-    .tiles{
-      justify-content: center;
-      height:19rem;
-      width:13rem;
-    }
-
     .tiles:hover{
-      transform:scale(1.1)
+      box-shadow: 0px 0px 15px rgb(177, 177, 177);
+      
+    }
+    .innerClass{
+      transition: transform 2s;
     }
 
-    .innerClass{
-      width:100%
+    .innerClass:hover{
+      transform:scale(1.1)
     }
 
     .carousel-inner .carousel-item {
       transition: -webkit-transform 2s ease;
       transition: transform 2s ease;
       transition: transform 2s ease, -webkit-transform 2s ease;
+    }
+    h3 h5{
+      font-weight: lighter !important ;
+    }
+    a:hover{
+      color: black !important ;
     }
 
   </style>
@@ -88,6 +94,51 @@
   -webkit-user-select: none;
   touch-action: manipulation;
   margin-top: 1rem;
+  transition: background-color 0.5s;
+}
+.button-47:hover{
+  outline: 1px solid #f7f7f7;
+  outline-offset: 2px;
+  background-color: transparent;
+  color: #f7f7f7;
+}
+
+/* CSS */
+.button-39 {
+  background-color: #FFFFFF;
+  border: 2px solid rgb(209,213,219);
+  border-radius: .5rem;
+  box-sizing: border-box;
+  color: #111827;
+  font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  font-size: .875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  padding: .75rem 1rem;
+  text-align: center;
+  text-decoration: none #D1D5DB solid;
+  text-decoration-thickness: auto;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  transition: background-color 0.5s;
+}
+.button-39:hover {
+  background-color: rgb(23, 23, 23);
+  color: #E2E8F0;
+}
+
+.button-39:focus {
+  background-color: rgb(72, 72, 72);
+  color: #ffffff;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.button-39:focus-visible {
+  box-shadow: none;
 }
   </style>
   <style>
@@ -164,7 +215,19 @@
 color: #2ecc71;		
 }
   </style>
+  <!-- owl-carousel -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw==" crossorigin="anonymous" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous"></script>
+  <style>
+    .owl-item{
+      width: 19rem !important;
+      margin-right: 1rem !important;
+    }
+    
+  </style>
 </head>
+
 <body>
   <div class="container-fluid px-0">
     <div id="navBarFinal">
@@ -173,7 +236,7 @@ color: #2ecc71;
     <div style="z-index: 10;" id="navBarLeft">
       <%- include('./partials/navBarLeft')%>
     </div>
-    <div id="carouselExampleControls" class="carousel slide mb-5" data-bs-ride="carousel">
+    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active">
           <!-- <img src="/banners/<%= bannerData[0]?.bannerImage %>" class="d-block w-100" alt="..."> -->
@@ -182,9 +245,9 @@ color: #2ecc71;
               <source src="/public/banners/final.mp4" type="video/mp4">
             </video>
             <div style=" position: absolute;z-index: 1;top:60vh">
-              <div class="px-5">
-                <h1 style="color: rgb(255, 255, 255)">Last Word for Laxury!</h1>
-                <h5 style="color: rgb(255, 255, 255)">Our Inspiration and elagant solutions <br>can help you  bring ideas into your life</h5>
+              <div class="mx-5 mx-sm-5 px-sm-5">
+                <h1 style="color: rgb(255, 255, 255);font-style: italic;">Last Word for Laxury!</h1>
+                <p style="color: rgb(255, 255, 255)">Our Inspiration and elagant solutions <br>can help you  bring ideas into your life</p>
                 <!-- HTML !-->
                 <button class="button-47" role="button">Shop now!</button>
               </div>
@@ -213,53 +276,133 @@ color: #2ecc71;
         <span class="visually-hidden">Next</span>
       </button>
     </div>
+
+    <div class=" my-5 mx-5 mx-sm-5 px-sm-5 text-center">
+      <h1 style="font-style: italic;">We Believe You Are Unique !</h1>
+      <p >Why settle for a furniture that is made for someone else? With aesthetic designs, premium materials and skilled artisanship, our team is committed to improve your shopping experience.Why settle for a furniture that is made for someone else? With aesthetic designs, premium materials and skilled artisanship, our team is committed to improve your shopping experience.</p>
+      <button class="button-39" role="button">Gallery</button>
+    </div>
+
+    <div class="my-4 mx-5 mx-md-5 px-sm-5 text-center text-lg-start">
+     
+      <h3 class="mt-4">Top Categories</h3>
+      <hr>
+    </div>
+    <div class=" catlist mb-3" >
+      <%for(let i=0;i<3;i++){%>
     
-  <div class="separator-2 bg-light py-4">
-    <h2 style="text-align: center;font-style: normal">Categories</h2>
-  </div>
-  
-  <div class="catlist px-md-5 bg-light" >
-    <%catData.forEach((item)=>{%>
-  
-      <a href="/product/categories/<%= item?.catName %>">
-        <div class="tiles-1 shadow p-3 mb-5 bg-white rounded mx-4" style="background-image:url('<%= item?.catImage[0]?.cloudunaryUrlcloudunaryUrl %>');background-size: 100%;background-repeat: no-repeat">
-          <h3 class="text-center"><%= item?.catName %></h3>
-        </div>
-      </a>
-  
-    <%})%>
-  
-  </div>
-  
-  <div class="catlist my-5">
-    <img src="/home displaym Images/furnitures home page panorama views.jpg" alt="" class="img-fluid">
-  
-  </div>
-  
-  
-  <div class="mb-5 bg-light pt-5">
-  <div>
-    <h2 style="text-align: center;font-style: normal">Trending Products</h2>
-  </div>
-  
-  <div class="catlist px-5">
-    <%for(let i=0; i < 4 ; i++){%>
-      <a href="/product/productpage/<%= recProducts[i]?._id %>">
-        <div class="tiles my-5 mx-4 ">
-          <div class="innerClass shadow" style="border-radius:0.5rem">  
-            <img src="<%= recProducts[i]?.productImage[0]?.cloudunaryUrl %>" alt="" class="img-fluid" style="border-radius:0.4rem">
+        <a href="/product/categories/<%= catData[i]?.catName %>">
+          <div>
+            <div class=" tiles-1 mx-2 mx-sm-4 mb-3 shadow bg-white" style="background-image:url('/public/categories/images/sofas-cat.jpg');background-size: 100%;background-repeat: no-repeat">
+              <h3 class="text-center"><%= catData[i]?.catName %></h3>
+            </div>
+            <h5 class="mx-3 mx-sm-5">New Arrivals</h5>
+            <p class="mx-3 mx-sm-5">Explore through categories</p>
           </div>
-          <h3 class="text-center"><%= recProducts[i]?.productName %></h3>
-          <h5 class="text-center">&#8377 <%= recProducts[i]?.rate %></h5>
-        </div>
-      </a>
-    <%}%>
-  
+        </a>
     
-  </div>
+      <%}%>
+    </div>
+    <div class="text-center mb-5">
+      <button class="button-39" role="button">Show more</button>
+    </div>
+
+    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <!-- <img src="/banners/<%= bannerData[0]?.bannerImage %>" class="d-block w-100" alt="..."> -->
+          <div style="position: relative;">
+            <video style="height:100vh;object-fit: cover" audio muted loop autoplay  width="100%">
+              <source src="/public/banners/In the living-dv.mp4" type="video/mp4">
+            </video>
+            <div style=" position: absolute;z-index: 1;top:70vh">
+              
+              <div class="text-center mb-5" style="width:100vw">
+                <button class="button-47" role="button">Offers !</button>
+              </div>
+              <div class="downArrow bounce text-center my-4" style="width:100vw">
+
+                <i style="font-size: 2rem;color: #E2E8F0;" class="fa-solid fa-angle-down"></i>
+              </div>
+            </div>
+            
+          </div>
+          
+          
+        </div>
+        <%for(let i=1;i<bannerData.length;i++){%>
+          <div class="carousel-item">
+            <img src="/banners/<%= bannerData[i]?.bannerImage %>" class="d-block w-100" alt="...">
+          </div>
+        <%}%>
+        
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
+
+    <!-- <div class="owl-carousel owl-theme mx-4 mx-sm-4 px-sm-5" style="width:96vw">
+      <div class="tiles-2 shadow rounded" style="background-image:url('/public/admin/images/userLoginImage.jpg');background-size: 100%;background-repeat: no-repeat">
+        <h3 class="text-center">dfgdfgd</h3>
+      </div>
+      
+  
+    </div> -->
+    <!-- <div class="catlist">
+      <img src="/home displaym Images/furnitures home page panorama views.jpg" alt="" class="img-fluid">
+    
+    </div> -->
+
+    <div class="my-4 mx-5 mx-md-5 px-sm-5 text-center text-lg-start">
+      <h3 class="mt-4">New Arrivals</h3>
+      <hr>
+    </div>
+
+    <div class="row pt-4 px-5 mx-0 mx-lg-5">
+      <%for(let i=0; i < 4 ; i++){%>
+        <div class="tiles col-lg-3 col-md-6 col-12 mb-4">
+          <div class=" innerClass p-3 h-100">
+            <a href="/product/productpage/<%= recProducts[i]?._id %>"></a>
+            <img src="/public/products/images/ormaryd-3-seat-sofa-grey__0919853_pe786760_s5.avif" alt="" class="img-fluid" style="border-radius:0.4rem">
+              <h5 >Contemprory Sofas</h5>
+              <p >&#8377 35000/-</p5>
+            </a>
+          </div>
+        </div>
+      <%}%>
+    </div>
+    
+    <div class="text-center mb-5">
+    <button class="button-39" role="button">Show more</button>
+    </div>
+
+    <div class="row container-fluid d-flex justify-content-center">
+
+      <div class="col-sm-3 p-3" style="width:10rem">
+        <img class="img-fluid" src="/public/home displaym Images/AD.jpg" alt="">
+      </div>
+      <div class="col-sm-3 p-3" style="width:10rem">
+        <img class="img-fluid" src="/public/home displaym Images/bette interiros-1.jpg" alt="">
+      </div>
+      <div class="col-sm-3 p-3" style="width:10rem">
+        <img class="img-fluid" src="/public/home displaym Images/Elle (1).jpg" alt="">
+      </div>
+      <div class="col-sm-3 p-3" style="width:10rem">
+        <img class="img-fluid" src="/public/home displaym Images/Living etc.jpg" alt="">
+      </div>
+      <hr>
+    </div>
+    <%- include('./partials/footer')%>
   </div>
   
-  <%- include('./partials/footer')%>
+  
   <script>
     var viewPortHeight=window.innerHeight
     window.onscroll = function(){myFunction()}
@@ -275,7 +418,13 @@ color: #2ecc71;
       }
     }
     
-
   </script>
+  <!-- owl-carousel -->
+  <script>
+    $(document).ready(function(){
+      $('.owl-carousel').owlCarousel();
+    });
+    </script>
+  <!-- owl-carousel -->
 </body>
   
