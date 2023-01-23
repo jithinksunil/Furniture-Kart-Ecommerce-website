@@ -90,6 +90,80 @@
   margin-top: 1rem;
 }
   </style>
+  <style>
+  /* bousing arrow*/
+    downArrow{
+	position: fixed;
+	bottom: 45%;
+	left: 50%;
+}
+.bounce {
+	-moz-animation: bounce 3s infinite;
+	-webkit-animation: bounce 3s infinite;
+	animation: bounce 3s infinite;
+}
+@-moz-keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    -moz-transform: translateY(0);
+    transform: translateY(0);
+  }
+  40% {
+    -moz-transform: translateY(-30px);
+    transform: translateY(-30px);
+  }
+  60% {
+    -moz-transform: translateY(-15px);
+    transform: translateY(-15px);
+  }
+}
+@-webkit-keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+  40% {
+    -webkit-transform: translateY(-30px);
+    transform: translateY(-30px);
+  }
+  60% {
+    -webkit-transform: translateY(-15px);
+    transform: translateY(-15px);
+  }
+}
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    -moz-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+  40% {
+    -moz-transform: translateY(-30px);
+    -ms-transform: translateY(-30px);
+    -webkit-transform: translateY(-30px);
+    transform: translateY(-30px);
+  }
+  60% {
+    -moz-transform: translateY(-15px);
+    -ms-transform: translateY(-15px);
+    -webkit-transform: translateY(-15px);
+    transform: translateY(-15px);
+  }
+}
+/* Demo Purpose Only*/
+.demo {
+  font-family: 'Raleway', sans-serif;
+	color:#fff;
+    display: block;
+    margin: 0 auto;
+    padding: 15px 0;
+    text-align: center;
+}
+.demo a{
+  font-family: 'Raleway', sans-serif;
+color: #2ecc71;		
+}
+  </style>
 </head>
 <body>
   <div class="container-fluid px-0">
@@ -107,15 +181,20 @@
             <video style="height:100vh;object-fit: cover" audio muted loop autoplay  width="100%">
               <source src="/public/banners/final.mp4" type="video/mp4">
             </video>
-            <div class=" px-5" style=" position: absolute;z-index: 1;top:60vh;">
-              <h1 style="color: rgb(255, 255, 255)">Last Word for Laxury!</h1>
-              <h5 style="color: rgb(255, 255, 255)">Our Inspiration and solutions can <br>help you  bring ideas into your life</h5>
-              <!-- HTML !-->
-              <button class="button-47" role="button">Shop now!</button>
-
-
+            <div style=" position: absolute;z-index: 1;top:60vh">
+              <div class="px-5">
+                <h1 style="color: rgb(255, 255, 255)">Last Word for Laxury!</h1>
+                <h5 style="color: rgb(255, 255, 255)">Our Inspiration and elagant solutions <br>can help you  bring ideas into your life</h5>
+                <!-- HTML !-->
+                <button class="button-47" role="button">Shop now!</button>
+              </div>
+              <div class="downArrow bounce text-center" style="width:100vw">
+                <i style="font-size: 2rem;color: #E2E8F0;" class="fa-solid fa-angle-down"></i>
+              </div>
             </div>
+            
           </div>
+          
           
         </div>
         <%for(let i=1;i<bannerData.length;i++){%>
