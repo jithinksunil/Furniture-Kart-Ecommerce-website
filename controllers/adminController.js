@@ -11,10 +11,15 @@ const fs=require('fs')
 const path=require('path')
 const cloudinary=require('../config/cloudinary')
 
-function adminLogin(req,res){
-    res.render('./adminFiles/adminLoginPage')
+const adminLogin = async(req,res)=>{
+    try{
+        res.render('./adminFiles/adminLoginPage')
+    }
+    catch(err){
+        res.render('./404Error')
+    }
 }
-async function adminLoginValidation(req,res){
+const adminLoginValidation = async(req,res)=>{
     let admin=await adminCollection.findOne({email:req.body.email})
     try{
         if(admin.password===req.body.password){
@@ -30,61 +35,87 @@ async function adminLoginValidation(req,res){
     }
 }
 
-async function adminDashBoard(req,res){
+const adminDashBoard = async(req,res)=>{
 
-    let orderPerMonth=[]
-    for (let i=1;i<=12;i++){
-        let numberOfOrders=await orderCollection.find({orderMonth:i}).count()
-        orderPerMonth.push(numberOfOrders)
-    }
+    try{
+        let orderPerMonth=[]
+        for (let i=1;i<=12;i++){
+            let numberOfOrders=await orderCollection.find({orderMonth:i}).count()
+            orderPerMonth.push(numberOfOrders)
+        }
+        
+        let dashBoardData={
+            users:await userCollection.count(),
+            products:await productCollection.count(),
+            orders:await orderCollection.count(),
+            deliverd:await orderCollection.find({status:'Deliverd'}).count(),
+            cancelled:await orderCollection.find({status:'Cancel'}).count(),
+            pending:await orderCollection.find({status:'Pending'}).count(),
+            outForDelivey:await orderCollection.find({status:'Out for delivey'}).count(),
+            shipped:await orderCollection.find({status:'Shipped'}).count()
+        }
+        await orderCollection.find({status:'Deliverd'})
     
-    let dashBoardData={
-        users:await userCollection.count(),
-        products:await productCollection.count(),
-        orders:await orderCollection.count(),
-        deliverd:await orderCollection.find({status:'Deliverd'}).count(),
-        cancelled:await orderCollection.find({status:'Cancel'}).count(),
-        pending:await orderCollection.find({status:'Pending'}).count(),
-        outForDelivey:await orderCollection.find({status:'Out for delivey'}).count(),
-        shipped:await orderCollection.find({status:'Shipped'}).count()
+        res.render('./adminFiles/adminDashBoard',{data:dashBoardData,orderPerMonth})
     }
-    await orderCollection.find({status:'Deliverd'})
-
-    res.render('./adminFiles/adminDashBoard',{data:dashBoardData,orderPerMonth})
+    catch(err){
+        res.render('./404Error')
+    }
 }
 
-async function userManagement(req,res){
+const userManagement = async(req,res)=>{
+    try{
+        const users=await userCollection.find()
+        res.render('./adminFiles/admin_userManagement',{userData:users})
+    }
+    catch(err){
+        res.render('./404Error')
+    }
 
-    const users=await userCollection.find()
-    res.render('./adminFiles/admin_userManagement',{userData:users})
 }
 
-async function blockUser(req,res){
+const blockUser = async(req,res)=>{
+    try{
+        let jithin=await userCollection.updateOne({_id:req.query.id},{action:false})
+        res.redirect('/admin/usermangement')
+    }
+    catch(err){
+        res.render('./404Error')
+    }
+}
     
-    let jithin=await userCollection.updateOne({_id:req.query.id},{action:false})
-    res.redirect('/admin/usermangement')
+
+const unBlockUser = async(req,res)=>{
+    try{
+        await userCollection.updateOne({_id:req.query.id},{action:true})
+        res.redirect('/admin/usermangement')
+    }
+    catch(err){
+        res.render('./404Error')
+    }
+
 }
 
-async function unBlockUser(req,res){
-
-    await userCollection.updateOne({_id:req.query.id},{action:true})
-    res.redirect('/admin/usermangement')
+const categoryManagement = async(req,res)=>{
+    try{
+        let message=req.query.message
+        let catData=await catCollection.find()
+        res.render('./adminFiles/adminCatagories',{catData:catData,message})
+        message=false
+    }
+    catch(err){
+        res.render('./404Error')
+    }
 }
 
-async function categoryManagement(req,res){
-    let message=req.query.message
-    let catData=await catCollection.find()
-    res.render('./adminFiles/adminCatagories',{catData:catData,message})
-    message=false
-}
-
-async function addCategory(req,res){
+const addCategory = async(req,res)=>{
     if(req.file){
         try{
+
             const result = await cloudinary.uploader.upload(
                 req.file.path,{
                     transformation: [
-                    { width: 485, height: 485, gravity: "face", crop: "fill" }]
+                    { width: 485, height: 575, gravity: "face", crop: "fill" }]
                 }
             )
 
@@ -107,28 +138,47 @@ async function addCategory(req,res){
 
 }
 
-async function listCategoryAction(req,res){
-    await catCollection.updateOne({_id:req.query.id},{action:true})
-    res.redirect('/admin/products/categorymangement')
+const listCategoryAction = async(req,res)=>{
+    try{
+        await catCollection.updateOne({_id:req.query.id},{action:true})
+        res.redirect('/admin/products/categorymangement')
+    }
+    catch(err){
+        res.render('./404Error')
+    }
 }
 
-async function unListCategoryAction(req,res){
-    await catCollection.updateOne({_id:req.query.id},{action:false})
-    res.redirect('/admin/products/categorymangement')
+const unListCategoryAction = async(req,res)=>{
+    try{
+        await catCollection.updateOne({_id:req.query.id},{action:false})
+        res.redirect('/admin/products/categorymangement')
+    }
+    catch(err){
+        res.render('./404Error')
+    }
 }
 
-async function productManagement(req,res){
-    let productData=await productCollection.find() 
-    res.render('./adminFiles/adminProducts',{productData:productData})
+const productManagement = async(req,res)=>{
+    try{
+        let productData=await productCollection.find() 
+        res.render('./adminFiles/adminProducts',{productData:productData})
+    }
+    catch(err){
+        res.render('./404Error')
+    }
 }
 
-async function productAddPage(req,res){
-    let catData=await catCollection.find()
-    
-    res.render('./adminFiles/admin_addProductPage',{catData:catData})
+const productAddPage = async(req,res)=>{
+    try{
+        let catData=await catCollection.find()
+        res.render('./adminFiles/admin_addProductPage',{catData:catData})
+    }
+    catch(err){
+        res.render('./404Error')
+    }
 }
 
-async function addProductCompleted(req,res){
+const addProductCompleted = async(req,res)=>{
     if(req.files){
         try{
 
@@ -176,117 +226,220 @@ async function addProductCompleted(req,res){
 
 }
 
-async function listProductAction(req,res){
-    await productCollection.updateOne({_id:req.query.id},{action:true})
-    res.redirect('/admin/products/productmangement')
-}
-
-async function unListProductAction(req,res){
-    await productCollection.updateOne({_id:req.query.id},{action:false})
-    res.redirect('/admin/products/productmangement')
-}
-
-async function orderManagement(req,res){
-
-    let salesReport=req.query.genarated
-    let path=req.query.path
-
-    let orderData=await orderCollection.aggregate([{$lookup:{
-        from:'user_collections',
-        localField:'userId',
-        foreignField:'_id',
-        as:'user'
-    }}])
-    res.render('./adminFiles/adminOrderManagement',{orderData,salesReport,path})
-}
-
-async function orderStatusManagement(req,res){
-    await orderCollection.updateOne({_id:req.query.orderId},{status:req.query.status})
-    res.json({status:true})
-}
-
-
-async function salesReport(req,res){
-
-    let orderData=await orderCollection.aggregate([{$match:{status:'Deliverd'}},{$lookup:{
-        from:'user_collections',
-        localField:'userId',
-        foreignField:'_id',
-        as:'user'
-    }}])
-    let salesData=[];//this array is created because the sales report template cannot read the data like this.user[0].fName??????????????????
-    for(let i=0;i<orderData.length;i++){
-        let order={
-            address:orderData[i].address.houseName,
-            fName:orderData[i].user[0].fName,
-            netAmount:orderData[i].netAmount,
-            status:orderData[i].status,
-            orderDate:orderData[i].orderDate
-        }
-        salesData.push(order)
+const listProductAction = async(req,res)=>{
+    try{
+        await productCollection.updateOne({_id:req.query.id},{action:true})
+        res.redirect('/admin/products/productmangement')
+    }
+    catch(err){
+        res.render('./404Error')
     }
 
-    let totalAmount=0;
-    for(let i=0;i<orderData.length;i++){
-        totalAmount=totalAmount+orderData[i].netAmount
+}
+
+const unListProductAction = async(req,res)=>{
+    try{
+        await productCollection.updateOne({_id:req.query.id},{action:false})
+        res.redirect('/admin/products/productmangement')
     }
+    catch(err){
+        res.render('./404Error')
+    }
+}
+
+const orderManagement = async(req,res)=>{
+    try{
+        let salesReport=req.query.genarated
+        let path=req.query.path
     
-    const html=fs.readFileSync(path.join(__dirname,'../views/adminFiles/salesReport/reportTemplate.html'),'utf-8')
-    const filename=Math.random()+'_doc'+'.pdf'
-    const filepath='/public/salesReports/'+filename
-
-    const document={
-        html:html,
-        data:{salesData,totalAmount},
-        path:'./public/salesReports/'+filename
+        let orderData=await orderCollection.aggregate([{$lookup:{
+            from:'user_collections',
+            localField:'userId',
+            foreignField:'_id',
+            as:'user'
+        }}])
+        res.render('./adminFiles/adminOrderManagement',{orderData,salesReport,path})
     }
-    pdf.create(document).then(resolve=>{
-        console.log(resolve)
-        res.redirect(filepath)
-    }).catch(err=>{
-        console.log(err)
-    })
-}
-
-async function couponManagement(req,res){
-
-    let couponData= await couponCollection.find()
-
-    res.render('./adminFiles/adminCouponManagement',{couponData})
-}
-
-async function couponListAndUnListActions(req,res){
-    if(req.query.list_CouponId){
-        await couponCollection.updateOne({_id:req.query.list_CouponId},{status:true})
-    }else if(req.query.unList_CouponId){
-        await couponCollection.updateOne({_id:req.query.unList_CouponId},{status:false})
+    catch(err){
+        res.render('./404Error')
     }
-    res.redirect('/admin/coupons')
+
 }
 
-async function bannerManagement(req,res){
-
-    let bannerData= await bannerCollection.find()
-    res.render('./adminFiles/adminBannerManagement',{bannerData})
+const orderStatusManagement = async(req,res)=>{
+    try{
+        await orderCollection.updateOne({_id:req.query.orderId},{status:req.query.status})
+        res.json({status:true})
+    }
+    catch(err){
+        res.render('./404Error')
+    }
 }
 
-async function blockBanner(req,res){
 
-    await bannerCollection.updateOne({_id:req.query.id},{action:false})
+const salesReport = async(req,res)=>{
+    try{
+        let orderData=await orderCollection.aggregate([{$match:{status:'Deliverd'}},{$lookup:{
+            from:'user_collections',
+            localField:'userId',
+            foreignField:'_id',
+            as:'user'
+        }}])
+        let salesData=[];//this array is created because the sales report template cannot read the data like this.user[0].fName??????????????????
+        for(let i=0;i<orderData.length;i++){
+            let order={
+                address:orderData[i].address.houseName,
+                fName:orderData[i].user[0].fName,
+                netAmount:orderData[i].netAmount,
+                status:orderData[i].status,
+                orderDate:orderData[i].orderDate
+            }
+            salesData.push(order)
+        }
+    
+        let totalAmount=0;
+        for(let i=0;i<orderData.length;i++){
+            totalAmount=totalAmount+orderData[i].netAmount
+        }
+        
+        const html=fs.readFileSync(path.join(__dirname,'../views/adminFiles/salesReport/reportTemplate.html'),'utf-8')
+        const filename=Math.random()+'_doc'+'.pdf'
+        const filepath='/public/salesReports/'+filename
+    
+        const document={
+            html:html,
+            data:{salesData,totalAmount},
+            path:'./public/salesReports/'+filename
+        }
+        pdf.create(document).then(resolve=>{
+            console.log(resolve)
+            res.redirect(filepath)
+        }).catch(err=>{
+            console.log(err)
+        })
+    }
+    catch(err){
+        res.render('./404Error')
+    }
 
-    res.redirect('/admin/banners')
 }
 
-async function unBlockBanner(req,res){
+const couponManagement = async(req,res)=>{
+    try{
+        let couponData= await couponCollection.find()
+    
+        res.render('./adminFiles/adminCouponManagement',{couponData})
+    }
+    catch(err){
+        res.render('./404Error')
+    }
 
-    await bannerCollection.updateOne({_id:req.query.id},{action:true})
-
-    res.redirect('/admin/banners')
 }
 
-function logOut(req,res){
-    req.session.destroy()
-    res.redirect('/admin/login')
+const addCouponCompleted = async(req,res)=>{
+    try{
+        await couponCollection.insertMany([{
+            couponName:req.body.couponName,
+            couponCode:req.body.couponCode,
+            discount:parseInt(req.body.discount),
+            count:parseInt(req.body.countPerUser)
+        }])
+        res.redirect('/admin/coupons')
+    }
+    catch(err){
+        res.render('./404Error')
+    }
+
+}
+
+const couponListAndUnListActions = async(req,res)=>{
+    try{
+        if(req.query.list_CouponId){
+            await couponCollection.updateOne({_id:req.query.list_CouponId},{status:true})
+        }else if(req.query.unList_CouponId){
+            await couponCollection.updateOne({_id:req.query.unList_CouponId},{status:false})
+        }
+        res.redirect('/admin/coupons')
+    }
+    catch(err){
+        res.render('./404Error')
+    }
+}
+
+const bannerManagement = async(req,res)=>{
+    try{
+        let bannerData= await bannerCollection.find()
+        res.render('./adminFiles/adminBannerManagement',{bannerData})
+    }
+    catch(err){
+        res.render('./404Error')
+    }
+
+}
+
+const addBanner = async(req,res)=>{
+    if(req.file){
+        try{
+
+            const result = await cloudinary.uploader.upload(
+                req.file.path,{
+                    transformation: [
+                    { width: 1920, height: 950, gravity: "face", crop: "fill" }]
+                }
+            )
+
+            
+            await bannerCollection.insertMany([{
+                bannerName:req.body.bannerLabel,
+                bannerImage:{public_id:result.public_id, cloudunaryUrl:result.secure_url}
+    
+             }]
+            )
+            
+            res.redirect('/admin/banners')
+        }
+        catch(err){
+            res.redirect('/admin/banners')
+        }
+    }
+    else{
+        res.redirect('/admin/banners?message=Select jpeg format')
+    }
+
+}
+
+const blockBanner = async(req,res)=>{
+    try{
+        
+            await bannerCollection.updateOne({_id:req.query.id},{action:false})
+        
+            res.redirect('/admin/banners')
+    }
+    catch(err){
+        res.render('./404Error')
+    }
+}
+
+const unBlockBanner = async(req,res)=>{
+    try{
+        await bannerCollection.updateOne({_id:req.query.id},{action:true})
+    
+        res.redirect('/admin/banners')
+    }
+    catch(err){
+        res.render('./404Error')
+    }
+
+}
+
+const logOut = async(req,res)=>{
+    try{
+        req.session.destroy()
+        res.redirect('/admin/login')
+    }
+    catch(err){
+        res.render('./404Error')
+    }
 }
 
 module.exports={
@@ -309,8 +462,10 @@ module.exports={
     orderStatusManagement,
     salesReport,
     couponManagement,
+    addCouponCompleted,
     couponListAndUnListActions,
     bannerManagement,
+    addBanner,
     blockBanner,
     unBlockBanner,
     logOut

@@ -1,6 +1,7 @@
+const userCollection = require("../models/userSchema")
 
 function adminSession(req,res,next){
-    if(true/*req.session.admin*/){
+    if(req.session.admin){
         next()
     }
     else{
@@ -8,9 +9,11 @@ function adminSession(req,res,next){
     }
 }
 
-function withOutAdminSession(req,res,next){
+async function withOutAdminSession(req,res,next){
     if(!req.session.admin){
+        
         next()
+       
     }
     else{
         res.redirect('/admin/dashboard')

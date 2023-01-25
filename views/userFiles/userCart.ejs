@@ -1,5 +1,10 @@
 <head>
   <link rel="stylesheet" href="/public/user/css/cart.css">
+  <style>
+    .searchBox{
+      display: none !important;
+    }
+  </style>
 </head>
 <body id="mainDivCart">
   <%- include('./partials/navBarLeft')%>
@@ -18,12 +23,16 @@
                         <h6 class="mb-0 text-muted"><%= cartCount %>items</h6>
                       </div>
                       <hr class="my-4">
+                      <%if(cartCount==0){%>
+                        <h3>No Items added in the cart..</h3>
+
+                      <%}%>
                       <%for(let i=0;i<cartProducts.length;i++){%>
                          
                         <div class="row mb-4 d-flex justify-content-between align-items-center">
                           <div class="col-md-2 col-lg-2 col-xl-2">
                             <img
-                            src="/products/images/<%= cartProducts[i].productDetails[0].productImage %>"
+                            src="<%= cartProducts[i].productDetails[0].productImage[0].cloudunaryUrl %>"
                               class="img-fluid rounded-3" alt="Cotton T-shirt">
                           </div>
                           <div class="col-md-3 col-lg-3 col-xl-3">
@@ -31,8 +40,9 @@
                           </div>
                           <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                             <button style="border: none;background-color: #d7d7d7;" onclick="amountChanger(-1*'<%=cartProducts[i].productDetails[0].rate %>','<%= i %>'); addToCart('<%= cartProducts[i].prod %>',-1)"> - </button>
-                              <span id= "<%= cartProducts[i].prod %>"> <%= cartProducts[i].nos %> </span>
+                              <span id= "<%= cartProducts[i].prod %>"> <%= cartProducts[i].nos %></span>
                             <button style="border: none;background-color: #d7d7d7;" onclick="amountChanger('<%=cartProducts[i].productDetails[0].rate %>','<%= i %>');addToCart('<%= cartProducts[i].prod %>',1)"> + </button>
+                            Nos
                           </div>
 
                           <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
@@ -47,7 +57,7 @@
                       
     
                       <div class="pt-5">
-                        <h6 class="mb-0"><a href="#!" class="text-body"><i
+                        <h6 class="mb-0"><a href="/" class="text-body"><i
                               class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a></h6>
                       </div>
                     </div>
@@ -83,5 +93,6 @@
         </div>
       </div>
     </section>
+
   <%- include('./partials/footer') %>
 </body>

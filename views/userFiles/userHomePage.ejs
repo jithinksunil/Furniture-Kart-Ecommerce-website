@@ -63,9 +63,7 @@
     h3 h5{
       font-weight: lighter !important ;
     }
-    a:hover{
-      color: black !important ;
-    }
+    
 
   </style>
   <style>
@@ -226,6 +224,7 @@ color: #2ecc71;
     }
     
   </style>
+   
 </head>
 
 <body>
@@ -238,8 +237,8 @@ color: #2ecc71;
     </div>
     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
+
         <div class="carousel-item active">
-          <!-- <img src="/banners/<%= bannerData[0]?.bannerImage %>" class="d-block w-100" alt="..."> -->
           <div style="position: relative;">
             <video style="height:100vh;object-fit: cover" audio muted loop autoplay  width="100%">
               <source src="https://res.cloudinary.com/df8w69xon/video/upload/v1674497806/drag%24drop/final_lkuwwd.mp4" type="video/mp4">
@@ -249,22 +248,34 @@ color: #2ecc71;
                 <h1 style="color: rgb(255, 255, 255);font-style: italic;">Last Word for Laxury!</h1>
                 <p style="color: rgb(255, 255, 255)">Our Inspiration and elagant solutions <br>can help you  bring ideas into your life</p>
                 <!-- HTML !-->
-                <button class="button-47" role="button">Shop now!</button>
-              </div>
-              <div class="downArrow bounce text-center" style="width:100vw">
-                <i style="font-size: 2rem;color: #E2E8F0;" class="fa-solid fa-angle-down"></i>
+                <a href="/product/categories/all">
+                  <button class="button-47 mx-5" role="button">Shop now!</button>
+                </a>
               </div>
             </div>
-            
           </div>
-          
-          
         </div>
-        <%for(let i=1;i<bannerData.length;i++){%>
+        
+        <%for(let i=0;i<bannerData.length;i++){%>
           <div class="carousel-item">
-            <img src="/banners/<%= bannerData[i]?.bannerImage %>" class="d-block w-100" alt="...">
+            <div style="position: relative;">
+              <img style="height:100vh;object-fit: cover" width="100%" src="<%= bannerData[i].bannerImage.cloudunaryUrl %>">
+              <div style=" position: absolute;z-index: 1;top:60vh">
+                <div class="mx-5 mx-sm-5 px-sm-5">
+                  <h1 style="color: rgb(255, 255, 255);font-style: italic;">Last Word for Laxury!</h1>
+                  <p style="color: rgb(255, 255, 255)">Our Inspiration and elagant solutions <br>can help you  bring ideas into your life</p>
+                  <a href="/product/categories/all">
+                    <button class="button-47 mx-5" role="button">Shop now!</button>
+                  </a>
+                </div>
+                <div class="downArrow bounce text-center" style="width:100vw">
+                  <i style="font-size: 2rem;color: #E2E8F0;" class="fa-solid fa-angle-down"></i>
+                </div>
+              </div>
+              
+            </div>
           </div>
-        <%}%>
+          <%}%>
         
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
@@ -280,7 +291,7 @@ color: #2ecc71;
     <div class=" my-5 mx-5 mx-sm-5 px-sm-5 text-center">
       <h1 style="font-style: italic;">We Believe You Are Unique !</h1>
       <p >Why settle for a furniture that is made for someone else? With aesthetic designs, premium materials and skilled artisanship, our team is committed to improve your shopping experience.Why settle for a furniture that is made for someone else? With aesthetic designs, premium materials and skilled artisanship, our team is committed to improve your shopping experience.</p>
-      <button class="button-39" role="button">Gallery</button>
+      
     </div>
 
     <div class="my-4 mx-5 mx-md-5 px-sm-5 text-center text-lg-start">
@@ -293,58 +304,35 @@ color: #2ecc71;
     
         <a href="/product/categories/<%= catData[i]?.catName %>">
           <div>
-            <div class=" tiles-1 mx-2 mx-sm-4 mb-3 shadow bg-white" style="background-image:url('/public/categories/images/sofas-cat.jpg');background-size: 100%;background-repeat: no-repeat">
+            <div class=" tiles-1 mx-2 mx-sm-4 mb-3 shadow bg-white" style="background-image:url('<%= catData[i]?.catImage[0].cloudunaryUrl %>');background-size: 100%;background-repeat: no-repeat">
               <h3 class="text-center"><%= catData[i]?.catName %></h3>
             </div>
-            <h5 class="mx-3 mx-sm-5">New Arrivals</h5>
-            <p class="mx-3 mx-sm-5">Explore through categories</p>
+            <h5 class="mx-3 mx-sm-5"><%= catData[i]?.catName %> Collection</h5>
+            <p class="mx-3 mx-sm-5">Explore through category</p>
           </div>
         </a>
     
       <%}%>
     </div>
     <div class="text-center mb-5">
-      <button class="button-39" role="button">Show more</button>
+      <a href="/product/categories/all">
+        <button class="button-39" role="button">Show more</button>
+      </a>
     </div>
 
-    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <!-- <img src="/banners/<%= bannerData[0]?.bannerImage %>" class="d-block w-100" alt="..."> -->
-          <div style="position: relative;">
-            <video style="height:100vh;object-fit: cover" audio muted loop autoplay  width="100%">
-              <source src="https://res.cloudinary.com/df8w69xon/video/upload/v1674497566/drag%24drop/In_the_living-dv_whopus.mp4" type="video/mp4">
-            </video>
-            <div style=" position: absolute;z-index: 1;top:70vh">
-              
-              <div class="text-center mb-5" style="width:100vw">
-                <button class="button-47" role="button">Offers !</button>
-              </div>
-              <div class="downArrow bounce text-center my-4" style="width:100vw">
-
-                <i style="font-size: 2rem;color: #E2E8F0;" class="fa-solid fa-angle-down"></i>
-              </div>
-            </div>
-            
-          </div>
-          
-          
-        </div>
-        <%for(let i=1;i<bannerData.length;i++){%>
-          <div class="carousel-item">
-            <img src="/banners/<%= bannerData[i]?.bannerImage %>" class="d-block w-100" alt="...">
-          </div>
-        <%}%>
+    <div style="position: relative;" class="conatiner-fluid">
+      <video style="height:100vh;object-fit: cover" audio muted loop autoplay  width="100%">
+        <source src="https://res.cloudinary.com/df8w69xon/video/upload/v1674497566/drag%24drop/In_the_living-dv_whopus.mp4" type="video/mp4">
+      </video>
+      <div style=" position: absolute;z-index: 1;top:70vh;width:100%" class="text-center">
         
+        <div class="downArrow bounce text-center my-4">
+          <i style="font-size: 2rem;color: #E2E8F0;" class="fa-solid fa-angle-down"></i>
+        </div>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
+      
+      
+      
     </div>
 
 
@@ -370,9 +358,9 @@ color: #2ecc71;
         <div class="tiles col-lg-3 col-md-6 col-12 mb-4">
           <div class=" innerClass p-3 h-100">
             <a href="/product/productpage/<%= recProducts[i]?._id %>"></a>
-            <img src="/public/products/images/ormaryd-3-seat-sofa-grey__0919853_pe786760_s5.jpg" alt="" class="img-fluid" style="border-radius:0.4rem">
-              <h5 >Contemprory Sofas</h5>
-              <p >&#8377 35000/-</p5>
+            <img src="<%= recProducts[i]?.productImage[0]?.cloudunaryUrl %>" alt="" class="img-fluid" style="border-radius:0.4rem">
+              <h5 ><%= recProducts[i]?.productName %></h5>
+              <p >&#8377 <%= recProducts[i]?.rate %>/-</p5>
             </a>
           </div>
         </div>
@@ -380,7 +368,9 @@ color: #2ecc71;
     </div>
     
     <div class="text-center mb-5">
-    <button class="button-39" role="button">Show more</button>
+      <a href="/product/categories/all">
+        <button class="button-39" role="button">Show more</button>
+      </a>
     </div>
 
     <div class="row container-fluid d-flex justify-content-center">
@@ -412,9 +402,12 @@ color: #2ecc71;
       if(currentOffset>=viewPortHeight*0.9){
         document.getElementById('navBarLeft').style.display = "block"
         document.getElementById('navBarFinal').style.display = "none"
+       
+        console.log(a);
       }else{
         document.getElementById('navBarLeft').style.display = "none"
         document.getElementById('navBarFinal').style.display = "block"
+
       }
     }
     

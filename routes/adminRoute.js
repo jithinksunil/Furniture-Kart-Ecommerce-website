@@ -5,6 +5,7 @@ const adminController=require('../controllers/adminController')
 const upload = require('../config/multerConfiguration')
 const catUpload=upload.uploadCategories
 const productUpload=upload.uploadProducts
+const bannerUpload=upload.uploadbanners
 const adminSession = require('../middlewares/adminSessionMW')
 const adminSessionMW=adminSession.adminSession
 const withOutAdminSessionMW=adminSession.withOutAdminSession
@@ -28,8 +29,11 @@ router.get('/orders',adminSessionMW,adminController.orderManagement)
 router.get('/orders/statuschange',adminController.orderStatusManagement)
 router.get('/genarate/salesreport',adminSessionMW,adminController.salesReport)
 router.get('/coupons',adminSessionMW,adminController.couponManagement)
+router.post('/coupon/add',adminSessionMW,adminController.addCouponCompleted)
+
 router.get('/coupon/couponmangement/actions',adminSessionMW,adminController.couponListAndUnListActions)
 router.get('/banners',adminSessionMW,adminController.bannerManagement)
+router.post('/banner/add',adminSessionMW,bannerUpload.single('bannerFile'),adminController.addBanner)
 router.get('/banners/blockbanner',adminSessionMW,adminController.blockBanner)
 router.get('/banners/unblockbanner',adminSessionMW,adminController.unBlockBanner)
 router.get('/logout',adminController.logOut)

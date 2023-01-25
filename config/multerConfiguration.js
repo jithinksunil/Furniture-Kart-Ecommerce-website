@@ -12,7 +12,7 @@ const catCloudstorage = new CloudinaryStorage({
 const uploadCategories = multer({
     storage: catCloudstorage,
     fileFilter:(req,file,callback)=>{//image validation for files other than required format,can avoid this  field if validain is not required
-        if(file.mimetype=='image/jpeg'||file.mimetype=='image/jpg'||file.mimetype=='image/png'||file.mimetype=='image/gif'){
+        if(file.mimetype=='image/jpeg'||file.mimetype=='image/jpg'||file.mimetype=='image/png'||file.mimetype=='image/gif'||file.mimetype=='image/avif'){
             callback(null,true)
         }
         else{
@@ -32,7 +32,28 @@ const productCloudstorage = new CloudinaryStorage({
 const uploadProducts = multer({
     storage: productCloudstorage,
     fileFilter:(req,file,callback)=>{//image validation for files other than required format,can avoid this  field if validain is not required
-        if(file.mimetype=='image/jpeg'||file.mimetype=='image/jpg'||file.mimetype=='image/png'||file.mimetype=='image/gif'){
+        if(file.mimetype=='image/jpeg'||file.mimetype=='image/jpg'||file.mimetype=='image/png'||file.mimetype=='image/gif'||file.mimetype=='image/avif'){
+            callback(null,true)
+        }
+        else{
+            callback(null,false)
+            
+            // return callback(new Error('only jpg jpeg png and gif file are allowed'))
+        }
+    }
+})
+
+const bannerCloudstorage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+      folder: "banners",//cloud folder
+    },
+});
+
+const uploadbanners = multer({
+    storage: bannerCloudstorage,
+    fileFilter:(req,file,callback)=>{//image validation for files other than required format,can avoid this  field if validain is not required
+        if(file.mimetype=='image/jpeg'||file.mimetype=='image/jpg'||file.mimetype=='image/png'||file.mimetype=='image/gif'||file.mimetype=='image/avif'){
             callback(null,true)
         }
         else{
@@ -45,5 +66,6 @@ const uploadProducts = multer({
 
 module.exports={
     uploadCategories,
-    uploadProducts
+    uploadProducts,
+    uploadbanners
 }

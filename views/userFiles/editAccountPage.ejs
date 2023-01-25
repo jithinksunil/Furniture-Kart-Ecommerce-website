@@ -1,4 +1,9 @@
     <body>
+      <style>
+        .searchBox{
+          display: none !important;
+        }
+      </style>
       
       <%- include('./partials/navBarLeft')%>
       <div style="height:5vw" class="my-3"></div>
@@ -33,17 +38,6 @@
                             name="lName"
                             class="form-control form-control-lg"
                             value="<%= userData.lName %>"
-                          />
-                        </div>
-                        <div class="form-outline mb-4">
-                          <label class="form-label" for="form3Example1cg"
-                            >Email</label
-                          >
-                          <input
-                            type="text"
-                            name="email"
-                            class="form-control form-control-lg"
-                            value="<%= userData.email %>"
                           />
                         </div>
                         <div class="form-outline mb-4">

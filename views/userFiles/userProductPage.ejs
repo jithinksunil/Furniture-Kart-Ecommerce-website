@@ -1,5 +1,10 @@
 <head>
     <link rel="stylesheet" type="text/css" href="/user/css/productDetailPage.css">
+    <style>
+        .searchBox{
+          display: none !important;
+        }
+      </style>
 </head>
 <body>
     <%- include('./partials/navBarLeft')%>
@@ -7,12 +12,12 @@
 
     <div class="container my-5">
 
-        <div class="row">
+        <div class="row" >
             
-            <div class="col-md-5">
+            <div class="col-md-5 card">
                 <div class="main-img img-zoom-container" >
-                        <figure class="zoom" onmousemove="zoom(event)" style="background-image: url(/products/images/<%=productData.productImage%>)">
-                        <img  class="img-fluid" src="/products/images/<%=productData.productImage%>" >
+                        <figure class="zoom" onmousemove="zoom(event)" style="background-image: url('<%=productData?.productImage[0]?.cloudunaryUrl %>')">
+                        <img  class="img-fluid" src="<%=productData?.productImage[0]?.cloudunaryUrl %>" >
                         </figure>
                 </div>
 
@@ -22,7 +27,7 @@
             <div class="col-md-7">
                 <div class="main-description px-2">
                     <div class="category text-bold text-secondary">
-                        Category: Cot
+                        Category:<%=productData.category%>
                     </div>
                     <div class="product-title text-bold my-3">
                         <%= productData.productName %>
@@ -30,54 +35,37 @@
 
 
                     <div class="price-area my-4">
-                        <p class="old-price mb-1"><del>$<span>
-                            ₹ <%= productData.rate %>
-                        </span></del>
-                            <span class="old-price-discount text-danger">(20% off)</span></p>
+                        
                         <p class="new-price text-bold mb-1"><span>
                             ₹ <%= productData.rate %>
                         </span></p>
-                        <p class="text-secondary mb-1">(Additional tax may apply on checkout)</p>
-
-                    </div>
-
-
-                    <div class="buttons d-flex my-5">
-                        <div class="block">
-                            <button id="cartButton" class="btn btn-dark btn-addtocart mx-2" style="width: 140px;" onclick="addToCart('<%= productData._id %>',1)"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
-                        </div>
                         
-                        <div class="block">
-                            <a href="/checkout?buyFrom=productPage&productId=<%= productData._id %>">
-                                <button class="btn btn-dark mx-2">Buy now</button>
-                            </a>
+
+                    </div>
+
+
+                        <div class="buttons d-flex my-5">
+                            <div class="block">
+                                <button id="cartButton" class="btn btn-dark btn-addtocart mx-2" style="width: 140px;" onclick="addToCart('<%= productData._id %>',1)"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+                            </div>
+                            
+                            <div class="block">
+                                <a href="/checkout?buyFrom=productPage&productId=<%= productData._id %>">
+                                    <button class="btn btn-dark mx-2">Buy now</button>
+                                </a>
+                            </div>
                         </div>
+                </div>
+
+                    <div class="product-details my-4">
+                        <p class="details-title text-color mb-1">Product Details</p>
+                        <p class="description"></p>
                     </div>
-                </div>
 
-                <div class="product-details my-4">
-                    <p class="details-title text-color mb-1">Product Details</p>
-                    <p class="description"> <p> <div>
-                        <!-- <%= productData.description %> -->
+                    <div class="product-details my-4">
+                        <h5 class=" text-color mb-2 "><%= productData.description %></h5>
                     </div>
-                        
-                    </p> </p>
-                </div>
-
-                <div class="product-details my-4">
-                    <p class="details-title text-color mb-2">Material & Care</p>
-                    <ul>
-                        <li>Cotton</li>
-                        <li>Machine-wash</li>
-                    </ul>
-                </div>
-
-                <div class="product-details my-4">
-                    <p class="details-title text-color mb-2">Sold by</p>
-                    <ul>
-                        <li>Cotton</li>
-                        <li>Machine-wash</li>
-                    </ul>
+                    
                 </div>
 
             </div>
@@ -89,7 +77,7 @@
     
     
     <script>
-
+        //product zoom
         function zoom(e){
             var zoomer = e.currentTarget;
             e.offsetX ? offsetX = e.offsetX : offsetX = e.touches[0].pageX

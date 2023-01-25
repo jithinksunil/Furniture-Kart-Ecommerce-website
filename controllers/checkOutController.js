@@ -7,6 +7,7 @@ const couponCollection=require('../models/couponShema')
 
 module.exports={
     checkOut:async (req,res)=>{
+    
         let catData=await catCollection.find({action:true})
         let cartCount=0
         try{
@@ -38,10 +39,14 @@ module.exports={
             for(let i=0;i<cartProducts.length;i++){
                 price=price+(parseInt(cartProducts[i].nos)*parseInt(cartProducts[i].productDetails[0].rate))
             }
+
+            let cartData=await cartCollection.findOne({userId:req.session.userData._id})
+            req.session.orderProducts=cartData.products
         }
         else if(req.query.buyFrom=='productPage'){
             let productData=await productCollection.findOne({_id:req.query.productId})
             price=parseInt(productData.rate)
+            req.session.orderProducts=[{productId:mongoose.Types.ObjectId(req.query.productId),quantity:1}]
         }
         
         let addressData=await userCollection.aggregate([{$match:{_id:mongoose.Types.ObjectId(req.session.userData._id)}},{$unwind:"$addresses"},{$project:{
@@ -58,35 +63,50 @@ module.exports={
     },
 
     deleteAddress:async (req,res)=>{
+        try{
+            await userCollection.updateOne({_id:req.session.userData._id},{$pull:{addresses:{_id:mongoose.Types.ObjectId(req.query.addressId)}}})
+            res.json({status:true})
+        }
+        catch(err){
+            res.render('./404Error')
+        }
 
-        await userCollection.updateOne({_id:req.session.userData._id},{$pull:{addresses:{_id:mongoose.Types.ObjectId(req.query.addressId)}}})
-        res.json({status:true})
     },
     
     addAddress:async (req,res)=>{
-        req.body.pin=parseInt(req.body.pin)
-        await userCollection.updateOne({_id:req.session.userData._id},{$push:{addresses:req.body}})
-        res.json({status:true})
+        try{
+            req.body.pin=parseInt(req.body.pin)
+            await userCollection.updateOne({_id:req.session.userData._id},{$push:{addresses:req.body}})
+            res.json({status:true})
+        }
+        catch(err){
+            res.render('./404Error')
+        }
     },
 
     couponApply:async (req,res)=>{
-
-        let coupon=await couponCollection.findOne({couponCode:req.query.couponCode,status:true})
-        if(coupon){
-            let userData=await userCollection.findOne({_id:req.session.userData._id})
-            let couponData=userData.couponsApplied
-            let couponExist=couponData.findIndex((item)=>{
-                return item==req.query.couponCode
-            })
-            if(couponExist==-1){
-                let couponData=await couponCollection.findOne({couponCode:req.query.couponCode})
-                res.json({coupon:'appliedNow',couponData})
-            }else{
-                res.json({coupon:'alreadyApplied'})
+        try{
+            let coupon=await couponCollection.findOne({couponCode:req.query.couponCode,status:true})
+            if(coupon){
+                let userData=await userCollection.findOne({_id:req.session.userData._id})
+                let couponData=userData.couponsApplied
+                let couponExist=couponData.findIndex((item)=>{
+                    return item==req.query.couponCode
+                })
+                if(couponExist==-1){
+                    let couponData=await couponCollection.findOne({couponCode:req.query.couponCode})
+                    res.json({coupon:'appliedNow',couponData})
+                }else{
+                    res.json({coupon:'alreadyApplied'})
+                }
+            }
+            else{
+                res.json({coupon:'invalid'})
             }
         }
-        else{
-            res.json({coupon:'invalid'})
+        catch(err){
+            res.render('./404Error')
         }
+
     }
 }

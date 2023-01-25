@@ -37,7 +37,7 @@
 				<h1 class="title" >
 					Category management
 				</h1>
-				<button type="button" class="btn btn-success" style="width: 80px; height:40px">Add</button>
+				
 			</div>
 		</section>
         <section class="mt-2 ">
@@ -58,7 +58,7 @@
 							<td class="mx-2"><%= item.catName %></td>
 							<td class="mx-2">
 								<div style="height: 90px;width:120px" class="img-fluid d-flex align-items-center">
-									<img src="/categories/images/<%= item.catImage %>" alt="img">
+									<img src="<%= item?.catImage[0].cloudunaryUrl %>" alt="img" class="h-100">
 								</div>
 							</td>
 							

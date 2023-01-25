@@ -4,8 +4,8 @@ const cartCollection=require('../models/cartShema')
 const mongoose= require('mongoose')
 function toObjectId(arg){return mongoose.Types.ObjectId(arg)}
 
-async function userWishlist(req,res){
-
+const userWishlist = async(req,res)=>{
+    
     let catData=await catCollection.find({action:true})
     let cartCount=0
         try{
@@ -44,10 +44,11 @@ async function userWishlist(req,res){
     }
 
     res.render('./userFiles/userWishlist',{userWishlist,userData:req.session.userData,cartCount,catData})
+
 }
 
-async function userAddToWishlist(req,res){
-
+const userAddToWishlist = async(req,res)=>{
+    try{
         let productAlreadyExist
         let userWishlist=await wishlistCollection.findOne({userId:req.session.userData._id})
     
@@ -72,13 +73,21 @@ async function userAddToWishlist(req,res){
             )
         }
         res.json({status:true,productAlreadyExist})
+    }
+    catch(err){
+        res.render('./404Error')
+    }
+
 }
 
-async function removeFromWishlist(req,res){
-
-    await wishlistCollection.updateOne({userId:req.session.userData._id},{$pull:{products:req.query.productId}})
-    res.redirect('/wishlist')
-
+const removeFromWishlist = async(req,res)=>{
+    try{
+        await wishlistCollection.updateOne({userId:req.session.userData._id},{$pull:{products:req.query.productId}})
+        res.redirect('/wishlist')
+    }
+    catch(err){
+        res.render('./404Error')
+    }
 }
 
 module.exports={

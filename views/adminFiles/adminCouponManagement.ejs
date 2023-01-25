@@ -38,6 +38,7 @@
             <h1 class="title" >
                 Coupons
             </h1>
+           
         </div>
     </section>
     <section class="mt-2 ">
@@ -77,6 +78,46 @@
             </tbody>
         </table>
     </section>
+
+    <div class="container col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="row g-0 align-items-center justify-content-center">
+            <div class="col-lg-6 mb-lg-0 py-5">
+                <div class="card cascading-right"
+                    style="background: hsla(0, 0%, 100%, 0.55); backdrop-filter: blur(30px); ">
+                    <div class="card-body shadow-5 text-center">
+                        <h2 class="fw-bold">Add Coupon</h2>
+                        <form action="/admin/coupon/add" method="post">
+
+                            <div class="form-outline mt-3">
+                                <label class="form-label" for="form3Example1">Coupon Name</label><br>
+                                <input type="text" id="form3Example1" name="couponName" class="form-control" />
+
+                            </div>
+                            <div class="form-outline mt-3">
+                                <label class="form-label" for="form3Example1">Coupon Code</label><br>
+                                <input type="text" id="form3Example1" name="couponCode" class="form-control" />
+
+                            </div>
+                            <div class="form-outline mt-3">
+                                <label class="form-label" for="form3Example1">Discount in %</label><br>
+                                <input type="text" id="form3Example1" name="discount" class="form-control" />
+
+                            </div>
+                            <div class="form-outline mt-3">
+                                <label class="form-label" for="form3Example1">Count per user</label><br>
+                                <input type="text" id="form3Example1" name="countPerUser" class="form-control" />
+
+                            </div>
+                            <div class="form-outline mt-3">
+                                <input type="submit" value="Submit" class="btn btn-primary btn-block mb-4">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <%- include('./partials/adminLayoutFooter')%>
 </body>
 

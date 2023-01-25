@@ -9,6 +9,7 @@
     .navbar-toggler:hover{
       background-color: rgb(220, 220, 220);
     }
+    
 </style>
 <div style="width:100vw;position:fixed;top:0; z-index: 2;display: flex;justify-content: center">
     <nav class="navbar navbar-expand-lg px-4" style="width:100vw; height:auto;background-color:white">
@@ -66,7 +67,7 @@
           
           <div>
             <% if(userData){%>
-              <a class="navbar-brand " title="Profile page"  href="#?userId=<%=userData._id %>"><%=userData.fName %></a>
+              <a class="navbar-brand " title="Profile page"  href="/profile?userId=<%=userData._id %>"><%=userData.fName %></a>
               <a href="/logout"  title="Log-out" ><i class="fa-solid fa-right-from-bracket text-primary"></i></a>
               
               <%}else{%>

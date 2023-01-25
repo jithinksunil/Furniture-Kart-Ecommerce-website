@@ -1,7 +1,8 @@
 const mongoose=require('mongoose')
 
 const newSchema=new mongoose.Schema({//defining structure of collections
-    bannerImage:String,
+    bannerName:String,
+    bannerImage:{public_id:String,cloudunaryUrl:String},
     action:{type:Boolean,default:true}
 })
 

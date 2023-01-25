@@ -5,6 +5,7 @@ const cartCollection = require("../models/cartShema")
 
 module.exports={
     productPage:async (req,res)=>{
+    
         let productData=await productCollection.findOne({_id:mongoose.Types.ObjectId(req.params.productid)})
         let catData=await catCollection.find({action:true})
         let cartCount=0
@@ -21,11 +22,11 @@ module.exports={
     },
 
     categoriesPage:async (req,res)=>{
-
+        
         let catData=await catCollection.find({action:true})
         let search=req.query.search||''
         let page=req.query.page||1
-        let limit=1
+        let limit=4
         let productData;
         let count;
         let sort=parseInt(req.query.sort)||1
@@ -72,11 +73,10 @@ module.exports={
             totalPages:(count/limit),
             currentPage:page,
             catName:req.params.category,
-            catData,
+            catData,                                                                                                                                                                                            
             cartCount,
             search,
             sort
         })
-    
     }
 }

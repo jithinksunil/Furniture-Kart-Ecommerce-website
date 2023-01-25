@@ -1,5 +1,10 @@
 
 <body id="mainDivWishlist">
+  <style>
+    .searchBox{
+      display: none !important;
+    }
+  </style>
   <%- include('./partials/navBarLeft')%>
   <div style="height:4vw">
 
@@ -18,35 +23,41 @@
                           <h6 class="mb-0 text-muted"><%= userWishlist[0]?.wishlistProducts?.length || 0 %> items</h6>
                         </div>
                         <hr class="my-4">
+                        <%if(!userWishlist[0]?.wishlistProducts?.length){%>
+                          <h3>No Items added to the wishlist..</h3>
+                          <%}%>
                       
                         <% for(let i=0;i<userWishlist[0]?.wishlistProducts?.length||0;i++){%>
                             <div class="row mb-4 d-flex justify-content-between align-items-center">
                               <div class="col-md-2 col-lg-2 col-xl-2">
                                 <img
-                                  src="/products/images/<%= userWishlist[0].wishlistProducts[i].productImage %>"
+                                  src="<%= userWishlist[0].wishlistProducts[i].productImage[0].cloudunaryUrl %>"
                                   class="img-fluid rounded-3" alt="Cotton T-shirt">
                               </div>
                               <div class="col-md-3 col-lg-3 col-xl-3">
                                 <h6 class="text-muted"><%= userWishlist[0].wishlistProducts[i].category %></h6>
                                 <h6 class="text-black mb-0"><%= userWishlist[0].wishlistProducts[i].productName %></h6>
                               </div>
-                              <div>
+                              <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                                 <button class="btn btn-dark" onclick="addToCart('<%= userWishlist[0].wishlistProducts[i]._id %>',1,true)"> +Cart</button>
                               </div>
+                              
                               <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                <h6 class="mb-0">&#8377; <%= userWishlist[0].wishlistProducts[i].rate %></h6>
+                                <h6 class="mb-0">&#8377; <%= userWishlist[0].wishlistProducts[i].rate %> /-</h6>
                               </div>
-                              <div>
-                                <a href="/wishlist/removeitem?productId=<%=userWishlist[0].wishlistProducts[i]._id %>"class="mx-5 text-decoration-none">Remove</a>
-                            </div>
-                
+                              
+                          
                               <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                <a href="#!" class="text-muted"><i class="fas fa-times"></i></a>
+                                <a href="/wishlist/removeitem?productId=<%=userWishlist[0].wishlistProducts[i]._id %>" class="text-muted"><i class="fas fa-times"></i></a>
                               </div>
                             </div>
           
                             <hr class="my-4">
                         <%}%>
+                        <div class="pt-5">
+                          <h6 class="mb-0"><a href="/" class="text-body"><i
+                                class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a></h6>
+                        </div>
       
                       </div>
                     </div>
@@ -58,5 +69,7 @@
           </div>
         </div>
       </section>
+      
+      
       <%- include('./partials/footer') %>
 </body>

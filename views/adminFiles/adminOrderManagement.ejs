@@ -38,9 +38,7 @@
             <h1 class="title" >
                 Orders
             </h1>
-        </div>
-        <div>
-            <a href="/admin/genarate/salesreport" target="_blank" role="button"class="btn btn-danger" style="width: 91px; height:40px">Download</a>
+            <a href="/admin/genarate/salesreport" target="_blank" role="button"class="btn btn-danger" style="height:40px">Sales-Report</a>
         </div>
     </section>
     
@@ -62,7 +60,13 @@
                     <tr>
                         <td class="mx-2 text-center"><%= i+1 %></td>
                         <td class="mx-2"><%= item.user[0].fName %></td>
-                        <td class="mx-2"><%= item.address.houseName %></td>
+                        <td class="mx-2"><%= item.address.houseName %> 
+                            <br><%= item.address.landmark %>
+                            <br><%= item.address.area %>
+                            <br><%= item.address.city %>
+                            <br><%= item.address.state %>
+                            <br>Pin:<%= item.address.pin %>
+                        </td>
                         <td class="mx-2"><%= item.orderDate %> </td>
                         <td class="mx-2"><%= item.netAmount %> Rs</td>
                         <td class="mx-2" id="<%= item._id %>"><%= item.status %></td>

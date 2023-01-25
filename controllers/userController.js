@@ -6,8 +6,8 @@ const otpfunctions=require('../config/otpConfiguration')
 const bannerCollection = require('../models/bannerSchema')
 const { query } = require('express')
 const { search } = require('../routes/userRoute')
-async function home(req,res){
-
+const home = async(req,res)=>{
+    
     let bannerData=await bannerCollection.find({action:true})
     let catData=await catCollection.find({action:true})
     let cartCount=0
@@ -22,14 +22,21 @@ async function home(req,res){
     }
     recProducts=await productCollection.find().limit(4)
     res.render('./userFiles/userHomePage',{catData,recProducts,userData:req.session.userData,bannerData,cartCount})
+
 }
 
-function userLogin(req,res){  //user login page
-    let warning=req.query.warning
-    res.render('./userFiles/userLoginPage',{userData:req.session.userData,warning})
+const userLogin = async(req,res)=>{  //user login page
+    try{
+        let warning=req.query.warning
+        res.render('./userFiles/userLoginPage',{userData:req.session.userData,warning})
+    }
+    catch(err){
+        res.render('./404Error')
+    }
 }
 
-async function userValidation(req,res){  //user login validation
+const userValidation = async(req,res)=>{  //user login validation
+    
     let userData=await userCollection.findOne({email:req.body.email})
     try{
         if(userData.password==req.body.password){
@@ -45,126 +52,166 @@ async function userValidation(req,res){  //user login validation
     }
 }
 
-function userLogout(req,res){  //user login page
-    req.session.destroy()
-    res.redirect('/')
-}
-
-async function userRegistration(req,res){  //user login page
-    let warning=req.query.warning
-    let catData=await catCollection.find({action:true})
-    res.render('./userFiles/userRegistrationPage',{userData:req.session.userData,warning,catData})
-}
-
-
-async function userRegistrationOtp(req,res){  //user login page
-    let newUser
-    console.log(req.body);
-    newUser=await userCollection.findOne({email:req.body.email})
-    console.log(newUser);
-    if(newUser){
-            
-        res.redirect(`/registration?warning=${true}`)
-        
+const userLogout = async(req,res)=>{  //user login page
+    try{
+        req.session.destroy()
+        res.redirect('/')
     }
-    else{
+    catch(err){
+        res.render('./404Error')
+    }
+}
 
-        req.session.registrationData={
-            fName:req.body.fName,
-            lName:req.body.lName,
-            age:req.body.age,
-            email:req.body.email,
-            password:req.body.password
+const userRegistration = async(req,res)=>{  //user login page
+    try{
+        let warning=req.query.warning
+        let catData=await catCollection.find({action:true})
+        res.render('./userFiles/userRegistrationPage',{userData:req.session.userData,warning,catData})
+    }
+    catch(err){
+        res.render('./404Error')
+    }
+}
+
+
+const userRegistrationOtp = async(req,res)=>{  //user login page
+    try{
+        let newUser
+        console.log(req.body);
+        newUser=await userCollection.findOne({email:req.body.email})
+        console.log(newUser);
+        if(newUser){
+                
+            res.redirect(`/registration?warning=${true}`)
+            
         }
-        let otpgen=otpfunctions.otp()
-        console.log(otpgen);
-        let mailOptions=otpfunctions.mailObject(req.body.email,otpgen)
-        otpfunctions.mailService(mailOptions)
-        req.session.registrationData.otp= otpgen
-        req.session.registrationData.expiry=Date.now()+60000
-        res.render('./userFiles/otp')
+        else{
+    
+            req.session.registrationData={
+                fName:req.body.fName,
+                lName:req.body.lName,
+                age:req.body.age,
+                email:req.body.email,
+                password:req.body.password
+            }
+            let otpgen=otpfunctions.otp()
+            console.log(otpgen);
+            let mailOptions=otpfunctions.mailObject(req.body.email,otpgen)
+            otpfunctions.mailService(mailOptions)
+            req.session.registrationData.otp= otpgen
+            req.session.registrationData.expiry=Date.now()+60000
+            res.render('./userFiles/otp')
+        }
+    }
+    catch(err){
+        res.render('./404Error')
     }
 }
     
-async function userRegistrationOtpValidation(req,res){  //user login page
-    let currentTime=Date.now()
-    let expiryTime=req.session.registrationData.expiry
-    let otp=req.session.registrationData.otp
+const userRegistrationOtpValidation = async(req,res)=>{  //user login page
+    try{
+        let currentTime=Date.now()
+        let expiryTime=req.session.registrationData.expiry
+        let otp=req.session.registrationData.otp
+    
+        if(currentTime<=expiryTime&&otp==req.body.otp){
+    
+            await userCollection.insertMany([
+                {
+                    fName:req.session.registrationData.fName,
+                    lName:req.session.registrationData.lName,
+                    age:req.session.registrationData.age,
+                    email:req.session.registrationData.email,
+                    password:req.session.registrationData.password
+                }
+            ])
+            req.session.userData=req.session.registrationData
+            req.session.registrationData=null
+            res.redirect('/')
+        }
+        }
+        catch(err){
+            res.render('./404Error')
+        }
+}
 
-    if(currentTime<=expiryTime&&otp==req.body.otp){
+const forgotPasswordPage = async(req,res)=>{
+    try{
+        let warning=req.query.warning
+        res.render('./userFiles/forgotPasswordPage',{warning})
+    }
+    catch(err){
+        res.render('./404Error')
+    }
+}
 
-        await userCollection.insertMany([
-            {
-                fName:req.session.registrationData.fName,
-                lName:req.session.registrationData.lName,
-                age:req.session.registrationData.age,
-                email:req.session.registrationData.email,
-                password:req.session.registrationData.password
+
+const forgotPasswordOtpPage = async(req,res)=>{
+    try{
+        let userEmail=req.query.userEmail
+        let userData=await userCollection.findOne({email:userEmail})
+        let warning=req.query.warning
+    
+        if(userData){
+            if(!warning){
+                let otpgen=otpfunctions.otp()
+                console.log(otpgen);
+                let mailOptions=otpfunctions.mailObject(userEmail,otpgen)
+                otpfunctions.mailService(mailOptions);
+                req.session.forgotPasswordOtp=otpgen
+                req.session.forgotPasswordOtpExpiry=Date.now()+60000
             }
-        ])
-        req.session.userData=req.session.registrationData
-        req.session.registrationData=null
+            res.render('./userFiles/forgotPasswordOtp',{userEmail,warning:req.query.warning})
+        }
+        else{
+            res.redirect(`/forgotpassword?warning=${true}`)
+        }
+    }
+    catch(err){
+        res.render('./404Error')
+    }
+
+}
+
+
+const forgotPasswordNewPasswordPage = async(req,res)=>{
+    try{
+        let currentTime=Date.now()
+        let expiryTime=req.session.forgotPasswordOtpExpiry
+        let otp=req.session.forgotPasswordOtp
+        let userEmail=req.body.userEmail
+    
+        console.log(currentTime);
+        console.log(expiryTime);
+    
+        if(currentTime<=expiryTime && otp==req.body.otp){
+            console.log('hello');
+            res.render('./userFiles/forgotPasswordNewPasswordPage',{userEmail})
+        }
+        else{
+            res.redirect(`/forgotpassword/otppage?warning=${true}&userEmail=${userEmail}`)
+        }
+    }
+    catch(err){
+        res.render('./404Error')
+    }
+
+}
+
+const forgotPasswordUpdation = async(req,res)=>{
+    try{
+        await userCollection.updateOne({email:req.body.userEmail},{password:req.body.password})
+        req.session.userData=await userCollection.findOne({email:req.body.userEmail})
         res.redirect('/')
     }
-}
-
-function forgotPasswordPage(req,res){
-    let warning=req.query.warning
-    res.render('./userFiles/forgotPasswordPage',{warning})
-}
-
-
-async function forgotPasswordOtpPage(req,res){
-
-    let userEmail=req.query.userEmail
-    let userData=await userCollection.findOne({email:userEmail})
-    let warning=req.query.warning
-
-    if(userData){
-        if(!warning){
-            let otpgen=otpfunctions.otp()
-            console.log(otpgen);
-            let mailOptions=otpfunctions.mailObject(userEmail,otpgen)
-            otpfunctions.mailService(mailOptions);
-            req.session.forgotPasswordOtp=otpgen
-            req.session.forgotPasswordOtpExpiry=Date.now()+60000
-        }
-        res.render('./userFiles/forgotPasswordOtp',{userEmail,warning:req.query.warning})
+    catch(err){
+        res.render('./404Error')
     }
-    else{
-        res.redirect(`/forgotpassword?warning=${true}`)
-    }
+
 }
 
-
-async function forgotPasswordNewPasswordPage(req,res){
-
-    let currentTime=Date.now()
-    let expiryTime=req.session.forgotPasswordOtpExpiry
-    let otp=req.session.forgotPasswordOtp
-    let userEmail=req.body.userEmail
-
-    console.log(currentTime);
-    console.log(expiryTime);
-
-    if(currentTime<=expiryTime && otp==req.body.otp){
-        console.log('hello');
-        res.render('./userFiles/forgotPasswordNewPasswordPage',{userEmail})
-    }
-    else{
-        res.redirect(`/forgotpassword/otppage?warning=${true}&userEmail=${userEmail}`)
-    }
-}
-
-async function forgotPasswordUpdation(req,res){
-
-    await userCollection.updateOne({email:req.body.userEmail},{password:req.body.password})
-    req.session.userData=await userCollection.findOne({email:req.body.userEmail})
-    res.redirect('/')
-}
-
-async function userProfile(req,res){
-
+const userProfile = async(req,res)=>{
+    
     const userData=await userCollection.findOne({_id:req.session.userData._id})
     let catData=await catCollection.find({action:true})
     let cartCount=0
@@ -178,9 +225,10 @@ async function userProfile(req,res){
         console.log(err);
     }
     res.render('./userFiles/userProfilePage',{userData,cartCount,catData})
+
 }
 
-async function changePassword(req,res){
+const changePassword = async(req,res)=>{
     
     const userData=await userCollection.findOne({_id:req.session.userData._id})
     let catData=await catCollection.find({action:true})
@@ -195,15 +243,21 @@ async function changePassword(req,res){
         console.log(err);
     }
     res.render('./userFiles/userChangePasswordPage',{userData,cartCount,catData})
-}
-
-async function updatePassword(req,res){
     
-    await userCollection.updateOne({_id:req.session.userData._id,password:req.body.currentPassword},{password:req.body.newPassword})
-    res.redirect('/profile')
 }
 
-async function editAccount(req,res){
+const updatePassword = async(req,res)=>{
+    try{
+        await userCollection.updateOne({_id:req.session.userData._id,password:req.body.currentPassword},{password:req.body.newPassword})
+        res.redirect('/profile')
+    }
+    catch(err){
+        res.render('./404Error')
+    }
+    
+}
+
+const editAccount = async(req,res)=>{
     
     let userData=await userCollection.findOne({_id:req.session.userData._id})
     let catData=await catCollection.find({action:true})
@@ -220,17 +274,21 @@ async function editAccount(req,res){
     res.render('./userFiles/editAccountPage',{userData,cartCount,catData})
 }
 
-async function updateAccount(req,res){
-
-    let userData={
-        fName:req.body.fName,
-        lName:req.body.lName,
-        age:req.body.age,
-        email:req.body.email
+const updateAccount = async(req,res)=>{
+    try{
+        let userData={
+            fName:req.body.fName,
+            lName:req.body.lName,
+            age:req.body.age
+        }
+        
+        await userCollection.updateOne({_id:req.session.userData._id,password:req.body.currentPassword},userData)
+        res.redirect('/profile')
     }
-    
-    await userCollection.updateOne({_id:req.session.userData._id,password:req.body.currentPassword},userData)
-    res.redirect('/profile')
+    catch(err){
+        res.render('./404Error')
+    }
+
 }
 
 module.exports={
