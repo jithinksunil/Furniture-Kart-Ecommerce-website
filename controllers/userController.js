@@ -12,7 +12,7 @@ const home = async(req,res)=>{
     let catData=await catCollection.find({action:true})
     let cartCount=0
     try{
-        let userCart=await cartCollection.findOne({userId:req.session.userData._id})
+        let userCart=await cartCollection.findOne({userId:req.session?.userData?._id})
         for(let i=0;i<userCart.products.length;i++){
             cartCount=cartCount+userCart.products[i].quantity
         }
