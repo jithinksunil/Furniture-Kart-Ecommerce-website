@@ -1,5 +1,6 @@
 const express=require('express')
 const app=express()
+const ErrorResponse =require('./error/errorResponse')
 
 const userRouter=require('./routes/userRoute')
 const productRouter=require('./routes/productRoute')
@@ -25,9 +26,10 @@ app.use((req, res, next) => {//setup cache
     res.set("Cache-Control", "no-store");
     next();
 });
-
 const morgan=require('morgan')//to check weather css are loaded or not
-app.use(morgan("dev"))
+if(process.env.NODE_ENVIRONMENT==="development"){
+    app.use(morgan("dev"))
+}
 
 const path=require('path')
 const expressLayouts=require('express-ejs-layouts')
@@ -47,5 +49,22 @@ app.use('/checkout',checkOutRouter)
 app.use('/wishlist',wishListRouter)
 app.use('/order',orderRouter)
 app.use('/admin',adminRouter)//enable the admin router
+app.use('*',(req,res,next)=>{
+    next(ErrorResponse.notFound())
+})
+
+
+app.use((err,req,res,next)=>{//error handling middle-ware
+    console.log(err.message);
+    console.log(err.stack);
+    console.log(err.name);
+    if(err instanceof ErrorResponse){
+        console.log('hekki');
+        return res.status(err.status).render('./404Error')
+    }
+    console.log('out');
+
+    // res.status(404).
+})
 
 app.listen(process.env.PORT,()=>console.log('Server started'))

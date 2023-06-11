@@ -22,5 +22,6 @@ router.get('/change/password',userSessionMW,userController.changePassword)
 router.post('/update/password',userSessionMW,userController.updatePassword)
 router.get('/edit/account',userSessionMW,userController.editAccount)
 router.post('/update/account',userSessionMW,userController.updateAccount)
+router.get('/jithin',userController.errorRouter)
 
 module.exports=router
