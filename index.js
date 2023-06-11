@@ -50,21 +50,20 @@ app.use('/wishlist',wishListRouter)
 app.use('/order',orderRouter)
 app.use('/admin',adminRouter)//enable the admin router
 app.use('*',(req,res,next)=>{
-    next(ErrorResponse.notFound())
+    next(ErrorResponse.notFound())//creating a new instance using its own static function
 })
 
 
 app.use((err,req,res,next)=>{//error handling middle-ware
-    console.log(err.message);
-    console.log(err.stack);
-    console.log(err.name);
-    if(err instanceof ErrorResponse){
-        console.log('hekki');
-        return res.status(err.status).render('./404Error')
-    }
-    console.log('out');
 
-    // res.status(404).
+    if(err instanceof ErrorResponse){
+
+        return res.status(err.status).render("error page corresponding")
+    }
+    else{
+        return res.status(err.status).render()
+    }
+
 })
 
 app.listen(process.env.PORT,()=>console.log('Server started'))
