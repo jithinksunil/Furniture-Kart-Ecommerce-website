@@ -1,6 +1,6 @@
 const express=require('express')
 const app=express()
-
+const createError = require('http-errors');
 const userRouter=require('./routes/userRoute')
 const productRouter=require('./routes/productRoute')
 const cartRouter=require('./routes/cartRoute')
@@ -25,9 +25,10 @@ app.use((req, res, next) => {//setup cache
     res.set("Cache-Control", "no-store");
     next();
 });
-
 const morgan=require('morgan')//to check weather css are loaded or not
-app.use(morgan("dev"))
+if(process.env.NODE_ENVIRONMENT==="development"){
+    app.use(morgan("dev"))
+}
 
 const path=require('path')
 const expressLayouts=require('express-ejs-layouts')
@@ -47,5 +48,13 @@ app.use('/checkout',checkOutRouter)
 app.use('/wishlist',wishListRouter)
 app.use('/order',orderRouter)
 app.use('/admin',adminRouter)//enable the admin router
+app.use('*',(req,res,next)=>{
+    next(createError(404))
+})
+
+app.use((err,req,res,next)=>{//error handling middle-ware
+
+    res.status(404).render('./404Error')
+})
 
 app.listen(process.env.PORT,()=>console.log('Server started'))
