@@ -53,7 +53,6 @@ app.use('*',(req,res,next)=>{
     next(ErrorResponse.notFound())//creating a new instance using its own static function
 })
 
-
 app.use((err,req,res,next)=>{//error handling middle-ware
 
     if(err instanceof ErrorResponse){
