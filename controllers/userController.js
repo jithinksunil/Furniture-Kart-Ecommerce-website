@@ -128,7 +128,8 @@ const userRegistrationOtpValidation = async(req,res)=>{  //user login page
                     password:req.session.registrationData.password
                 }
             ])
-            req.session.userData=req.session.registrationData
+            const userData=await userCollection.findOne({email:req.session.registrationData.email})
+            req.session.userData=userData
             req.session.registrationData=null
             res.redirect('/')
         }

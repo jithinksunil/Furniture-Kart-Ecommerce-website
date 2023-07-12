@@ -14,6 +14,9 @@
       box-shadow: 0px 0px 15px rgb(177, 177, 177);
       
     }
+    .wishlistHeart:hover{
+      scale: 1.2;
+    }
 
   </style>
 </head>
@@ -27,7 +30,7 @@
       <div class="mx-5 px-5 d-flex justify-content-between">
       
        <div class="filter d-inline-block">
-          <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <button class="btn dropdown-toggle" style="background: #022439; color:#b3b3b3;font-weight: 500" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             FILTER
           </button>
           <ul class="dropdown-menu">
@@ -49,14 +52,14 @@
 
         <div class="filter d-inline-block">
           <a href="/product/categories/all %>">
-            <button class="btn btn-dark px-4" type="button"  aria-expanded="false">
+            <button class="btn px-4" type="button" style="background: #022439; color:#b3b3b3;font-weight: 500"  aria-expanded="false">
               All
             </button>
           </a>
         </div>
 
         <div class="sort  d-inline-block ">
-          <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <button class="btn dropdown-toggle" style="background: #022439; color:#b3b3b3;font-weight: 500" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             SORT
           </button>
           <ul class="dropdown-menu">
@@ -84,7 +87,7 @@
             
             <div class=" innerClass p-3 w-80">
               <div style="float:right">
-                <button onclick="addToWishlist('<%= productData[i]._id %>')" style="font-size:larger;float:right;border:none;background-color:white;"><i class=" fa-regular fa-heart mx-4" ></i></button>
+                <button  onclick="addToWishlist('<%= productData[i]._id %>')" style="font-size:larger;float:right;border:none;background-color:white"><i class=" wishlistHeart fa-regular fa-heart mx-4" ></i></button>
               </div>
               <a href="/product/productpage/<%= productData[i]._id %>">
               <img src="<%=productData[i]?.productImage[0]?.cloudunaryUrl %>" alt="" class="img-fluid" style="border-radius:0.4rem">
