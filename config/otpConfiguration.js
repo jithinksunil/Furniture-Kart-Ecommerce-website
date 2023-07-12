@@ -15,7 +15,8 @@ function mailObject(email,otpgen){
         to: email,  //doseje1135@bitvoo.com
         subject: 'YOUR OTP',
         //   text: `enterotp`
-        html: `<p>${otpgen}</p>`
+        html: `<p>Dear user,
+        Your otp is:${otpgen}</p>`
     }
     return mailOptions
 }

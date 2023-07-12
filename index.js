@@ -1,6 +1,7 @@
 const express=require('express')
 const app=express()
 const createError = require('http-errors');
+
 const userRouter=require('./routes/userRoute')
 const productRouter=require('./routes/productRoute')
 const cartRouter=require('./routes/cartRoute')
@@ -50,11 +51,13 @@ app.use('/order',orderRouter)
 app.use('/admin',adminRouter)//enable the admin router
 app.use('*',(req,res,next)=>{
     next(createError(404))
+
 })
 
 app.use((err,req,res,next)=>{//error handling middle-ware
 
     res.status(404).render('./404Error')
+
 })
 
 app.listen(process.env.PORT,()=>console.log('Server started'))

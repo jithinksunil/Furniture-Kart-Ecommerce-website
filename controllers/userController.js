@@ -1,9 +1,12 @@
+const createError = require('http-errors');
+
 const productCollection=require('../models/productSchema')
 const catCollection = require("../models/categorySchema")
 const cartCollection = require("../models/cartShema")
 const userCollection = require("../models/userSchema")
 const otpfunctions=require('../config/otpConfiguration')
 const bannerCollection = require('../models/bannerSchema')
+
 const { query } = require('express')
 const { search } = require('../routes/userRoute')
 const home = async(req,res)=>{
@@ -25,13 +28,13 @@ const home = async(req,res)=>{
 
 }
 
-const userLogin = async(req,res)=>{  //user login page
+const userLogin = async(req,res,next)=>{  //user login page
     try{
         let warning=req.query.warning
         res.render('./userFiles/userLoginPage',{userData:req.session.userData,warning})
     }
     catch(err){
-        res.render('./404Error')
+        res.next(createError(500))
     }
 }
 
@@ -125,7 +128,8 @@ const userRegistrationOtpValidation = async(req,res)=>{  //user login page
                     password:req.session.registrationData.password
                 }
             ])
-            req.session.userData=req.session.registrationData
+            const userData=await userCollection.findOne({email:req.session.registrationData.email})
+            req.session.userData=userData
             req.session.registrationData=null
             res.redirect('/')
         }
@@ -291,6 +295,11 @@ const updateAccount = async(req,res)=>{
 
 }
 
+const errorRouter=(req,res,next)=>{
+    let error=new Error('newError occured')
+    next()
+}
+
 module.exports={
     home,
     userLogin,
@@ -307,6 +316,7 @@ module.exports={
     changePassword,
     updatePassword,
     editAccount,
-    updateAccount
+    updateAccount,
+    errorRouter
 }
 
