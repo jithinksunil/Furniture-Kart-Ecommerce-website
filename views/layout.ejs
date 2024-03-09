@@ -182,7 +182,7 @@
         function deleteAddress(addressId){
           $.ajax({
             url:'/checkout/delete/address?addressId='+addressId,
-            method:'get',
+            method:'delete',
             success:(response)=>{
               location.reload()
             }

@@ -7,7 +7,7 @@ const { addAddress, checkOut, couponApply, deleteAddress } = checkoutController;
 
 router.use(userSessionMW);
 router.get('/', checkOut);
-router.get('/delete/address', deleteAddress);
+router.delete('/delete/address', deleteAddress);
 router.post('/add/address', addAddress);
 router.get('/coupon/applied', couponApply);
 
