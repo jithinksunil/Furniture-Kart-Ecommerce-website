@@ -1,42 +1,108 @@
-const express=require('express')
-const router=express.Router()
-const adminCollection=require('../models/adminSchema')
-const adminController=require('../controllers/adminController')
-const upload = require('../config/multerConfiguration')
-const catUpload=upload.uploadCategories
-const productUpload=upload.uploadProducts
-const bannerUpload=upload.uploadbanners
-const adminSession = require('../middlewares/adminSessionMW')
-const adminSessionMW=adminSession.adminSession
-const withOutAdminSessionMW=adminSession.withOutAdminSession
+const express = require('express');
+const router = express.Router();
+const upload = require('../config/multerConfiguration');
+const catUpload = upload.uploadCategories;
+const productUpload = upload.uploadProducts;
+const bannerUpload = upload.uploadbanners;
+const {
+  adminSession: adminSessionMW,
+  withOutAdminSession: withOutAdminSessionMW,
+} = require('../middlewares/adminSessionMW');
+const {
+  addBanner,
+  addCategory,
+  addCouponCompleted,
+  addProductCompleted,
+  adminDashBoard,
+  adminLogin,
+  adminLoginValidation,
+  bannerManagement,
+  blockBanner,
+  blockUser,
+  categoryManagement,
+  couponListAndUnListActions,
+  couponManagement,
+  listCategoryAction,
+  listProductAction,
+  logOut,
+  orderManagement,
+  unBlockBanner,
+  orderStatusManagement,
+  productAddPage,
+  productManagement,
+  salesReport,
+  unBlockUser,
+  unListCategoryAction,
+  unListProductAction,
+  userManagement,
+} = require('../controllers/adminController');
 
-router.get('/login',withOutAdminSessionMW,adminController.adminLogin)
-router.post('/login/validation',adminController.adminLoginValidation)
-router.get('/dashboard',adminSessionMW,adminController.adminDashBoard)
-router.get('/usermangement',adminSessionMW,adminController.userManagement)
-router.get('/usermangement/blockuser',adminSessionMW,adminController.blockUser)
-router.get('/usermangement/unblockuser',adminSessionMW,adminController.unBlockUser)
-router.get('/products/categorymangement',adminSessionMW,adminController.categoryManagement)
-router.post('/products/categorymangement/add',catUpload.single('catImage'),adminController.addCategory)
-router.get('/products/categorymangement/listaction',adminSessionMW,adminController.listCategoryAction)
-router.get('/products/categorymangement/un-listaction',adminSessionMW,adminController.unListCategoryAction)
-router.get('/products/productmangement',adminSessionMW,adminController.productManagement)
-router.get('/products/productmangement/addproduct',adminSessionMW,adminController.productAddPage)
-router.post('/products/productmangement/addproduct/completed',productUpload.array('poductImage',4),adminController.addProductCompleted)
-router.get('/products/productmangement/listaction',adminSessionMW,adminController.listProductAction)
-router.get('/products/productmangement/un-listaction',adminSessionMW,adminController.unListProductAction)
-router.get('/orders',adminSessionMW,adminController.orderManagement)
-router.get('/orders/statuschange',adminController.orderStatusManagement)
-router.get('/genarate/salesreport',adminSessionMW,adminController.salesReport)
-router.get('/coupons',adminSessionMW,adminController.couponManagement)
-router.post('/coupon/add',adminSessionMW,adminController.addCouponCompleted)
+router.get('/logout', logOut);
+router.post('/login/validation', adminLoginValidation);
 
-router.get('/coupon/couponmangement/actions',adminSessionMW,adminController.couponListAndUnListActions)
-router.get('/banners',adminSessionMW,adminController.bannerManagement)
-router.post('/banner/add',adminSessionMW,bannerUpload.single('bannerFile'),adminController.addBanner)
-router.get('/banners/blockbanner',adminSessionMW,adminController.blockBanner)
-router.get('/banners/unblockbanner',adminSessionMW,adminController.unBlockBanner)
-router.get('/logout',adminController.logOut)
+router.get('/login', withOutAdminSessionMW, adminLogin);
 
-module.exports=router
+router.use(adminSessionMW);
+router.get('/dashboard', adminDashBoard);
+router.get('/usermangement', userManagement);
+router.get('/usermangement/blockuser', blockUser);
+router.get('/usermangement/unblockuser', unBlockUser);
+router.get('/products/categorymangement', categoryManagement);
+router.post(
+  '/products/categorymangement/add',
+  catUpload.single('catImage'),
+  addCategory
+);
+router.get(
+  '/products/categorymangement/listaction',
 
+  listCategoryAction
+);
+router.get(
+  '/products/categorymangement/un-listaction',
+
+  unListCategoryAction
+);
+router.get('/products/productmangement', productManagement);
+router.get(
+  '/products/productmangement/addproduct',
+
+  productAddPage
+);
+router.post(
+  '/products/productmangement/addproduct/completed',
+  productUpload.array('poductImage', 4),
+  addProductCompleted
+);
+router.get(
+  '/products/productmangement/listaction',
+
+  listProductAction
+);
+router.get(
+  '/products/productmangement/un-listaction',
+
+  unListProductAction
+);
+router.get('/orders/statuschange', orderStatusManagement);
+router.get('/orders', orderManagement);
+router.get('/genarate/salesreport', salesReport);
+router.get('/coupons', couponManagement);
+router.post('/coupon/add', addCouponCompleted);
+
+router.get(
+  '/coupon/couponmangement/actions',
+
+  couponListAndUnListActions
+);
+router.get('/banners', bannerManagement);
+router.post(
+  '/banner/add',
+
+  bannerUpload.single('bannerFile'),
+  addBanner
+);
+router.get('/banners/blockbanner', blockBanner);
+router.get('/banners/unblockbanner', unBlockBanner);
+
+module.exports = router;

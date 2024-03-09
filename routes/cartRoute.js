@@ -1,12 +1,15 @@
-const express=require('express')
-const router=express.Router()
-const cartController=require('../controllers/cartController')
-const userSession = require('../middlewares/userSessionMW')
-const userSessionMW=userSession.userSession
-const userSessionMWForAjax=userSession.userSessionForAjax
+const express = require('express');
+const router = express.Router();
+const cartController = require('../controllers/cartController');
+const userSession = require('../middlewares/userSessionMW');
+const userSessionMW = userSession.userSession;
+const userSessionMWForAjax = userSession.userSessionForAjax;
+const { removeFromCart, userAddToCart, userCart } = cartController;
 
-router.get('/',userSessionMW,cartController.userCart)
-router.get('/addtocart',userSessionMWForAjax,cartController.userAddToCart)
-router.get('/removeitem',userSessionMW,cartController.removeFromCart)
+router.get('/addtocart', userSessionMWForAjax, userAddToCart);
 
-module.exports=router
+router.use(userSessionMW);
+router.get('/', userCart);
+router.get('/removeitem', removeFromCart);
+
+module.exports = router;
