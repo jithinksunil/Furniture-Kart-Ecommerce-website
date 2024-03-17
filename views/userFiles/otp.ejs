@@ -8,9 +8,13 @@
     padding: 0 !important;
     justify-content: center;
   }
+  
   @media (max-width: 765px) {
     .image {
       display: none;
+    }
+    .resentButtonContainer{
+      text-align: center;
     }
   }
 </style>
@@ -55,16 +59,19 @@
             />
           </div>
         </form>
-        <button
+        <div class="resentButtonContainer">
+
+          <button
           class="btn btn-danger mt-2"
           id="resend-button"
           btn
           btn-dark
           onclick="resendOtp()"
           style="margin: auto"
-        >
+          >
           Resend OTP
         </button>
+      </div>
       </div>
     </div>
     <script>
