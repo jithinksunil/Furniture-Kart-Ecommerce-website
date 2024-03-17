@@ -17,8 +17,9 @@
       display: flex;
       justify-content: center;
       padding-top: 50px;
-      padding-bottom: 40px;
+      padding-bottom: 50px;
       align-items: center;
+      min-height: 100vh;
     }
     @media (max-width: 765px) {
       .signinContainer {
@@ -34,9 +35,7 @@
   </style>
 </head>
 <body>
-  <%- include('./partials/navBarLeft')%>
-  <div style="height: 5vw"></div>
-  <div class="mainConainer" >
+  <div class="mainConainer">
     <div class="container card signinContainer" style="height: fit-content">
       <img class="image" src="/user/images/userLoginImage.jpg" />
       <div class="signin-form">
@@ -110,26 +109,4 @@
       </div>
     </div>
   </div>
-
-  <%- include('./partials/footer')%>
 </body>
-
-<!-- <div class="container loginPageOverrides" style="background-color: red;">
-  <section class="sign-in">
-    <div class="container">
-      <div class="signin-content">
-        <div class="signin-image">
-          <figure>
-            <img
-              class="d-md-block d-sm-none"
-              src="/public/user/images/userLoginImage.jpg"
-              alt="sing up image"
-            />
-          </figure>
-        </div>
-
-        
-      </div>
-    </div>
-  </section>
-</div> -->
