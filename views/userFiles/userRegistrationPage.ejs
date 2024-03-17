@@ -1,74 +1,135 @@
 <head>
   <link rel="stylesheet" href="/user/css/userLoginPage.css" />
+
   <style>
-    .searchBox{
+    .searchBox {
       display: none !important;
+    }
+    .signinContainer {
+      min-height: 500px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      padding: 0 !important;
+      justify-content: center;
+      align-items: center;
+    }
+    .mainConainer {
+      display: flex;
+      justify-content: center;
+      padding-top: 50px;
+      padding-bottom: 40px;
+      align-items: center;
+    }
+    @media (max-width: 765px) {
+      .signinContainer {
+        display: flex;
+      }
+      .image {
+        display: none;
+      }
+      .mainConainer {
+        padding-top: 90px;
+      }
     }
   </style>
 </head>
 <body>
   <%- include('./partials/navBarLeft')%>
-  <div style="height:5vw"></div>
-  <div class="container loginPageOverrides">
-    <section class="sign-in">
-      <div class="container">
-        <div class="signin-content">
-          <div class="signin-image">
-            <figure>
-              <img class="d-md-block d-sm-none " src="/public/user/images/userLoginImage.jpg" alt="sing up image" />
-            </figure>
-            
+  <div style="height: 5vw"></div>
+  <div class="mainConainer" >
+    <div class="container card signinContainer" style="height: fit-content">
+      <img class="image" src="/user/images/userLoginImage.jpg" />
+      <div class="signin-form">
+        <h2 class="form-title">Register</h2>
+        <form
+          action="/registration/Otp"
+          method="POST"
+          class="register-form"
+          id="login-form"
+        >
+          <div class="form-group">
+            <input
+              type="text"
+              name="fName"
+              id="your_name"
+              placeholder="first name"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              name="lName"
+              id="your_name"
+              placeholder="last"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="number"
+              name="age"
+              id="your_name"
+              placeholder="Age"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="email"
+              name="email"
+              id="your_name"
+              placeholder="Email"
+              required
+            />
           </div>
 
-          <div class="signin-form">
-            <h2 class="form-title">Register</h2>
-            <form
-              action="/registration/Otp"
-              method="POST"
-              class="register-form"
-              id="login-form"
-            >
-            <div class="form-group">
-              <input type="text"  name="fName" id="your_name" placeholder="first name" required/>
-            </div>
-            <div class="form-group">
-              <input type="text"  name="lName" id="your_name" placeholder="last" required/>
-            </div>
-            <div class="form-group">
-              <input type="number"  name="age" id="your_name" placeholder="Age" required/>
-            </div>
-              <div class="form-group">
-                <input type="email"  name="email" id="your_name" placeholder="Email" required/>
-              </div>
-              
-              
-              <div class="form-group">
-                <input
-                  type="password"
-                  name="password"
-                  id="your_pass"
-                  placeholder="Password"
-                  required
-                />
-              </div>
-              <% if(warning){%>
-                <p style="color:black">Email id is already registered</p>  
-              <%}%>
-              
-              <div class="form-group form-button">
-                <input
-                  type="submit"
-                  name="signin"
-                  id="signin"
-                  class="form-submit"
-                  value="Proceed"
-                />
-              </div>
-            </form>
+          <div class="form-group">
+            <input
+              type="password"
+              name="password"
+              id="your_pass"
+              placeholder="Password"
+              required
+            />
           </div>
-        </div>
+          <% if(warning){%>
+          <p style="color: black">Email id is already registered</p>
+          <%}%>
+
+          <div class="form-group form-button">
+            <input
+              type="submit"
+              name="signin"
+              id="signin"
+              class="form-submit"
+              value="Proceed"
+            />
+          </div>
+        </form>
       </div>
-    </section>
+    </div>
   </div>
+
   <%- include('./partials/footer')%>
 </body>
+
+<!-- <div class="container loginPageOverrides" style="background-color: red;">
+  <section class="sign-in">
+    <div class="container">
+      <div class="signin-content">
+        <div class="signin-image">
+          <figure>
+            <img
+              class="d-md-block d-sm-none"
+              src="/public/user/images/userLoginImage.jpg"
+              alt="sing up image"
+            />
+          </figure>
+        </div>
+
+        
+      </div>
+    </div>
+  </section>
+</div> -->

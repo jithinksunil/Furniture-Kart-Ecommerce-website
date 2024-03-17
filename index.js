@@ -34,6 +34,7 @@ app.use((req, res, next) => {
   res.set('Cache-Control', 'no-store');
   next();
 });
+
 if (process.env.NODE_ENVIRONMENT === 'development') {
   app.use(morgan('dev'));
 }
@@ -45,13 +46,13 @@ app.use(expressLayouts); //setting up layout
 app.set('views', './views'); //setting up directory for view engine, here views is the folder
 app.set('view engine', 'ejs'); //setting up  view engine
 
-app.use('/', userRouter); //enable the user router
 app.use('/product', productRouter);
 app.use('/cart', cartRouter);
 app.use('/checkout', checkOutRouter);
 app.use('/wishlist', wishListRouter);
 app.use('/order', orderRouter);
 app.use('/admin', adminRouter); //enable the admin router
+app.use('/', userRouter); //enable the user router
 app.use('*', (req, res, next) => {
   next(createError(404));
 });

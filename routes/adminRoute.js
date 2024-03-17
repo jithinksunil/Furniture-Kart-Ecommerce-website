@@ -39,7 +39,6 @@ const {
 
 router.get('/logout', logOut);
 router.post('/login/validation', adminLoginValidation);
-
 router.get('/login', withOutAdminSessionMW, adminLogin);
 
 router.use(adminSessionMW);
@@ -53,55 +52,26 @@ router.post(
   catUpload.single('catImage'),
   addCategory
 );
-router.get(
-  '/products/categorymangement/listaction',
-
-  listCategoryAction
-);
-router.get(
-  '/products/categorymangement/un-listaction',
-
-  unListCategoryAction
-);
+router.get('/products/categorymangement/listaction', listCategoryAction);
+router.get('/products/categorymangement/un-listaction', unListCategoryAction);
 router.get('/products/productmangement', productManagement);
-router.get(
-  '/products/productmangement/addproduct',
-
-  productAddPage
-);
+router.get('/products/productmangement/addproduct', productAddPage);
 router.post(
   '/products/productmangement/addproduct/completed',
   productUpload.array('poductImage', 4),
   addProductCompleted
 );
-router.get(
-  '/products/productmangement/listaction',
-
-  listProductAction
-);
-router.get(
-  '/products/productmangement/un-listaction',
-
-  unListProductAction
-);
+router.get('/products/productmangement/listaction', listProductAction);
+router.get('/products/productmangement/un-listaction', unListProductAction);
 router.get('/orders/statuschange', orderStatusManagement);
 router.get('/orders', orderManagement);
 router.get('/genarate/salesreport', salesReport);
 router.get('/coupons', couponManagement);
 router.post('/coupon/add', addCouponCompleted);
 
-router.get(
-  '/coupon/couponmangement/actions',
-
-  couponListAndUnListActions
-);
+router.get('/coupon/couponmangement/actions', couponListAndUnListActions);
 router.get('/banners', bannerManagement);
-router.post(
-  '/banner/add',
-
-  bannerUpload.single('bannerFile'),
-  addBanner
-);
+router.post('/banner/add', bannerUpload.single('bannerFile'), addBanner);
 router.get('/banners/blockbanner', blockBanner);
 router.get('/banners/unblockbanner', unBlockBanner);
 
