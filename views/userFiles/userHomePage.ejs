@@ -296,18 +296,20 @@ color: #2ecc71;
         <span class="visually-hidden">Next</span>
       </button>
     </div>
+<div style="max-width: 1800px; padding-left: 20px; padding-right: 20px;margin: auto;">
 
-    <div class=" my-5 mx-5 mx-sm-5 px-sm-5 text-center">
-      <h1 style="font-style: italic;">We Believe You Are Unique !</h1>
-      <p >Why settle for a furniture that is made for someone else? With aesthetic designs, premium materials and skilled artisanship, our team is committed to improve your shopping experience.Why settle for a furniture that is made for someone else? With aesthetic designs, premium materials and skilled artisanship, our team is committed to improve your shopping experience.</p>
+  <div class=" my-5 mx-5 mx-sm-5 px-sm-5 text-center">
+    <h1 style="font-style: italic;">We Believe You Are Unique !</h1>
+    <p style="max-width: 1100px;margin: auto;">Why settle for a furniture that is made for someone else? With aesthetic designs, premium materials and skilled artisanship, our team is committed to improve your shopping experience.Why settle for a furniture that is made for someone else? With aesthetic designs, premium materials and skilled artisanship, our team is committed to improve your shopping experience.</p>
       
     </div>
 
     <div class="my-4 mx-5 mx-md-5 px-sm-5 text-center text-lg-start">
-     
+      
       <h3 class="mt-4">Top Categories</h3>
       <hr>
     </div>
+  </div>
     <div class=" catlist mb-3" >
       <%for(let i=0;i<3;i++){%>
     
@@ -345,41 +347,32 @@ color: #2ecc71;
     </div>
 
 
-    <!-- <div class="owl-carousel owl-theme mx-4 mx-sm-4 px-sm-5" style="width:96vw">
-      <div class="tiles-2 shadow rounded" style="background-image:url('/public/admin/images/userLoginImage.jpg');background-size: 100%;background-repeat: no-repeat">
-        <h3 class="text-center">dfgdfgd</h3>
+
+    <div style="max-width: 1800px;padding-left: 20px; padding-right: 20px;">
+      <div class="my-4 mx-5 mx-md-5 px-sm-5 text-center text-lg-start">
+        <h3 class="mt-4">New Arrivals</h3>
+        <hr>
+      </div>
+  
+      <div class="row pt-4 px-5 mx-0 mx-lg-5">
+        <%for(let i=0; i < 4 ; i++){%>
+          <div class="tiles col-lg-3 col-md-6 col-12 mb-4">
+            <div class=" innerClass p-3 h-100">
+              <a href="/product/productpage/<%= recProducts[i]?._id %>"></a>
+              <img src="<%= recProducts[i]?.productImage[0]?.cloudunaryUrl %>" alt="" class="img-fluid" style="border-radius:0.4rem">
+                <h5 ><%= recProducts[i]?.productName %></h5>
+                <p >&#8377 <%= recProducts[i]?.rate %>/-</p5>
+              </a>
+            </div>
+          </div>
+        <%}%>
       </div>
       
-  
-    </div> -->
-    <!-- <div class="catlist">
-      <img src="/home displaym Images/furnitures home page panorama views.jpg" alt="" class="img-fluid">
-    
-    </div> -->
-
-    <div class="my-4 mx-5 mx-md-5 px-sm-5 text-center text-lg-start">
-      <h3 class="mt-4">New Arrivals</h3>
-      <hr>
-    </div>
-
-    <div class="row pt-4 px-5 mx-0 mx-lg-5">
-      <%for(let i=0; i < 4 ; i++){%>
-        <div class="tiles col-lg-3 col-md-6 col-12 mb-4">
-          <div class=" innerClass p-3 h-100">
-            <a href="/product/productpage/<%= recProducts[i]?._id %>"></a>
-            <img src="<%= recProducts[i]?.productImage[0]?.cloudunaryUrl %>" alt="" class="img-fluid" style="border-radius:0.4rem">
-              <h5 ><%= recProducts[i]?.productName %></h5>
-              <p >&#8377 <%= recProducts[i]?.rate %>/-</p5>
-            </a>
-          </div>
-        </div>
-      <%}%>
-    </div>
-    
-    <div class="text-center mb-5">
-      <a href="/product/categories/all">
-        <button class="button-39" role="button">Show more</button>
-      </a>
+      <div class="text-center mb-5">
+        <a href="/product/categories/all">
+          <button class="button-39" role="button">Show more</button>
+        </a>
+      </div>
     </div>
 
     <div class="row container-fluid d-flex justify-content-center">

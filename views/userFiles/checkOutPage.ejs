@@ -9,6 +9,24 @@ cursor: pointer;
     .radioButton:hover{
       cursor: pointer;
     }
+    .selctButton{
+      background-color: rgb(155, 101, 0);
+      border: none;
+      color: white;
+      border-radius: 5px;
+      padding: 5px;
+      padding-left: 10px;
+      padding-right: 10px;
+      font-size: 14px;
+    }
+    .buttonContaner{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    #addressSelector:checked+.selctButton{
+      background-color: green;
+    }
   </style>
   
   <%- include('./partials/navBarLeft')%>
@@ -64,9 +82,7 @@ cursor: pointer;
                   <label class="form-label" for="form7Example6">Pincode</label>
                   <p id="pincodeError" style="color: red"></p>
                 </div>
-                
-                  <div onclick="addAddress()" class="addAddress" style=" font-size:larger;float:right;border:none;background-color:white; display: flex; gap: 5px;"><span style="margin-top: -7px;">Add to address</span><i class="fa-solid fa-angles-right" ></i></div>
-                
+                  <div onclick="addAddress()" class="addAddress" style=" font-size:larger;float:right;border:none;background-color:white; display: flex; gap: 5px;"><span style="margin-top: -7px;">Add to addresses</span><i class="fa-solid fa-angles-right" ></i></div>
                 <div class="custom-control custom-radio">
                   <input
                     id="credit"
@@ -170,21 +186,26 @@ cursor: pointer;
             <div class="card-header py-3">
               <h5 class="mb-0">Addresses</h5>
             </div>
+            <% if(addressData.length===0){
+              %> <div style="padding: 20px;text-align: center;">No Addresses added...</div><%
+            }%>
             <div class="card-body">
               <% addressData.forEach((item)=>{%>
-                <input type="radio" value="<%= item._id %>" name="address" id="addressSelector" class="radioButton" onclick="selectAddress(
-                  '<%= item.houseName %>',
-                  '<%= item.area %>',
-                  '<%= item.landmark %>',
-                  '<%= item.city %>',
-                  '<%= item.pin %>',
-                  '<%= item.state %>'
-                )" required />
+                
                 <ul class="list-group list-group-flush ">
                   
                   <p><span><%= item.houseName %>, </span><span><%= item.area %>, </span><span><%= item.landmark %>, </span><span><%= item.city %>, </span><span><%= item.state %>, </span><span><%= item.pin %></span></p>
-                  
-                  <button onclick="deleteAddress('<%= item.addressId %>')" style="font-size:larger;float:right;border:none;background-color:white;"><i class="fa-solid fa-trash"></i></button>
+                  <div class="buttonContaner">
+<button class="selctButton" onclick="selectAddress(
+  '<%= item.houseName %>',
+  '<%= item.area %>',
+  '<%= item.landmark %>',
+  '<%= item.city %>',
+  '<%= item.pin %>',
+  '<%= item.state %>'
+)">Select</button>
+                    <button onclick="deleteAddress('<%= item.addressId %>')" style="font-size:larger;border:none;background-color:white;"><i class="fa-solid fa-trash"></i></button>
+                  </div>
                 </ul>
                 
                 <hr>
