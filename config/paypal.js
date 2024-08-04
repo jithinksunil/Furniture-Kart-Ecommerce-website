@@ -6,8 +6,8 @@ module.exports={
     paypalIntergration:(res,userId,totalAmount)=>{
         paypal.configure({
             'mode': 'sandbox',
-            'client_id': 'AUph16OQlgs0Af8jR_YZyxgY88VLPyPVk_qU_MJUZ1O0b9y4VZ0Zxb7wFcxDd3n5YufGHhRTbSuFytNW',
-            'client_secret': 'EASmta6JXHlT5rtXDeE4ki62L0Oz0ayFW8ztvJR6Qbq5xk-67d6Q7-Af0mvcN-HkDiGhPby3ljgnB377'
+            'client_id': process.env.PAYPAL_CLIENT_ID,
+            'client_secret': process.env.PAYPAL_CLIENT_SECRET
           });
         
           const create_payment_json = {
@@ -16,8 +16,8 @@ module.exports={
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": `${process.env.MY_DOMAIN_IN_PAYPAL}/order/onlinepayment/success`,
-                "cancel_url": `${process.env.MY_DOMAIN_IN_PAYPAL}/order/onlinepayment/cancel`
+                "return_url": `${process.env.FRONT_END_URL}/order/onlinepayment/success`,
+                "cancel_url": `${process.env.FRONT_END_URL}/order/onlinepayment/cancel`
             },
             "transactions": [{
                 "item_list": {
