@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-
+const dotenv = require("dotenv")
 function otp() {
   let otpgen = Math.floor(1000 + Math.random() * 9000);
   return otpgen;
@@ -7,7 +7,7 @@ function otp() {
 
 function mailObject(email, otpgen) {
   let mailOptions = {
-    from: 'jithinksunil96@gmail.com',
+    from: process.env.NODEMAILER_EMAIL,
     to: email, //doseje1135@bitvoo.com
     subject: 'YOUR OTP',
     //   text: `enterotp`
@@ -21,8 +21,8 @@ function mailService(mailOptions) {
   let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'jithinksunil96@gmail.com',
-      pass: 'nskzhacimzlqfors', // password from gmail
+      user: process.env.NODEMAILER_EMAIL,
+      pass: process.env.NODEMAILER_PASSWORD, // password from gmail
     },
   });
 
